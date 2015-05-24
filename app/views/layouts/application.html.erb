@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Workspace</title>
+  <title>Daycare SuperAdmin</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <nav class="navbar navbar-default" id="topbar">
+		<div class="container-fluid">
+			<div class="navbar-header">
+			  <span class="navbar-brand">Admin panel</span> 
+			</div>
+			
+		</div>
+	</nav>
 
-<%= yield %>
+<div class="container">
+	<div class="row">
+      <%= yield %>
+  </div>
+</div>
 
 </body>
 </html>
