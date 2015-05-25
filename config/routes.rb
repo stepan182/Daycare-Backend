@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
+
+# You can have the root of your site routed with "root"
+  root 'login#index'
+  
+  get 'login' => 'login#index'
+  post 'login' => 'login#login'
+  get 'home' => 'home#index'
   get 'admins/new'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  root 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

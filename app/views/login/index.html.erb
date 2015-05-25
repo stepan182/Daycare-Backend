@@ -1,0 +1,43 @@
+<h1 class="pull-center white headerMargin"><span class="nonBold">Login as</span> Super Admin</h1>
+
+<div class="col-md-5 col-centered">
+    <div class="panel panel-default padding20">
+      <div class="panel-body">
+        <div class="pull-center">
+            <img src="/assets/Daycare-logo.gif">
+            <br/><br/>
+            
+            <form method="post" action="/login">
+                <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+                <div class="form-group">
+                  <input type="text" placeholder="Email" id="txtEmail" name="txtEmail" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="password" placeholder="Password" id="txtPassword" name="txtPassword" class="form-control">
+                </div>
+                <div class="form-group">
+                  <a href="#">forgot password</a>
+                </div>
+                
+                <button type="submit" class="btn btn-success">LOG IN</button>
+              </form>
+          </div>
+      </div>
+    </div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+$(function(){
+    $("#topbar").hide();
+})
+</script>
+<style>
+body {
+    background-color: #ea5b0c;
+    background-image: url('/assets/main-background.gif');
+    background-size: 100%;
+    background-position: top center;
+    background-repeat:no-repeat;
+}
+</style>
