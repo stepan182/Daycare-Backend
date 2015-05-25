@@ -4,16 +4,16 @@
     <div class="panel panel-default padding20">
       <div class="panel-body">
         <div class="pull-center">
-            <img src="/assets/Daycare-logo.gif">
+            <img src="/assets/Daycare-logo.gif" class="img-responsive">
             <br/><br/>
             
             <form method="post" action="/login">
                 <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
                 <div class="form-group">
-                  <input type="text" placeholder="Email" id="txtEmail" name="txtEmail" class="form-control">
+                  <input type="text" placeholder="Email" id="txtEmail" name="txtEmail" class="form-control" required>
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="Password" id="txtPassword" name="txtPassword" class="form-control">
+                  <input type="password" placeholder="Password" id="txtPassword" name="txtPassword" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <a href="#">forgot password</a>
@@ -36,8 +36,6 @@ $(function(){
 body {
     background-color: #ea5b0c;
     background-image: url('/assets/main-background.gif');
-    background-size: 100%;
-    background-position: top center;
-    background-repeat:no-repeat;
+    
 }
 </style>

@@ -4,15 +4,19 @@ class LoginController < ApplicationController
   end
   
   def login
-    @admin = Admin.find_by(email: params[:txtEmail])
+    admin = Admin.find_by(email: params[:txtEmail])
     
-    if @admin
-      flash[:message] = "Admin found"
+    if admin && admin.authenticate(params[:txtPassword])
+      login_admin(admin)
       redirect_to '/home'
     else
-      flash[:message] = "Admin not found"
-      redirect_to '/'
+      flash[:danger] = "Invalid email/password combination"
+      redirect_to '/login'
     end
     
   end
+  
+  def logout
+  end
+
 end

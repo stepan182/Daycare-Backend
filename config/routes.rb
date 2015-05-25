@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   
   get 'login' => 'login#index'
   post 'login' => 'login#login'
+  delete 'logout'  => 'login#logout'
   get 'home' => 'home#index'
   get 'admins/new'
 

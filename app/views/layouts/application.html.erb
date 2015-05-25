@@ -19,9 +19,13 @@
 		</div>
 	</nav>
 	
-	<%=flash[:message] %>
 
 <div class="container">
+    
+    <% flash.each do |message_type, message| %>
+        <div class="top7 alert alert-<%= message_type %>"><%= message %></div>
+    <% end %>
+
 	<div class="row">
       <%= yield %>
   </div>
