@@ -11,12 +11,14 @@ class LoginController < ApplicationController
       redirect_to '/home'
     else
       flash[:danger] = "Invalid email/password combination"
-      redirect_to '/login'
+      redirect_to root_url
     end
     
   end
   
   def logout
+    log_out
+    redirect_to root_url
   end
 
 end

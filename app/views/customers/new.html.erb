@@ -1,0 +1,53 @@
+<br/>
+<div class="col-md-6 col-md-offset-3">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <h4>Create Single Customer</h4>
+  		</div>
+
+		<div class="panel-body">
+					
+		<%= form_for @customer, url: customers_path, html: {role: "form"} do |f| %>
+		  <div class="form-group">
+              <%= f.label :customer_name%>
+              <%= f.text_field :customer_name, class: "form-control" %>
+          </div>
+          
+          <div class="form-group">
+              <%= f.label :username%>
+              <%= f.text_field :username, class: "form-control" %>
+          </div>
+          
+          <div class="form-group">
+              <%= f.label :password%>
+              <%= f.password_field :password, class: "form-control" %>
+          </div>
+          
+          <div class="form-group">
+              <%= f.label :email%>
+              <%= f.text_field :email, class: "form-control" %>
+          </div>
+          
+          
+          <div class="col-md-offset-5">
+              <%= f.submit "Create", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+					
+		</div>
+		
+	</div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("ADD CUSTOMERS");
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #1a8a8f;
+}
+</style>

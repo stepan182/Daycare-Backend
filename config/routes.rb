@@ -3,11 +3,11 @@ Rails.application.routes.draw do
 # You can have the root of your site routed with "root"
   root 'login#index'
   
-  get 'login' => 'login#index'
+  get  'login' => 'login#index'
   post 'login' => 'login#login'
-  delete 'logout'  => 'login#logout'
-  get 'home' => 'home#index'
-  get 'admins/new'
+  get  'logout'  => 'login#logout'
+  get  'home' => 'home#index'
+  resources :customers
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -9,6 +9,10 @@ body {
     color: #fff;
 }
 
+a:hover.white {
+    color: #fff;
+}
+
 .nonBold {
     font-weight: 100;
 }
@@ -33,4 +37,24 @@ body {
 .col-centered{
     float: none;
     margin: 0 auto;
+}
+
+.homeHeader {
+    background-color: #ea5b0c;
+}
+
+.navbar-header {
+    padding-top: 7px;
+}
+
+.maxWidth {
+    width:100%;
+}
+
+.linksSpace {
+    margin-left:5px;
+}
+
+.floatLeft {
+    float:left;
 }

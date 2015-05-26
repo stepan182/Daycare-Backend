@@ -10,8 +10,12 @@ module LoginHelper
   
   def authorize
     if !logged_in?
-      redirect_to '/login'
+      redirect_to login_url
     end
+  end
+  
+  def log_out
+    session.delete(:admin_name)
   end
   
 end
