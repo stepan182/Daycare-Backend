@@ -16,7 +16,7 @@
 			  <span class="white" id="slogan"><br/>AS SUPER ADMIN</span>
 			  <span class="pull-right white">
 			      <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <%= link_to("Home", home_path, :class => "white")%>
-			      <span class="glyphicon glyphicon-user linksSpace" aria-hidden="true"></span> Edit Profile 
+			      <span class="glyphicon glyphicon-user linksSpace" aria-hidden="true"></span> <%= link_to("Edit Profile", edit_admin_path(session[:admin_id].to_i), :class => "white") %> 
 			      <span class="glyphicon glyphicon-log-out linksSpace" aria-hidden="true"></span> <%= link_to("Log out", logout_path, :class => "white")%>
 			   </span>
 			</div>

@@ -141,17 +141,18 @@ function showUserTypes(){
     else{
         $("#sel_daycare_user_type").hide();
         $("#sel_daycare_department").hide();
+        $("#sel_daycare_user_type option").removeAttr("selected");
+        $("#sel_daycare_department option").removeAttr("selected");
     }
 }
 
 $(function(){
-        
+
         // Add slogan
         $("#slogan").html("ADD CUSTOMERS");
         
-        // Hide Daycare user type
-        $("#sel_daycare_user_type").hide();
-        $("#sel_daycare_department").hide();
+        // Hide or show Daycare fields
+        showUserTypes();
         
         // prevent modal forms submission
         $("#new_customer_type").submit(function(e) {       

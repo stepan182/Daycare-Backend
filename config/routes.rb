@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   post 'login' => 'login#login'
   get  'logout'  => 'login#logout'
   get  'home' => 'home#index'
+  resources :admins
   resources :customers
   resources :customer_types
   resources :daycare_departments

@@ -2,6 +2,7 @@ module LoginHelper
   
   def login_admin(admin)
     session[:admin_name] = admin.name
+    session[:admin_id] = admin.id
   end
   
   def logged_in?
@@ -16,6 +17,7 @@ module LoginHelper
   
   def log_out
     session.delete(:admin_name)
+    session.delete(:admin_id)
   end
   
 end
