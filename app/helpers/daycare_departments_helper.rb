@@ -1,0 +1,2 @@
+module DaycareDepartmentsHelper
+end

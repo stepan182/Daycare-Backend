@@ -1,4 +1,17 @@
 <br/>
+<% if @customer.errors.any? %>
+  <div id="error_explanation" class="col-md-6 col-md-offset-3">
+    <div class="alert alert-danger">
+      The form contains <%= pluralize(@customer.errors.count, "error") %>.
+    </div>
+    <ul class="red">
+    <% @customer.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <div class="col-md-6 col-md-offset-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -10,25 +23,48 @@
 		<%= form_for @customer, url: customers_path, html: {role: "form"} do |f| %>
 		  <div class="form-group">
               <%= f.label :customer_name%>
-              <%= f.text_field :customer_name, class: "form-control" %>
+              <%= f.text_field :customer_name, {class: "form-control", required: "true"} %>
           </div>
           
           <div class="form-group">
               <%= f.label :username%>
-              <%= f.text_field :username, class: "form-control" %>
+              <%= f.text_field :username, {class: "form-control", required: "true"} %>
           </div>
           
           <div class="form-group">
               <%= f.label :password%>
-              <%= f.password_field :password, class: "form-control" %>
+              <%= f.password_field :password, {class: "form-control", required: "true"} %>
           </div>
           
           <div class="form-group">
               <%= f.label :email%>
-              <%= f.text_field :email, class: "form-control" %>
+              <%= f.text_field :email, {class: "form-control", required: "true"} %>
+          </div>
+          
+          <div class="form-group">
+              <%= f.label :country%>
+              <%= f.country_select :country, ["Norway"], {}, { :class => "form-control" } %>
           </div>
           
           
+          <div class="form-group">
+              <a data-toggle="modal" href="#" class="pull-right" data-target="#customerTypeModal">+ add new</a>
+              <%= f.label :customer_type_id%>
+              <%= f.collection_select(:customer_type_id, @type_providers, :id, :type_name, {}, {include_blank: true, required: 'true', class: 'form-control', onchange: 'showUserTypes()'}) %>
+          </div>
+          
+          <div class="form-group" id="sel_daycare_user_type">
+              <%= f.label :daycare_user_type %>
+              <%= f.select(:daycare_user_type, "<option></option><option>Daycare Manager</option><option>Daycare Worker</option><option>Daycare Parent</option>".html_safe, {}, {multiple: false, class: 'form-control'}) %>
+          </div>
+          
+          <div class="form-group" id="sel_daycare_department">
+              <a data-toggle="modal" href="#" class="pull-right" data-target="#customerDepartmentModal">+ add new</a>
+              <%= f.label :daycare_department%><br/>
+              <%= f.collection_select(:daycare_department_ids, @departments_providers, :id, :department_name, {}, {:multiple => true, class: 'form-control'}) %>
+          </div>
+          
+          <br/><br/>
           <div class="col-md-offset-5">
               <%= f.submit "Create", class: "btn btn-primary" %>
           </div>
@@ -39,11 +75,122 @@
 	</div>
 </div>
 
+<!-- Customer Type Modal -->
+<div class="modal fade" id="customerTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Add New Customer Type</h4>
+            
+            </div>
+            <div class="modal-body">
+                
+                <%= form_for @customer_type, url: customer_types_path, html: {role: "form"} do |f| %>
+            		  <div class="form-group">
+                          <%= f.label :type_name%>
+                          <%= f.text_field :type_name, class: "form-control" %>
+                      </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="customer_type_btn">Add</button>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Customer Department Modal -->
+<div class="modal fade" id="customerDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Add New Daycare Department</h4>
+            
+            </div>
+            <div class="modal-body">
+                
+                <%= form_for @daycare_department, url: daycare_departments_path, html: {role: "form"} do |f| %>
+            		  <div class="form-group">
+                          <%= f.label :department_name%>
+                          <%= f.text_field :department_name, class: "form-control" %>
+                      </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="customer_department_btn">Add</button>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Scripts and styles -->
 <script>
-    $(function(){
+
+// Show daycare user type if daycare customer type selected
+function showUserTypes(){
+    if ($("#customer_customer_type_id option:selected" ).text() == 'Daycare Customer'){
+        $("#sel_daycare_user_type").show();
+        $("#sel_daycare_department").show();
+    }
+    else{
+        $("#sel_daycare_user_type").hide();
+        $("#sel_daycare_department").hide();
+    }
+}
+
+$(function(){
+        
+        // Add slogan
         $("#slogan").html("ADD CUSTOMERS");
-    })
+        
+        // Hide Daycare user type
+        $("#sel_daycare_user_type").hide();
+        $("#sel_daycare_department").hide();
+        
+        // prevent modal forms submission
+        $("#new_customer_type").submit(function(e) {       
+          e.preventDefault();
+        });
+        $("#new_daycare_department").submit(function(e) {       
+          e.preventDefault();
+        });
+        
+        // Add customer type and append to list
+        $("#customer_type_btn").on("click", function(){
+            $.post("/customer_types",
+              {
+                  type_name: $("#customer_type_type_name").val()
+              },
+              function(data){
+                
+                $("#customer_type_type_name").val('');
+                $("#customer_customer_type_id").append('<option value='+ data.id +'>'+ data.type_name + '</option>');
+                  
+              } , "json");
+        });
+        
+        // Add department name and append to list
+        $("#customer_department_btn").on("click", function(){
+            $.post("/daycare_departments",
+              {
+                  department_name: $("#daycare_department_department_name").val()
+              },
+              function(data){
+                
+                $("#daycare_department_department_name").val('');
+                $("#customer_daycare_department_ids").append('<option value='+ data.id +'>'+ data.department_name + '</option>');
+                  
+              } , "json");
+        });
+
+
+});
 </script>
 
 <style>

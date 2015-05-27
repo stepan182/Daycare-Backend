@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150526122322) do
+ActiveRecord::Schema.define(version: 20150527134934) do
 
   create_table "admins", force: true do |t|
     t.string   "name"
@@ -23,12 +23,35 @@ ActiveRecord::Schema.define(version: 20150526122322) do
 
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true
 
+  create_table "customer_types", force: true do |t|
+    t.string "type_name"
+  end
+
   create_table "customers", force: true do |t|
     t.string   "customer_name"
     t.string   "username"
     t.string   "email"
     t.string   "country"
     t.string   "password_digest"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_type_id"
+    t.string   "daycare_user_type"
+  end
+
+  add_index "customers", ["customer_type_id"], name: "index_customers_on_customer_type_id"
+  add_index "customers", ["username"], name: "index_customers_on_username", unique: true
+
+  create_table "customers_daycare_departments", force: true do |t|
+    t.integer "customer_id"
+    t.integer "daycare_department_id"
+  end
+
+  add_index "customers_daycare_departments", ["customer_id"], name: "index_customers_daycare_departments_on_customer_id"
+  add_index "customers_daycare_departments", ["daycare_department_id"], name: "index_customers_daycare_departments_on_daycare_department_id"
+
+  create_table "daycare_departments", force: true do |t|
+    t.string   "department_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
