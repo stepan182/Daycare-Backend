@@ -45,3 +45,6 @@ gem 'autoprefixer-rails'
 # Countries list
 gem 'country_select', github: 'stefanpenner/country_select'
 
+# Roo to proccess excel files
+gem 'roo'
+

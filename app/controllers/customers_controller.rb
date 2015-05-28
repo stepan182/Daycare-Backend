@@ -1,4 +1,5 @@
 class CustomersController < ApplicationController
+  #require 'roo'
   before_action :authorize
   
   def index
@@ -26,6 +27,14 @@ class CustomersController < ApplicationController
       
       render 'new'
     end
+  end
+  
+  def import_new
+   
+  end
+  
+  def import
+   Customer.import(params[:file])
   end
   
   private

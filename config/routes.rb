@@ -8,7 +8,12 @@ Rails.application.routes.draw do
   get  'logout'  => 'login#logout'
   get  'home' => 'home#index'
   resources :admins
-  resources :customers
+  resources :customers do
+    collection { 
+      post :import
+      get :import_new
+    }
+  end
   resources :customer_types
   resources :daycare_departments
 

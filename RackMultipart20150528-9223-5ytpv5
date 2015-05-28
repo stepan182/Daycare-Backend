@@ -1,0 +1,2 @@
+customer_name;username;password;email;country;customer_type_id;daycare_user_type
+John Smith;jsmith;password123;john@yahoo.com;England;1;

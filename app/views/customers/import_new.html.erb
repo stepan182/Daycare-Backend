@@ -1,0 +1,36 @@
+<div class="col-md-6 col-md-offset-3">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <h4>Create Multiple Customers</h4>
+  		</div>
+
+		<div class="panel-body pull-center">
+		    <h4>Upload multiple customers with excel file</h4>
+		    <br/><br/>
+        <%= form_tag import_customers_path, multipart: true do %>
+          <div class="form-group col-md-offset-4">
+              
+              <%= file_field_tag :file, {required: "true"} %>
+          </div>
+              <br/><br/>
+              <%= submit_tag "Import", class: "btn btn-primary" %>
+        <% end %>
+              <br/>
+
+        </div>
+		
+	</div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("ADD CUSTOMERS");
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #1a8a8f;
+}
+</style>
