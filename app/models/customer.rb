@@ -12,29 +12,56 @@ class Customer < ActiveRecord::Base
 
     has_secure_password
     
-    #def self.import(file)
-    #  CSV.foreach(file.path, headers: true) do |row|
-    #    Customer.create! row.to_hash
-    #  end
-    #end
-    
     def self.import(file)
       spreadsheet = open_spreadsheet(file)
       header = spreadsheet.row(1)
       (2..spreadsheet.last_row).each do |i|
         row = Hash[[header, spreadsheet.row(i)].transpose]
-        customer = Customer.new
-        customer.attributes = row.to_hash.slice(*accessible_attributes)
-        customer.save!
+        if !Customer.exists?(:username => row["username"])
+          customer = Customer.new
+          #customer.attributes = row.to_hash.slice(*row.to_hash.keys)
+          customer.customer_name = row["customer name"]
+          customer.username = row["username"]
+          customer.password = row["password"]
+          customer.email = row["email"]
+          customer.country = row["country"]
+          
+          #Daycare customer
+          if file.original_filename == "Daycare-Customers.xlsx"
+            daycare_type = CustomerType.find_by(:type_name => "Daycare Customer")
+            customer.customer_type_id = daycare_type.id
+            customer.daycare_user_type = row["daycare user type"]
+            daycare_department = DaycareDepartment.find_by(:department_name => row["daycare department"])
+            if daycare_department.nil?
+              daycare_department = DaycareDepartment.create(:department_name => row["daycare department"])
+            end
+            customer.daycare_department_ids = daycare_department.id
+            
+            daycare_type = nil
+            daycare_department = nil
+          
+          #Daycare partner
+          elsif file.original_filename == "Daycare-Partners.xlsx"
+            partner_type = CustomerType.find_by(:type_name => row["customer type"])
+            if partner_type.nil?
+              partner_type = CustomerType.create(:type_name => row["customer type"])
+            end
+            customer.customer_type_id = partner_type.id
+            
+            partner_type = nil
+          end
+          
+          customer.save!
+        end
       end
       
     end
     
     def self.open_spreadsheet(file)
       case File.extname(file.original_filename)
-      when ".csv" then Csv.new(file.path, nil, :ignore)
-      when ".xls" then Excel.new(file.path, nil, :ignore)
-      when ".xlsx" then Excelx.new(file.path, nil, :ignore)
+      when ".csv" then Roo::Csv.new(file.path, packed: nil, file_warning: :ignore)
+      when ".xls" then Roo::Excel.new(file.path, packed: nil, file_warning: :ignore)
+      when ".xlsx" then Roo::Excelx.new(file.path, packed: nil, file_warning: :ignore)
       else raise "Unknown file type: #{file.original_filename}"
       end
     end

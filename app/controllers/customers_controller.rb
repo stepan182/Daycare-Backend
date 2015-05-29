@@ -30,11 +30,17 @@ class CustomersController < ApplicationController
   end
   
   def import_new
-   
+    @customer = Customer.new
   end
   
   def import
-   Customer.import(params[:file])
+    if Customer.import(params[:file])
+      flash[:success] = "Success: customers were loaded"
+      redirect_to '/home'
+    else
+      #render 'import_new'
+      redirect_to '/admins/1/edit'
+    end
   end
   
   private

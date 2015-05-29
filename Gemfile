@@ -43,7 +43,8 @@ gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 
 # Countries list
-gem 'country_select', github: 'stefanpenner/country_select'
+#gem 'country_select', github: 'stefanpenner/country_select'
+gem 'country_select', git: 'https://github.com/alibabajan/country_select.git'
 
 # Roo to proccess excel files
 gem 'roo'
