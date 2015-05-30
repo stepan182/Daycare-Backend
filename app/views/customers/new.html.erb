@@ -61,7 +61,7 @@
           <div class="form-group" id="sel_daycare_department">
               <a data-toggle="modal" href="#" class="pull-right" data-target="#customerDepartmentModal">+ add new</a>
               <%= f.label :daycare_department%><br/>
-              <%= f.collection_select(:daycare_department_ids, @departments_providers, :id, :department_name, {}, {:multiple => true, class: 'form-control'}) %>
+              <%= f.collection_select(:daycare_department_ids, @departments_providers, :id, :department_name, {}, {:multiple => true, class: 'form-control', size: '10'}) %>
           </div>
           
           <br/><br/>

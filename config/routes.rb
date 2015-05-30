@@ -16,6 +16,12 @@ Rails.application.routes.draw do
   end
   resources :customer_types
   resources :daycare_departments
+  resources :privileges do
+    collection {
+      post  :get_customers_by_country
+      post  :create_update
+    }
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

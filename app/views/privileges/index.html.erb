@@ -1,0 +1,92 @@
+<div class="col-md-6 col-md-offset-3">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <h4>Customer Privileges</h4>
+  		</div>
+
+		<div class="panel-body">
+		    
+		    <%= form_tag privileges_path, html: {role: "form"} do %>
+		    
+		    <div class="form-group">
+              <%= label_tag :choose_country%>
+              <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "showCustomers()", id: "country_sel"  } %>
+            </div>
+            
+            
+            <div class="form-group" id="customerNames">
+            <div class="pull-right">select all <input type="checkbox" id="select_all"/></div>
+            <label>Choose customer</label>
+            
+              <div class="nameBox pull-right" id="cNames">
+                
+              </div>
+              
+            </div>
+            
+            <br class="clear" /><br/>
+            <div class="col-md-offset-5">
+              <%= submit_tag "Next", class: "btn btn-primary" %>
+            </div>
+            <%end%>
+            
+        </div>
+		
+	</div>
+</div>
+
+
+<!-- Scripts and styles -->
+<script>
+
+    function showCustomers(){
+        $.post("/privileges/get_customers_by_country",
+            {
+                country: $("#country_sel").val()
+            },
+            
+            function(data){
+                
+                $("#cNames").empty();
+                
+                $.each(data, function(i, item) {
+                    $("#cNames").append('<label for="chk'+ i +'">'+ item.customer_name +' <input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'"></label><br/>');
+                });
+                
+                  
+            } , "json");
+        
+        $("#customerNames").show();
+    }
+
+    $(function(){
+        $("#slogan").html("PRIVILEGES");
+        $("#customerNames").hide();
+        
+        $('#select_all').change(function(){
+            var checkboxes = $(this).closest('form').find(':checkbox');
+            if($(this).prop('checked')) {
+              checkboxes.prop('checked', true);
+            } else {
+              checkboxes.prop('checked', false);
+            }
+        });
+    });
+</script>
+
+<style>
+#topbar {
+    background-color: #273480;
+}
+
+.nameBox { 
+    border:2px solid #ccc;
+    width:70%; 
+    height: 200px; 
+    overflow-y: scroll;
+    padding: 10px;
+    text-align:right;
+    margin-bottom:10px;
+}
+
+</style>

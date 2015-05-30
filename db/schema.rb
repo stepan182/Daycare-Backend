@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150527134934) do
+ActiveRecord::Schema.define(version: 20150530151441) do
 
   create_table "admins", force: true do |t|
     t.string   "name"
@@ -50,10 +50,22 @@ ActiveRecord::Schema.define(version: 20150527134934) do
   add_index "customers_daycare_departments", ["customer_id"], name: "index_customers_daycare_departments_on_customer_id"
   add_index "customers_daycare_departments", ["daycare_department_id"], name: "index_customers_daycare_departments_on_daycare_department_id"
 
+  create_table "customers_privileges", force: true do |t|
+    t.integer "customer_id"
+    t.integer "privilege_id"
+  end
+
+  add_index "customers_privileges", ["customer_id"], name: "index_customers_privileges_on_customer_id"
+  add_index "customers_privileges", ["privilege_id"], name: "index_customers_privileges_on_privilege_id"
+
   create_table "daycare_departments", force: true do |t|
     t.string   "department_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "privileges", force: true do |t|
+    t.string "privilege_name"
   end
 
 end

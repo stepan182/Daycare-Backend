@@ -1,5 +1,4 @@
 class CustomersController < ApplicationController
-  #require 'roo'
   before_action :authorize
   
   def index
@@ -34,13 +33,9 @@ class CustomersController < ApplicationController
   end
   
   def import
-    if Customer.import(params[:file])
-      flash[:success] = "Success: customers were loaded"
-      redirect_to '/home'
-    else
-      #render 'import_new'
-      redirect_to '/admins/1/edit'
-    end
+    Customer.import(params[:file])
+    flash[:success] = "Success: customers were loaded"
+    redirect_to '/home'
   end
   
   private

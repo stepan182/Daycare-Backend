@@ -1,6 +1,7 @@
 class Customer < ActiveRecord::Base
     has_one :customer_type
     has_and_belongs_to_many :daycare_departments, join_table: :customers_daycare_departments
+    has_and_belongs_to_many :privileges, join_table: :customers_privileges
     
     validates :customer_name, presence: true
     validates :username, presence: true, uniqueness: { case_sensitive: false }
