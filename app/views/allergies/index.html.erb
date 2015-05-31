@@ -5,12 +5,65 @@
   		</div>
 
 		<div class="panel-body pull-center">
+		    
+		    <%@allergies.each do |item|%>
             
+            <div class="icn-button" data-toggle="modal" data-target="#allergyModal" data-id="<%=item.id%>" data-allergy_name="<%=item.allergy_name%>" data-description="<%=item.description%>">
+                <%= image_tag item.icon.url, size: "64" if item.icon? %>
+                <h4><%= item.allergy_name %></h4>
+            </div>
             
-            <br/><br/>
+            <%end%>
+            
+            <br class="clear" /><br/><br/>
             <a href="<%= new_allergy_path %>" class="btn btn-primary">Add new Allergy</a>
+        
         </div>
-      </div>
+     </div>
+</div>
+
+<!-- Allergy Modal -->
+<div class="modal fade" id="allergyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <%= form_tag "/allergies", method: :patch, multipart: true do |f| %>
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Edit/delete Allergy</h4>
+            
+            </div>
+            <div class="modal-body">
+                
+                
+            		  
+            		  <div class="form-group">
+            		      <label for="recipient-name" class="control-label">Allergy name</label>
+                          <input type="text" class="form-control" id="allergy_name" name="allergy[allergy_name]">
+                      </div>
+                      
+                      <div class="form-group">
+                          <label for="allergy_icon">Icon</label>
+                          <input accept="image/jpeg,image/gif,image/png" id="allergy_icon" name="allergy[icon]" type="file" />
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="message-text" class="control-label">Description:</label>
+                        <textarea class="form-control" id="description" name="allergy[description]"></textarea>
+                      </div>
+                
+            </div>
+            <div class="modal-footer">
+                <%= link_to "Delete", allergy_path(id: 2), method: :delete, class: "btn btn-danger pull-left", data: {confirm: "Are you sure?"}, id: "delete-btn" %>
+                
+                <%= submit_tag "Update", class: "btn btn-primary pull-right" %>
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                
+            </div>
+            
+            <% end %>
+        </div>
     </div>
 </div>
 
@@ -18,7 +71,23 @@
 <script>
     $(function(){
         $("#slogan").html("FUNCTIONALITY");
+        $("#delete-btn").on("click", function(){
+            $('#allergyModal').modal('hide');
+        });
         
+        //Edit modal data bind
+        $('#allergyModal').on('show.bs.modal', function (event) {
+          var div = $(event.relatedTarget);
+          var id = div.data('id');
+          var name = div.data('allergy_name');
+          var description = div.data('description');
+          
+          var modal = $(this);
+          modal.find('.modal-body #allergy_name').val(name);
+          modal.find('.modal-body #description').val(description);
+          modal.find('.modal-footer #delete-btn').attr("href", "/allergies/" + id)
+          modal.find('.modal-content form').attr("action", "/allergies/" + id)
+        })
     })
 </script>
 
@@ -26,4 +95,18 @@
 #topbar {
     background-color: #bd2926;
 }
+
+.icn-button {
+    margin:4px;
+    background-color:#FFF;
+    border-radius:5px;
+    border:1px solid #D0D0D0;
+    float:left;
+    margin-left:10px;
+    box-shadow: 1px 1px 1px #EFEFEF;
+    width:160px;
+    padding:10px;
+    cursor:pointer;
+}
+
 </style>

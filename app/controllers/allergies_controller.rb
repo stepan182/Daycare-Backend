@@ -2,6 +2,8 @@ class AllergiesController < ApplicationController
   before_action :authorize
     
     def index
+        @allergies = Allergy.all
+        @allergy = Allergy.new
     end
     
     def new
@@ -18,10 +20,22 @@ class AllergiesController < ApplicationController
         end
     end
     
+    def update
+        @allergy = Allergy.find(params[:id])
+        if @allergy.update_attributes(allergy_params)
+          flash[:success] = "Allergy updated"
+          redirect_to request.referrer
+        else
+          flash[:danger] = "Allergy not updated. " + @allergy.errors.full_messages.to_s
+          redirect_to request.referrer
+        end
+    end
+    
     def destroy
-        #@allergy.destroy
+        @allergy = Allergy.find(params["id"])
+        @allergy.destroy
         flash[:success] = "Allergy deleted"
-        redirect_to request.referrer || root_url
+        redirect_to request.referrer
     end
     
     
