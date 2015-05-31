@@ -1,0 +1,2 @@
+class FunctionalitiesController < ApplicationController
+end

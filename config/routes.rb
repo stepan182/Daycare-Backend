@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       post  :create_update
     }
   end
+  get 'functionalities' => 'functionalities#index'
+  resources :allergies
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

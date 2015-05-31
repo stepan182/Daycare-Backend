@@ -49,3 +49,8 @@ gem 'country_select', git: 'https://github.com/alibabajan/country_select.git'
 # Roo to proccess excel files
 gem 'roo'
 
+# Image upload
+gem 'carrierwave',             '0.10.0'
+gem 'mini_magick',             '3.8.0'
+gem 'fog',                     '1.23.0'
+
