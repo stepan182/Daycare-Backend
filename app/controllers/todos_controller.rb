@@ -49,6 +49,13 @@ class TodosController < ApplicationController
     
     end
     
+    def edit
+        #@todo = Todo.find(id: params["id"]).includes(tasks: :subtasks)
+    end
+    
+    def update
+    end
+    
     def destroy
         @todo = Todo.find(params["id"])
         @todo.destroy

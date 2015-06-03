@@ -1,0 +1,88 @@
+<br/>
+
+<div class="col-md-8 col-md-offset-2">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+        <h4>Edit Customer Departments</h4>
+		</div>
+
+		<div class="panel-body">
+		
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Department name</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @categories.each do |cat| %>
+              <tr>
+                <td><%= cat.department_name %>
+                <div class="pull-right">
+                    <%= link_to "delete", daycare_department_path(id: cat.id), method: :delete, data: {confirm: "Are you sure?"} %>
+                     | 
+                    <a href="#" data-toggle="modal" data-target="#departmentModal" data-id="<%= cat.id %>" data-department_name="<%= cat.department_name %>">edit</a>
+                </div>
+                </td>
+              </tr>
+            <%end%>
+            </tbody>
+        </table>
+        
+		</div>
+		
+	</div>
+</div>
+
+
+<!-- Department Modal -->
+<div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <%= form_for @daycare_department, url: daycare_departments_path, method: :patch, html: {role: "form"} do |f| %>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Edit Daycare Department</h4>
+            
+            </div>
+            <div class="modal-body">
+                
+            		  <div class="form-group">
+                          <%= f.label :department_name%>
+                          <%= f.text_field :department_name, class: "form-control" %>
+                      </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <%= submit_tag "Update", class: "btn btn-primary pull-right" %>
+            </div>
+            
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("ADD CUSTOMERS");
+        
+        //Edit modal data bind
+        $('#departmentModal').on('show.bs.modal', function (event) {
+          var a = $(event.relatedTarget);
+          var id = a.data('id');
+          var name = a.data('department_name');
+          
+          var modal = $(this);
+          modal.find('.modal-body #daycare_department_department_name').val(name);
+          modal.find('.modal-content form').attr("action", "/daycare_departments/" + id)
+        })
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #1a8a8f;
+}
+</style>
