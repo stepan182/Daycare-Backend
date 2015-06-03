@@ -48,7 +48,7 @@
           
           
           <div class="form-group">
-              <a data-toggle="modal" href="#" class="pull-right" data-target="#customerTypeModal">+ add new</a>
+              <a data-toggle="modal" href="#" class="pull-right" data-target="#customerTypeModal">+ add new type</a>
               <%= f.label :customer_type_id%>
               <%= f.collection_select(:customer_type_id, @type_providers, :id, :type_name, {}, {include_blank: true, required: 'true', class: 'form-control', onchange: 'showUserTypes()'}) %>
           </div>
@@ -59,7 +59,7 @@
           </div>
           
           <div class="form-group" id="sel_daycare_department">
-              <a data-toggle="modal" href="#" class="pull-right" data-target="#customerDepartmentModal">+ add new</a>
+              <a data-toggle="modal" href="#" class="pull-right" data-target="#customerDepartmentModal">+ add new department</a>
               <%= f.label :daycare_department%><br/>
               <%= f.collection_select(:daycare_department_ids, @departments_providers, :id, :department_name, {}, {:multiple => true, class: 'form-control', size: '10'}) %>
           </div>

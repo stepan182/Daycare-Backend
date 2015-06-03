@@ -76,8 +76,8 @@
             
             <br class="clear" /><br/><br/>
             <div>
-              <button type="button" class="btn btn-default" onclick="history.go(-1)">Back</button>
-              <%= f.submit "Apply", class: "btn btn-success pull-right" %>
+              <a href="/privileges" class="btn btn-default">Back</a>
+              <%= f.submit "Apply", class: "btn btn-primary pull-right" %>
             </div>
             <%end%>
             
@@ -133,22 +133,21 @@ div label input {
     border-radius:5px;
     padding-top: 30px; 
     height: 90px;
+    color: #cdcccc;
 }
 
 #ck-button input:hover + span {
-    background-color:#5cb85c;
-    color:#fff;
     cursor:pointer;
 }
 
 #ck-button input:checked + span {
-    background-color:#449d44;
-    color:#fff;
+    background-image:url('/assets/selected-dot.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+    color: #333333;
 }
 
 #ck-button input:checked:hover + span {
-    background-color:#5cb85c;
-    color:#fff;
     cursor:pointer;
 }
 

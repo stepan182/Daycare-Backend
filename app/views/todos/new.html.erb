@@ -1,0 +1,218 @@
+<br/>
+
+<div class="col-md-8 col-md-offset-2">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <h4>Add To Do's for customers</h4>
+  		</div>
+
+		<div class="panel-body">
+					
+		<%= form_tag(todos_path, html: { multipart: true }) do |f| %>
+		  
+		  <div class="form-group">
+              <%= label_tag :choose_country%>
+              <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "getCustomers()", id: "country_sel"  } %>
+          </div>
+          
+          <div class="form-group">
+              <%= label_tag :customer_type_id%>
+              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {required: 'true', class: 'form-control', onchange: 'showUserTypes();showUsers();getCustomers()'}) %>
+          </div>
+		  
+		  <div class="form-group" id="sel_daycare_user_type">
+              <%= label_tag :daycare_user_type %>
+              <%= select_tag(:daycare_user_type, "<option></option><option>Daycare Manager</option><option>Daycare Worker</option><option>Daycare Parent</option>".html_safe, {onchange: "getCustomers()", class: 'form-control'}) %>
+          </div>
+          
+          <div class="form-group" id="sel_daycare_department">
+              <div class="pull-right">select all <input type="checkbox" id="select_all_departments"/></div>
+              <%= label_tag :daycare_department%><br/>
+              <%= select(:daycare_department_names, :daycare_department_ids, @departments_providers.map { |dep| [dep.department_name.html_safe, dep.id] }, {}, {:multiple => true, size: '10', onchange: "getCustomers()", class: 'form-control'}) %>
+          </div>
+          
+          <div class="form-group" id="customerNames">
+            <div class="pull-right">select all <input type="checkbox" id="select_all_customers"/></div>
+            <label>Choose customer</label>
+            
+              <div class="nameBox pull-right" id="cNames">
+                
+              </div>
+              
+          </div>
+          <br/>
+          
+          <b>To Do</b>
+          <div class="panel-footer">
+            <table width="100%" class="form-inline m" id="todoTable"><tr>
+            <td align="center"><b>Subject</b></td>
+            <td><input class="form-control c" id="subject" name="subject" required="required" style="margin-left: 0px;" type="text" value="" /></td>
+            <td></td>
+            <td><a href="javascript:void(0);" onclick="addTask(1,this)" id="lnkTasks">+ add new task</a></td>
+            </tr>
+            
+            <tr>
+            <td></td>
+            <td colspan="2"><b>Task</b> <input class="form-control c" id="task[0]" name="task[0]" required="required" type="text" /></td>
+            <td><a href="javascript:void(0);" onclick="addSubTask(0,this)" id="lnkSubTasks">+ add new subtask</a></td>
+            </tr>
+            
+            <tr>
+            <td></td>
+            <td align="center" colspan="2"><b>SubTask</b> <input class="form-control c" id="subtask[0][0]" name="subtask[0][0]" type="text" /></td>
+            <td></td>
+            </tr>
+            
+            <tr>
+            <td colspan="4" style="padding: 10px"><b>Should be completed by</b> <input type='text' class="datetimepicker" id='datetimepicker' name="complete_by" required="required" /></td>
+            </tr></table><br/>
+          </div>
+            
+          <br class="clear" /><br/>
+          <div class="col-md-offset-5">
+              <%= submit_tag "Submit", class: "btn btn-primary" %>
+          </div>
+          
+        <% end %>
+					
+		</div>
+		
+	</div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+var ni = 0;
+var pi = 1;
+
+function addTask(taskNum,i){
+  pi = 1;
+  var index = $(i).closest('td').parent()[0].sectionRowIndex;      
+  var rowCount = $('#todoTable tr').length;
+  
+  document.getElementById("todoTable").insertRow(parseInt(rowCount)-1).innerHTML = '<tr><td></td>'
+            +'<td colspan="2"><b>Task</b> <input class="form-control c" id="task['+ taskNum +']" name="task['+ taskNum +']" type="text" /></td>'
+            +'<td><a href="javascript:void(0);" onclick="addSubTask('+ parseInt(taskNum) +',this)" id="lnkSubTasks">+ add new subtask</a></td></tr>'
+            
+  document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML =  '<tr><td></td>'
+            +'<td align="center" colspan="2"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +'][0]" name="subtask['+ taskNum +'][0]" type="text" /></td>'
+            +'<td></td>'
+            +'</tr>'
+  
+  $("#lnkTasks").attr("onclick", "addTask("+ (parseInt(taskNum) + 1) +",this)");
+}
+
+function addSubTask(taskNum,i){
+  ni += 1;
+  pi += 1;
+  var index = $(i).closest('td').parent()[0].sectionRowIndex;
+  
+  document.getElementById("todoTable").insertRow(parseInt(index) + 1).innerHTML = '<tr><td></td>'
+            +'<td align="center" colspan="2"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +']['+ ni +']" name="subtask['+ taskNum +']['+ ni +']" type="text" /></td>'
+            +'<td></td></tr>'
+  $("#lnkSubTasks").attr("onclick", "addSubTask("+ parseInt(taskNum) +",this,"+ ni +")");
+}
+
+// Show daycare user type if daycare customer type selected
+function showUserTypes(){
+    if ($("#customer_type_name_customer_type_id option:selected" ).text() == 'Daycare Customer'){
+        $("#sel_daycare_user_type").show();
+        $("#sel_daycare_department").show();
+    }
+    else{
+        $("#sel_daycare_user_type").hide();
+        $("#sel_daycare_department").hide();
+        $("#sel_daycare_user_type option").removeAttr("selected");
+        $("#sel_daycare_department option").removeAttr("selected");
+    }
+    
+}
+
+function showUsers(){
+    $("#customerNames").show();
+}
+
+function getCustomers(){
+        $.post("/privileges/get_customers_by_country",
+            {
+                country: $("#country_sel").val(),
+                customer_type_id: $("#customer_type_name_customer_type_id").val(),
+                daycare_user_type: $("#daycare_user_type").val(),
+                daycare_department_ids: $("#daycare_department_names_daycare_department_ids").val()
+            },
+            
+            function(data){
+                
+                $("#cNames").empty();
+                
+                $.each(data, function(i, item) {
+                    $("#cNames").append('<label for="chk'+ i +'"><input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'"> '+ item.customer_name +'</label><br/>');
+                });
+                
+                  
+            } , "json");
+        
+        //$("#customerNames").show();
+    }
+
+    $(function(){
+        $("#slogan").html("FUNCTIONALITY");
+        
+        // Hide or show Daycare fields
+        showUserTypes();
+        $("#customerNames").hide();
+        
+        $('.datetimepicker').datetimepicker();
+        
+        $('#select_all_departments').change(function(){
+            //$("#sel_daycare_department option").attr("selected", "selected");
+            var selectboxes = $(this).closest('form').find('#sel_daycare_department option');
+            if($(this).prop('checked')) {
+              selectboxes.prop('selected', true);
+            } else {
+              selectboxes.prop('selected', false);
+            }
+        });
+        
+        $('#select_all_customers').change(function(){
+            var checkboxes = $(this).closest('form').find('#customerNames :checkbox');
+            if($(this).prop('checked')) {
+              checkboxes.prop('checked', true);
+            } else {
+              checkboxes.prop('checked', false);
+            }
+        });
+        
+        
+        $('form').submit(function(e) {
+            if($("input:checked").length == 0){
+            alert('please select atleast one Customer!');
+            return false;
+            }
+        });
+        
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #bd2926;
+}
+.nameBox { 
+    border:2px solid #ccc;
+    width:100%; 
+    height: 200px; 
+    overflow-y: scroll;
+    padding: 10px;
+    text-align:left;
+    margin-bottom:10px;
+}
+.c {
+  width: 70% !important;
+  margin: 7px;
+}
+
+.m{
+  border: 1px solid #ccc;
+}
+</style>

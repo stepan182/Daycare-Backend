@@ -1,0 +1,64 @@
+<br/>
+
+<div class="col-md-8 col-md-offset-2">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <table width="100%"><tr>
+  		  <td><h4>To Do's for customers</h4></td>
+  		  <td align="right"><a href="/todos/new" class="btn btn-primary">Add new todo</a></td>
+		  </tr></table>
+		  </div>
+
+		<div class="panel-body">
+			
+		<% @todos.each do |todo| %>
+		<br/>
+        
+        <b><%= todo.subject %></b>
+		<div class="panel-footer todo">
+			<div class="pull-right">
+				<%= link_to "delete", todo_path(id: todo.id), method: :delete, class: "btn btn-danger btn-sm", data: {confirm: "Are you sure?"}, id: "delete-btn" %>
+				<button type="button" class="btn btn-default btn-sm">edit</button>
+			</div>
+			<div>Tasks: </div>
+			
+			<ul>
+				<% todo.tasks.each do |task| %>
+				<li><%= task.task %>
+					<ul>
+						<% task.subtasks.each do |subtask| %>
+						<li><%= subtask.subtask %>
+						<%end%>
+					</ul>
+				<%end%>
+			</ul>
+		
+		<br/>
+		<i>Should be completed by: <%= I18n.localize(todo.complete_by, format: :short) %></i>
+		</div>
+			
+		<%end%>
+			
+		</div>
+		
+	</div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("FUNCTIONALITY");
+        
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #bd2926;
+}
+.todo {
+	background-color: #e1e0df;
+	border: 1px solid #dddddd;
+	box-shadow: 0 0 9px rgba(0,0,0,0.5);
+}
+</style>

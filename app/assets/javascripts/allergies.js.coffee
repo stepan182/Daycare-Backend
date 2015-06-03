@@ -1,1 +1,0 @@
-#$("#delete-btn").on "ajax:success", (e, data, status, xhr) -> alert "The article was deleted."

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150531115651) do
+ActiveRecord::Schema.define(version: 20150602130710) do
 
   create_table "admins", force: true do |t|
     t.string   "name"
@@ -66,6 +66,14 @@ ActiveRecord::Schema.define(version: 20150531115651) do
   add_index "customers_privileges", ["customer_id"], name: "index_customers_privileges_on_customer_id"
   add_index "customers_privileges", ["privilege_id"], name: "index_customers_privileges_on_privilege_id"
 
+  create_table "customers_todos", force: true do |t|
+    t.integer "customer_id"
+    t.integer "todo_id"
+  end
+
+  add_index "customers_todos", ["customer_id"], name: "index_customers_todos_on_customer_id"
+  add_index "customers_todos", ["todo_id"], name: "index_customers_todos_on_todo_id"
+
   create_table "daycare_departments", force: true do |t|
     t.string   "department_name"
     t.datetime "created_at"
@@ -74,6 +82,31 @@ ActiveRecord::Schema.define(version: 20150531115651) do
 
   create_table "privileges", force: true do |t|
     t.string "privilege_name"
+  end
+
+  create_table "subtasks", force: true do |t|
+    t.string   "subtask"
+    t.integer  "task_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "subtasks", ["task_id"], name: "index_subtasks_on_task_id"
+
+  create_table "tasks", force: true do |t|
+    t.string   "task"
+    t.integer  "todo_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tasks", ["todo_id"], name: "index_tasks_on_todo_id"
+
+  create_table "todos", force: true do |t|
+    t.string   "subject"
+    t.datetime "complete_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

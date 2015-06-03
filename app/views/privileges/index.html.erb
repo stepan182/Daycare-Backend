@@ -50,7 +50,7 @@
                 $("#cNames").empty();
                 
                 $.each(data, function(i, item) {
-                    $("#cNames").append('<label for="chk'+ i +'">'+ item.customer_name +' <input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'"></label><br/>');
+                    $("#cNames").append('<label for="chk'+ i +'"><input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'"> '+ item.customer_name +'</label><br/>');
                 });
                 
                   
@@ -81,11 +81,11 @@
 
 .nameBox { 
     border:2px solid #ccc;
-    width:70%; 
+    width:100%; 
     height: 200px; 
     overflow-y: scroll;
     padding: 10px;
-    text-align:right;
+    text-align:left;
     margin-bottom:10px;
 }
 
