@@ -16,4 +16,36 @@ class CustomerTypesController < ApplicationController
     end 
   end
   
+  def index
+    @customer_types = CustomerType.all
+    @customer_type = CustomerType.new
+  end
+  
+  def destroy
+    @customer_type = CustomerType.find(params["id"])
+    @customer_type.destroy
+    flash[:success] = "Customer type deleted"
+    redirect_to request.referrer
+  end
+  
+  
+  def update
+    @customer_type = CustomerType.find(params[:id])
+        
+      if @customer_type.update_attributes(customer_type_params)
+        flash[:success] = "Customer type updated"
+        redirect_to request.referrer
+      else
+        flash[:danger] = "Customer type not updated. " + @customer_type.errors.full_messages.to_s
+        redirect_to request.referrer
+      end
+      
+  end
+  
+  private
+
+    def customer_type_params
+      params.require(:customer_type).permit(:type_name)
+    end
+  
 end
