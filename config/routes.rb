@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   get  'login' => 'login#index'
   post 'login' => 'login#login'
   get  'logout'  => 'login#logout'
+  post  'forgot_password'  => 'login#forgot_password'
+  get  'password_reset' => 'login#password_reset'
+  post 'password_reset' => 'login#do_reset'
   get  'home' => 'home#index'
   resources :admins
   resources :customers do
