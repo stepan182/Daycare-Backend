@@ -27,7 +27,8 @@
 <div class="container">
     
       <% flash.each do |message_type, message| %>
-          <div class="top7 alert alert-<%= message_type %>"><%= message %></div>
+          <div class="top7 alert alert-<%= message_type %>">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><%= message %></div>
       <% end %>
 
 	<div class="row">

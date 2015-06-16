@@ -1,5 +1,6 @@
 class Customer < ActiveRecord::Base
     has_one :customer_type
+    has_one :user_type, :through => :customer_type
     has_and_belongs_to_many :daycare_departments, join_table: :customers_daycare_departments
     has_and_belongs_to_many :privileges, join_table: :customers_privileges
     has_and_belongs_to_many :todos, join_table: :customers_todos
@@ -10,9 +11,8 @@ class Customer < ActiveRecord::Base
     
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }
-    validates :password, presence: true
-    validates :customer_type_id, presence: true
-
+    #validates :password, presence: true
+    
     has_secure_password
     
     def self.import(file)

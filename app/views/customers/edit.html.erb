@@ -15,12 +15,12 @@
 <div class="col-md-6 col-md-offset-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-		  <h4>Create Single Customer</h4>
+		  <h4>Edit Customer</h4>
   		</div>
 
 		<div class="panel-body">
 					
-		<%= form_for @customer, url: customers_path, html: {role: "form"} do |f| %>
+		<%= form_for @customer, html: {role: "form"} do |f| %>
 		  <div class="form-group">
               <%= f.label :customer_name%>
               <%= f.text_field :customer_name, {class: "form-control", required: "true"} %>
@@ -31,10 +31,6 @@
               <%= f.text_field :username, {class: "form-control", required: "true"} %>
           </div>
           
-          <div class="form-group">
-              <%= f.label :password%>
-              <%= f.text_field :password, {class: "form-control", required: "true"} %>
-          </div>
           
           <div class="form-group">
               <%= f.label :email%>
@@ -43,24 +39,17 @@
           
           <div class="form-group">
               <%= f.label :country%>
-              <%= f.country_select :country, ["Norway"], {}, { :class => "form-control" } %>
-          </div>
-          
-          
-          <div class="form-group">
-              <a data-toggle="modal" href="/customer_types" class="pull-right" data-target="#customerTypeModal22">edit customer types</a>
-              <%= f.label :customer_type_id%>
-              <%= f.collection_select(:customer_type_id, @type_providers, :id, :type_name, {}, {include_blank: true, required: 'true', class: 'form-control ct', onchange: 'showUserTypes()'}) %>
+              <%= f.country_select :country, ["#{@customer.country}"], {}, { :class => "form-control" } %>
           </div>
           
           <div class="form-group" id="sel_daycare_user_type">
-              <a data-toggle="modal" id="idit_user_types" href="/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=1" class="pull-right" data-target="#userTypeModal22" data-cache="false">edit user types</a>
+              <a data-toggle="modal" id="idit_user_types" href="/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>" class="pull-right" data-target="#userTypeModal22" data-cache="false">edit user types</a>
               <%= f.label :user_type %>
               <%= f.select(:user_type_id, "<option></option>".html_safe, {}, {multiple: false, class: 'form-control ut'}) %>
           </div>
           
           <div class="form-group" id="sel_daycare_department">
-              <a data-toggle="modal" id="idit_departments" href="/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_type=1" class="pull-right" data-target="#departmentModal22">edit departments</a>
+              <a data-toggle="modal" id="idit_departments" href="/daycare_departments?g=<%= rand(36**8).to_s(36) %>&<% if @customer.customer_type_id != 3 %>customer_type=<%= @customer.customer_type_id %><%else%>customer_type=-1&user_id=<%= @customer.id %><%end%>" class="pull-right" data-target="#departmentModal22">edit departments</a>
               <%= f.label :department%><br/>
               <%= f.select(:daycare_department_ids, "", {}, {multiple: true, required: 'true', class: 'form-control dd', size: '10'}) %>
 
@@ -68,12 +57,14 @@
           
           <br/><br/>
           <div class="col-md-offset-5">
-              <%= f.submit "Create", class: "btn btn-primary" %>
+              <%= f.submit "Update", class: "btn btn-primary" %>
           </div>
         <% end %>
 					
 		</div>
 		
+    <br/>
+
 	</div>
 </div>
 
@@ -101,50 +92,24 @@
 <!-- Scripts and styles -->
 <script>
 
-// Show daycare user type if daycare customer type selected
-function showUserTypes(){
-    if ($("#customer_customer_type_id").val() == "3"){
-          deptCType = "-1";
-        }
-        else{
-          deptCType = $("#customer_customer_type_id").val();
-        }
-
-    if ($("#customer_customer_type_id option:selected" ).text() != ''){
-        $("#sel_daycare_user_type").show();
-        $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ $("#customer_customer_type_id").val());
-        getUserTypes();
-        $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType);
-        getUserDepartments();
-        $("#sel_daycare_department").show();
-    }
-    else{
-        $("#sel_daycare_user_type").hide();
-        $("#sel_daycare_department").hide();
-        $("#sel_daycare_user_type option").removeAttr("selected");
-        $("#sel_daycare_department option").removeAttr("selected");
-        $(".ut").empty();
-        $(".dd").empty();
-    }
-}
-
 $(function(){
 
         // Add slogan
         $("#slogan").html("ADD CUSTOMERS");
-        
+
+        getUserTypes();
+        getUserDepartments();
+
         // fix remote modal
         //$(document).on("hidden.bs.modal", ".modal", function (e) { if (!$(e.target).is(".local-modal")) { $(e.target).removeData("bs.modal").find(".modal-content").empty(); } });
 
-        // Hide or show Daycare fields
-        showUserTypes();
-
 });
+
 
 function getUserTypes(){
         $.post("/user_types/get_user_types",
             {
-                costomer_type: $("#customer_customer_type_id").val()
+                costomer_type: <%= @customer.customer_type_id %>
             },
             
             function(data){
@@ -152,7 +117,12 @@ function getUserTypes(){
                 $(".ut").empty();
                 
                 $.each(data, function(i, item) {
+                  if (item.id == "<%=@customer.user_type_id%>"){
+                    $(".ut").append('<option value="'+ item.id +'" selected>'+ item.user_type_name +'</option>');
+                  }
+                  else {
                     $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
+                  }
                 });
                 
                   
@@ -162,7 +132,11 @@ function getUserTypes(){
 function getUserDepartments(){
         $.post("/daycare_departments/get_departments",
             {
-                customer_type: deptCType
+              <% if @customer.customer_type_id != 3 %>
+                customer_type: <%= @customer.customer_type_id %>
+              <% else %>
+                user_id: <%= @customer.id %>
+              <% end %>
             },
             
             function(data){

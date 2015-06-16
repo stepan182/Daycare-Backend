@@ -15,10 +15,22 @@ Rails.application.routes.draw do
     collection { 
       post :import
       get :import_new
+      get :edit_all
+      get :create_customer
+      post :get_customer_list
     }
   end
   resources :customer_types
-  resources :daycare_departments
+  resources :user_types do
+    collection {
+      post :get_user_types
+    }
+  end
+  resources :daycare_departments do
+    collection {
+      post :get_departments
+    }
+  end
   resources :privileges do
     collection {
       post  :get_customers_by_country

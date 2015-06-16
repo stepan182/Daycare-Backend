@@ -3,33 +3,34 @@ class PrivilegesController < ApplicationController
   protect_from_forgery :except => [:get_customers_by_country]
   
   def index
+    @type_providers = CustomerType.all
   end
   
   def get_customers_by_country
     
-    if params["country"].present? && !params["customer_type_id"].present? && !params["daycare_user_type"].present? && !params["daycare_department_ids"].present?
+    if params["country"].present? && !params["customer_type_id"].present? && !params["user_type_id"].present? && !params["daycare_department_ids"].present?
       customers = Customer.where(country: params["country"])
     
-    elsif params["country"].present? && params["customer_type_id"].present? && !params["daycare_user_type"].present? && !params["daycare_department_ids"].present?
+    elsif params["country"].present? && params["customer_type_id"].present? && !params["user_type_id"].present? && !params["daycare_department_ids"].present?
       customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"])
     
-    elsif params["country"].present? && !params["customer_type_id"].present? && params["daycare_user_type"].present? && !params["daycare_department_ids"].present?
-      customers = Customer.where(country: params["country"], daycare_user_type: params["daycare_user_type"])
+    elsif params["country"].present? && !params["customer_type_id"].present? && params["user_type_id"].present? && !params["daycare_department_ids"].present?
+      customers = Customer.where(country: params["country"], user_type_id: params["user_type_id"])
     
-    elsif params["country"].present? && params["customer_type_id"].present? && params["daycare_user_type"].present? && !params["daycare_department_ids"].present?
-      customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"], daycare_user_type: params["daycare_user_type"])
+    elsif params["country"].present? && params["customer_type_id"].present? && params["user_type_id"].present? && !params["daycare_department_ids"].present?
+      customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"], user_type_id: params["user_type_id"])
     
-    elsif params["country"].present? && !params["customer_type_id"].present? && !params["daycare_user_type"].present? && params["daycare_department_ids"].present?
+    elsif params["country"].present? && !params["customer_type_id"].present? && !params["user_type_id"].present? && params["daycare_department_ids"].present?
       customers = Customer.where(country: params["country"]).joins(:daycare_departments).where('daycare_departments.id IN (?) ', params["daycare_department_ids"])
     
-    elsif params["country"].present? && params["customer_type_id"].present? && !params["daycare_user_type"].present? && params["daycare_department_ids"].present?
+    elsif params["country"].present? && params["customer_type_id"].present? && !params["user_type_id"].present? && params["daycare_department_ids"].present?
       customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"]).joins(:daycare_departments).where('daycare_departments.id IN (?) ', params["daycare_department_ids"])
       
-    elsif params["country"].present? && !params["customer_type_id"].present? && params["daycare_user_type"].present? && params["daycare_department_ids"].present?
-      customers = Customer.where(country: params["country"], daycare_user_type: params["daycare_user_type"]).joins(:daycare_departments).where('daycare_departments.id IN (?) ', params["daycare_department_ids"])
+    elsif params["country"].present? && !params["customer_type_id"].present? && params["user_type_id"].present? && params["daycare_department_ids"].present?
+      customers = Customer.where(country: params["country"], user_type_id: params["user_type_id"]).joins(:daycare_departments).where('daycare_departments.id IN (?) ', params["daycare_department_ids"])
       
-    elsif params["country"].present? && params["customer_type_id"].present? && params["daycare_user_type"].present? && params["daycare_department_ids"].present?
-      customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"], daycare_user_type: params["daycare_user_type"]).joins(:daycare_departments).where('daycare_departments.id IN (?) ', params["daycare_department_ids"])
+    elsif params["country"].present? && params["customer_type_id"].present? && params["user_type_id"].present? && params["daycare_department_ids"].present?
+      customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"], user_type_id: params["user_type_id"]).joins(:daycare_departments).where('daycare_departments.id IN (?) ', params["daycare_department_ids"])
     end
     
     respond_to do |format|

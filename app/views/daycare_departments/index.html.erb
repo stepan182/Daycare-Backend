@@ -1,30 +1,25 @@
-<br/>
-
-<div class="col-md-8 col-md-offset-2">
-	<div class="panel panel-default">
-		<div class="panel-heading">
+<div class="modal-header">
         <table width="100%"><tr>
-            <td><h4>Edit Customer Departments</h4></td>
-            <td><a data-toggle="modal" href="#" class="pull-right" data-target="#customerDepartmentModal">+ add new department</a></td>
+            <td><h4>Edit Daycare Departments</h4></td>
+            <td><a data-toggle="modal" href="#" class="pull-right" data-target="#departmentModal">+ add new department</a></td>
         </tr></table>
-		</div>
-
-		<div class="panel-body">
-		
-        <table class="table table-striped" id="tbl">
+</div>  
+<div class="modal-body">  
+    
+        <table class="table table-striped" id="tblDepartments">
             <thead>
               <tr>
                 <th>Department name</th>
               </tr>
             </thead>
             <tbody>
-            <% @categories.each do |cat| %>
-              <tr>
-                <td><%= cat.department_name %>
+            <% @daycare_departments.each do |dept| %>
+              <tr id="<%=dept.id%>">
+                <td><%= dept.department_name %>
                 <div class="pull-right">
-                    <%= link_to "delete", daycare_department_path(id: cat.id), method: :delete, data: {confirm: "Are you sure?"} %>
+                    <a href="javascript:void(0);" onclick="deleteDepartment('<%=dept.id%>');" data-confirm="Are you sure?">delete</a>
                      | 
-                    <a href="#" data-toggle="modal" data-target="#departmentModal" data-id="<%= cat.id %>" data-department_name="<%= cat.department_name %>">edit</a>
+                    <a href="#" data-toggle="modal" data-target="#departmentModal2" data-id="<%= dept.id %>" data-department_name="<%= dept.department_name %>">edit</a>
                 </div>
                 </td>
               </tr>
@@ -32,15 +27,15 @@
             </tbody>
         </table>
         
-		</div>
-		
-	</div>
-</div>
+    </div>  
+<div class="modal-footer">  
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>  
+</div>  
 
 
-<!-- Edit Department Modal -->
-<div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Edit Modal -->
+<div class="modal fade" id="departmentModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 90%;">
         <div class="modal-content">
             <%= form_for @daycare_department, url: daycare_departments_path, method: :patch, html: {role: "form"} do |f| %>
             <div class="modal-header">
@@ -50,15 +45,15 @@
             </div>
             <div class="modal-body">
                 
-            		  <div class="form-group">
+                  <div class="form-group">
                           <%= f.label :department_name%>
                           <%= f.text_field :department_name, class: "form-control" %>
                       </div>
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <%= submit_tag "Update", class: "btn btn-primary pull-right" %>
+                <button type="button" class="btn btn-default mClose2">Close</button>
+                <button type="button" class="btn btn-primary mClose2" id="daycare_department_btn2">Update</button>
             </div>
             
             <% end %>
@@ -66,9 +61,9 @@
     </div>
 </div>
 
-<!-- Add Department Modal -->
-<div class="modal fade" id="customerDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Add Modal -->
+<div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 90%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -78,16 +73,18 @@
             <div class="modal-body">
                 
                 <%= form_for @daycare_department, url: daycare_departments_path, html: {role: "form"} do |f| %>
-            		  <div class="form-group">
+                  <div class="form-group">
                           <%= f.label :department_name%>
-                          <%= f.text_field :department_name, class: "form-control", id: "depname2" %>
+                          <%= f.text_field :department_name, class: "form-control", id: "department_name2" %>
+                          <%= f.hidden_field :customer_type_id, :value => params[:customer_type] %>
                       </div>
-                
+                <% end %>
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="customer_department_btn">Add</button>
-                <% end %>
+                <button type="button" class="btn btn-default mClose1">Close</button>
+                <button type="button" class="btn btn-primary mClose1" id="daycare_department_btn">Add</button>
+                
             </div>
         </div>
     </div>
@@ -97,9 +94,18 @@
 <script>
     $(function(){
         $("#slogan").html("ADD CUSTOMERS");
+
+        $(".mClose1").on("click", function(){
+          $('#departmentModal').modal('hide');
+        });
+
+        $(".mClose2").on("click", function(){
+          $('#departmentModal2').modal('hide');
+        });
+
         
         //Edit modal data bind
-        $('#departmentModal').on('show.bs.modal', function (event) {
+        $('#departmentModal2').on('show.bs.modal', function (event) {
           var a = $(event.relatedTarget);
           var id = a.data('id');
           var name = a.data('department_name');
@@ -107,38 +113,78 @@
           var modal = $(this);
           modal.find('.modal-body #daycare_department_department_name').val(name);
           modal.find('.modal-content form').attr("action", "/daycare_departments/" + id)
-        })
-        
-        // prevent modal forms submission
-        $("form").eq(1).submit(function(e) {       
-          e.preventDefault();
+          modal.find('.modal-footer #daycare_department_btn2').attr("onclick", "updateDepartment("+ id +")")
         });
         
-        // Add department name and append to list
-        $("#customer_department_btn").on("click", function(){
+        // prevent modal forms submission
+        //$("form").eq(0).submit(function(e) {       
+        //  e.preventDefault();
+        //});
+        //$("form").eq(1).submit(function(e) {       
+        //  e.preventDefault();
+        //});
+ 
+        // Add customer type and append to list
+        $("#daycare_department_btn").on("click", function(){
             $.post("/daycare_departments",
               {
-                  department_name: $("#depname2").val()
+                  department_name: $("#department_name2").val(),
+                  customer_type_id: <%= params[:customer_type] %>
               },
               function(data){
                 
-                $("#depname2").val('');
-                $("#tbl tr:last").after('<tr>'
+                $("#department_name2").val('');
+                $("#tblDepartments tr:last").after('<tr id="'+ data.id +'">'
                 +'<td>' + data.department_name
                 +'<div class="pull-right">'
-                +'<a data-confirm="Are you sure?" data-method="delete" href="/daycare_departments/'+ data.id +'" rel="nofollow">delete</a> | ' 
-                +'<a href="#" data-toggle="modal" data-target="#departmentModal" data-id="'+ data.id +'" data-department_name="'+ data.department_name +'">edit</a>'
+                +'<a href="javascript:void(0);" onclick="deleteDepartment(\''+ data.id +'\');" data-confirm="Are you sure?">delete</a> | ' 
+                +'<a href="#" data-toggle="modal" data-target="#departmentModal2" data-id="'+ data.id +'" data-department_name="'+ data.department_name +'">edit</a>'
                 +'</div></td></tr>');
+
+                $(".dd").append('<option value='+ data.id +'>'+ data.department_name + '</option>');
                   
               } , "json");
         });
-        
-        
-    })
+ 
+    });
+
+// Delete
+function deleteDepartment(id){
+  $.ajax({
+    url: '/daycare_departments/'+id,
+    type: 'DELETE',
+    success: function(result) {
+        $('table#tblDepartments tr#'+id).remove();
+        $(".dd option[value='"+ id +"']").remove();
+    }
+    
+  });
+
+}
+
+// Update
+function updateDepartment(id){
+
+            data = { department_name: $("#daycare_department_department_name").val(), _method: 'patch' };
+            url = "/daycare_departments/"+id
+            request = $.post(url, data);
+            request.done(function(data){
+                $('table#tblDepartments tr#'+data.id).html('<td>' + data.department_name
+                +'<div class="pull-right">'
+                +'<a href="javascript:void(0);" onclick="deleteDepartment(\''+ data.id +'\');" data-confirm="Are you sure?">delete</a> | ' 
+                +'<a href="#" data-toggle="modal" data-target="#departmentModal2" data-id="'+ data.id +'" data-department_name="'+ data.department_name +'">edit</a>'
+                +'</div></td>');
+
+                $(".dd option[value='"+ id +"']").html(data.department_name);
+
+            });
+}
+
 </script>
 
 <style>
 #topbar {
     background-color: #1a8a8f;
 }
+
 </style>
