@@ -1,0 +1,72 @@
+<br/>
+<% if @partner.errors.any? %>
+  <div id="error_explanation" class="col-md-6 col-md-offset-3">
+    <div class="alert alert-danger">
+      The form contains <%= pluralize(@partner.errors.count, "error") %>.
+    </div>
+    <ul class="red">
+    <% @partner.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="col-md-6 col-md-offset-3">
+	<div class="panel panel-default">
+		<div class="panel-heading"><h4>Edit Partner</h4></div>
+
+		<div class="panel-body">
+			
+		<%= form_for @partner, html: {role: "form"} do |f| %>
+		  <div class="form-group">
+              <%= f.label :partner_name%>
+              <%= f.text_field :partner_name, {class: "form-control", required: "true"} %>
+          </div>
+          
+          <div class="form-group">
+              <%= f.label :username%>
+              <%= f.text_field :username, {class: "form-control", required: "true"} %>
+          </div>
+          
+          <div class="form-group">
+              <%= f.label :email%>
+              <%= f.text_field :email, {class: "form-control", required: "true"} %>
+          </div>
+          
+          <div class="form-group">
+              <%= f.label :address%>
+              <%= f.text_area :address, {class: "form-control", required: "false"} %>
+          </div>
+
+          <div class="form-group">
+              <%= f.label :country%>
+              <%= f.country_select :country, ["#{@partner.country}"], {}, { :class => "form-control" } %>
+          </div>
+          
+
+          <br class="clear" /><br/>
+          <div class="col-md-offset-5">
+              <%= submit_tag "Update", class: "btn btn-primary" %>
+          </div>
+
+        <% end %>
+			
+		</div>
+		
+	</div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("PARTNERS");
+        
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #3481b0;
+}
+</style>

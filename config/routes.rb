@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   get 'functionalities' => 'functionalities#index'
   resources :allergies
   resources :todos
+  resources :franchises
+  resources :partners
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -48,7 +48,7 @@
           
           
           <div class="form-group">
-              <a data-toggle="modal" href="/customer_types" class="pull-right" data-target="#customerTypeModal22">edit customer types</a>
+              <!-- <a data-toggle="modal" href="/customer_types" class="pull-right" data-target="#customerTypeModal22">edit customer types</a> -->
               <%= f.label :customer_type_id%>
               <%= f.collection_select(:customer_type_id, @type_providers, :id, :type_name, {}, {include_blank: true, required: 'true', class: 'form-control ct', onchange: 'showUserTypes()'}) %>
           </div>
