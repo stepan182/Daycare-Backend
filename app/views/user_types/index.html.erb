@@ -77,6 +77,8 @@
                           <%= f.label :user_type_name%>
                           <%= f.text_field :user_type_name, class: "form-control", id: "type_name2" %>
                           <%= f.hidden_field :customer_type_id, :value => params[:customer_type] %>
+                          <%= f.hidden_field :franchise_id, :value => params[:franchise_id] %>
+                          <%= f.hidden_field :partner_id, :value => params[:partner_id] %>
                       </div>
                 
             </div>
@@ -127,7 +129,9 @@
             $.post("/user_types",
               {
                   user_type_name: $("#type_name2").val(),
-                  customer_type_id: <%= params[:customer_type] %>
+                  customer_type_id: <%= params[:customer_type] %>,
+                  <%if params["franchise_id"].present? %>franchise_id: <%= params["franchise_id"] %>,<%end%>
+                  <%if params["partner_id"].present? %>partner_id: <%= params["partner_id"] %><%end%>
               },
               function(data){
                 

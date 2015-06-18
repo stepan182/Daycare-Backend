@@ -14,11 +14,17 @@ class CustomersController < ApplicationController
 
   def get_customer_list
     
-    if params["country"].present? && !params["customer_type_id"].present?
+    if params["country"].present? && !params["customer_type_id"].present? && !params["partner_id"].present? && !params["franchise_id"].present?
       customers = Customer.where(country: params["country"])
     
-    elsif params["country"].present? && params["customer_type_id"].present?
+    elsif params["country"].present? && params["customer_type_id"].present? && !params["partner_id"].present? && !params["franchise_id"].present?
       customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"])
+
+    elsif params["country"].present? && params["customer_type_id"].present? && params["partner_id"].present? && !params["franchise_id"].present?
+      customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"], partner_id: params["partner_id"])
+
+    elsif params["country"].present? && params["customer_type_id"].present? && !params["partner_id"].present? && params["franchise_id"].present?
+      customers = Customer.where(country: params["country"], customer_type_id: params["customer_type_id"], franchise_id: params["franchise_id"])
     end
     
     respond_to do |format|
@@ -29,29 +35,11 @@ class CustomersController < ApplicationController
   end
   
   def new
+    #@next_id = Customer.maximum(:id).to_i.next
     @customer = Customer.new
-    @customer_type = CustomerType.new
     @type_providers = CustomerType.all
-    @user_type = UserType.new
-    @daycare_department = DaycareDepartment.new
-  end
-  
-  def edit
-    @customer = Customer.find(params[:id])
-    @user_type = UserType.new
-    @user_type_providers = UserType.all
-    @daycare_department = DaycareDepartment.new
-    #@customer_dept = @customer.daycare_departments
-  end
-
-  def update
-    @customer = Customer.find(params[:id])
-    if @customer.update_attributes(customer_params)
-      flash[:success] = "Customer updated"
-      redirect_to '/customers'
-    else
-      render 'edit'
-    end
+    @franchises = Franchise.all
+    @partners = Partner.all
   end
 
   def create
@@ -61,15 +49,36 @@ class CustomersController < ApplicationController
       flash[:success] = "Success: customer has been added"
       redirect_to '/customers'
     else
-      @customer_type = CustomerType.new
+      #@customer = Customer.new
       @type_providers = CustomerType.all
-      @user_type = UserType.new
-      @daycare_department = DaycareDepartment.new
-      @departments_providers = DaycareDepartment.all
+      @franchises = Franchise.all
+      @partners = Partner.all
       
       render 'new'
     end
   end
+  
+  def edit
+    @customer = Customer.find(params[:id])
+    @franchises = Franchise.all
+    @partners = Partner.all
+    @customer_dept = @customer.daycare_departments
+  end
+
+  def update
+    @customer = Customer.find(params[:id])
+    if @customer.update_attributes(customer_params)
+      flash[:success] = "Customer updated"
+      redirect_to '/customers'
+    else
+      #@customer = Customer.find(params[:id])
+      @franchises = Franchise.all
+      @partners = Partner.all
+      @customer_dept = @customer.daycare_departments
+      render 'edit'
+    end
+  end
+
   
   def import_new
     @customer = Customer.new
@@ -83,6 +92,8 @@ class CustomersController < ApplicationController
 
   def edit_all
     @type_providers = CustomerType.all
+    @franchises = Franchise.all
+    @partners = Partner.all
   end
 
   def destroy
@@ -96,7 +107,7 @@ class CustomersController < ApplicationController
 
     def customer_params
       params.require(:customer).permit(:customer_name, :username, :password, :email, :country, 
-      :customer_type_id, :user_type_id, :daycare_department_ids => [])
+      :customer_type_id, :user_type_id, :franchise_id, :partner_id, :address, :daycare_department_ids => [])
     end
   
 end

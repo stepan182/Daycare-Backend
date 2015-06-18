@@ -40,6 +40,11 @@
               <%= f.label :email%>
               <%= f.text_field :email, {class: "form-control", required: "true"} %>
           </div>
+
+          <div class="form-group">
+              <%= f.label :address%>
+              <%= f.text_area :address, {class: "form-control"} %>
+          </div>
           
           <div class="form-group">
               <%= f.label :country%>
@@ -53,6 +58,16 @@
               <%= f.collection_select(:customer_type_id, @type_providers, :id, :type_name, {}, {include_blank: true, required: 'true', class: 'form-control ct', onchange: 'showUserTypes()'}) %>
           </div>
           
+          <div class="form-group" id="sel_franchise">
+              <%= f.label :choose_franchise %>
+              <%= f.collection_select(:franchise_id, @franchises, :id, :franchise_name, {include_blank: true}, {class: 'form-control fr', onchange: 'showUserTypes()'}) %>
+          </div>
+
+          <div class="form-group" id="sel_partner">
+              <%= f.label :choose_partner %>
+              <%= f.collection_select(:partner_id, @partners, :id, :partner_name, {include_blank: true}, {class: 'form-control pr', onchange: 'showUserTypes()'}) %>
+          </div>
+
           <div class="form-group" id="sel_daycare_user_type">
               <a data-toggle="modal" id="idit_user_types" href="/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=1" class="pull-right" data-target="#userTypeModal22" data-cache="false">edit user types</a>
               <%= f.label :user_type %>
@@ -60,9 +75,9 @@
           </div>
           
           <div class="form-group" id="sel_daycare_department">
-              <a data-toggle="modal" id="idit_departments" href="/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_type=1" class="pull-right" data-target="#departmentModal22">edit departments</a>
+              <a data-toggle="modal" id="idit_departments" href="/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_type=1&customer_id=<%= @next_id %>" class="pull-right" data-target="#departmentModal22">edit departments</a>
               <%= f.label :department%><br/>
-              <%= f.select(:daycare_department_ids, "", {}, {multiple: true, required: 'true', class: 'form-control dd', size: '10'}) %>
+              <%= f.select(:daycare_department_ids, "", {}, {multiple: true, class: 'form-control dd', size: '10'}) %>
 
           </div>
           
@@ -71,7 +86,7 @@
               <%= f.submit "Create", class: "btn btn-primary" %>
           </div>
         <% end %>
-					
+
 		</div>
 		
 	</div>
@@ -103,24 +118,61 @@
 
 // Show daycare user type if daycare customer type selected
 function showUserTypes(){
-    if ($("#customer_customer_type_id").val() == "3"){
-          deptCType = "-1";
+  deptCType = $("#customer_customer_type_id").val();
+  $("#sel_daycare_user_type").hide();
+  $("#sel_daycare_department").hide();
+
+        // franchise
+        if (deptCType == "2"){
+          $("#sel_franchise").show();
+          $("#sel_partner").hide();
+          
+          
+          if ($("#customer_franchise_id option:selected" ).text() != ''){
+            $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType +"&franchise_id="+ $("#customer_franchise_id").val());
+            getUserTypes();
+            $("#sel_daycare_user_type").show();
+
+            $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&franchise_id="+ $("#customer_franchise_id").val());
+            getUserDepartments();
+            $("#sel_daycare_department").show();
+          }
+
         }
-        else{
-          deptCType = $("#customer_customer_type_id").val();
+        //partner
+        else if (deptCType == "3") {
+          $("#sel_partner").show();
+          $("#sel_franchise").hide();
+
+          if ($("#customer_partner_id option:selected" ).text() != ''){
+            $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType +"&partner_id="+ $("#customer_partner_id").val());
+            getUserTypes();
+            $("#sel_daycare_user_type").show();
+            
+            $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>");
+            $("#sel_daycare_department").show();
+          }
+
+        }
+        //single
+        else if (deptCType == "1") {
+          $("#sel_franchise").hide();
+          $("#sel_partner").hide();
+
+          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType);
+          getUserTypes();
+          $("#sel_daycare_user_type").show();
+          
+          $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>");
+          $("#sel_daycare_department").show();
         }
 
-    if ($("#customer_customer_type_id option:selected" ).text() != ''){
-        $("#sel_daycare_user_type").show();
-        $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ $("#customer_customer_type_id").val());
-        getUserTypes();
-        $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType);
-        getUserDepartments();
-        $("#sel_daycare_department").show();
-    }
-    else{
-        $("#sel_daycare_user_type").hide();
-        $("#sel_daycare_department").hide();
+        
+
+    if ($("#customer_customer_type_id option:selected" ).text() == ''){
+     
+        $("#sel_franchise").hide();
+        $("#sel_partner").hide();
         $("#sel_daycare_user_type option").removeAttr("selected");
         $("#sel_daycare_department option").removeAttr("selected");
         $(".ut").empty();
@@ -144,7 +196,10 @@ $(function(){
 function getUserTypes(){
         $.post("/user_types/get_user_types",
             {
-                costomer_type: $("#customer_customer_type_id").val()
+                customer_type: $("#customer_customer_type_id").val(),
+                partner_id: $("#customer_partner_id").val(),
+                franchise_id: $("#customer_franchise_id").val()
+
             },
             
             function(data){
@@ -162,7 +217,7 @@ function getUserTypes(){
 function getUserDepartments(){
         $.post("/daycare_departments/get_departments",
             {
-                customer_type: deptCType
+                franchise_id: $("#customer_franchise_id").val()
             },
             
             function(data){
@@ -170,7 +225,7 @@ function getUserDepartments(){
                 $(".dd").empty();
                 
                 $.each(data, function(i, item) {
-                    $(".dd").append('<option value="'+ item.id +'">'+ item.department_name +'</option>');
+                    $(".dd").append('<option value="'+ item.id +'" selected>'+ item.department_name +'</option>');
                 });
                 
                   

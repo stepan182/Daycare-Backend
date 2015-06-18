@@ -1,6 +1,8 @@
 class Customer < ActiveRecord::Base
-    has_one :customer_type
-    has_one :user_type, :through => :customer_type
+    belongs_to :customer_type
+    has_many :user_types
+    belongs_to :franchise
+    belongs_to :partner
     has_and_belongs_to_many :daycare_departments, join_table: :customers_daycare_departments
     has_and_belongs_to_many :privileges, join_table: :customers_privileges
     has_and_belongs_to_many :todos, join_table: :customers_todos

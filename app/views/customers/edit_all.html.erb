@@ -16,9 +16,18 @@
           </div>
           
           <div class="form-group">
-            <a data-toggle="modal" href="/customer_types" class="pull-right" data-target="#customerTypeModal22">edit customer types</a>
               <%= label_tag :customer_type_id%>
               <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {required: 'true', class: 'form-control ct', onchange: 'getCustomers();'}) %>
+          </div>
+
+          <div class="form-group" id="sel_franchise">
+              <%= label_tag :franchise %>
+              <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'getCustomers();'}) %>
+          </div>
+
+          <div class="form-group" id="sel_partner">
+              <%= label_tag :partner %>
+              <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'getCustomers();'}) %>
           </div>
           
         <%end%>
@@ -27,8 +36,8 @@
             <thead>
               <tr>
                 <th>Customer name</th>
-                <th>Username</th>
                 <th>Email</th>
+                <th>Address</th>
                 <th>Country</th>
               </tr>
             </thead>
@@ -62,15 +71,36 @@
     $(function(){
         $("#slogan").html("ADD CUSTOMERS");
         $("#tbl").hide();
+        $("#sel_franchise").hide();
+        $("#sel_partner").hide();
           
     });
 
 
 function getCustomers(){
+  //franchise
+  if ($(".ct").val() == "2"){
+    $("#sel_franchise").show();
+    $("#sel_partner").hide();
+  
+  }
+  //partner
+  else if ($(".ct").val() == "3") {
+    $("#sel_partner").show();
+    $("#sel_franchise").hide();
+  }
+  else if ($(".ct").val() == "1") {
+    $("#sel_franchise").hide();
+    $("#sel_partner").hide();
+  }
+
+
         $.post("/customers/get_customer_list",
             {
                 country: $("#country_sel").val(),
-                customer_type_id: $("#customer_type_name_customer_type_id").val()
+                customer_type_id: $("#customer_type_name_customer_type_id").val(),
+                partner_id: $("#partner_name_partner_id").val(),
+                franchise_id: $("#franchise_name_franchise_id").val()
             },
             
             function(data){
@@ -78,7 +108,7 @@ function getCustomers(){
                 $("#custList").empty();
                 
                 $.each(data, function(i, item) {
-                    $("#custList").append('<tr><td>'+ item.customer_name +'</td><td>'+ item.username +'</td><td>'+ item.email +'</td>'
+                    $("#custList").append('<tr><td>'+ item.customer_name +'</td><td>'+ item.email +'</td><td>'+ item.address +'</td>'
                     +'<td>'+ item.country +'<div class="pull-right">'
                     +'<a data-confirm="Are you sure?" data-method="delete" href="/customers/'+ item.id +'">delete</a> | '
                     +'<a href="/customers/'+ item.id +'/edit">edit</a></div></td></tr>');

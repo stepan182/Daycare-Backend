@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602130710) do
+ActiveRecord::Schema.define(version: 20150617120251) do
 
   create_table "admins", force: true do |t|
     t.string   "name"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20150602130710) do
     t.datetime "updated_at"
   end
 
-  add_index "admins", ["email"], name: "index_admins_on_email", unique: true
+  add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
 
   create_table "allergies", force: true do |t|
     t.string   "allergy_name"
@@ -44,38 +44,64 @@ ActiveRecord::Schema.define(version: 20150602130710) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_type_id"
-    t.string   "daycare_user_type"
+    t.integer  "user_type_id"
   end
 
-  add_index "customers", ["customer_type_id"], name: "index_customers_on_customer_type_id"
-  add_index "customers", ["username"], name: "index_customers_on_username", unique: true
+  add_index "customers", ["customer_type_id"], name: "index_customers_on_customer_type_id", using: :btree
+  add_index "customers", ["user_type_id"], name: "index_customers_on_user_type_id", using: :btree
+  add_index "customers", ["username"], name: "index_customers_on_username", unique: true, using: :btree
 
   create_table "customers_daycare_departments", force: true do |t|
     t.integer "customer_id"
     t.integer "daycare_department_id"
   end
 
-  add_index "customers_daycare_departments", ["customer_id"], name: "index_customers_daycare_departments_on_customer_id"
-  add_index "customers_daycare_departments", ["daycare_department_id"], name: "index_customers_daycare_departments_on_daycare_department_id"
+  add_index "customers_daycare_departments", ["customer_id"], name: "index_customers_daycare_departments_on_customer_id", using: :btree
+  add_index "customers_daycare_departments", ["daycare_department_id"], name: "index_customers_daycare_departments_on_daycare_department_id", using: :btree
 
   create_table "customers_privileges", force: true do |t|
     t.integer "customer_id"
     t.integer "privilege_id"
   end
 
-  add_index "customers_privileges", ["customer_id"], name: "index_customers_privileges_on_customer_id"
-  add_index "customers_privileges", ["privilege_id"], name: "index_customers_privileges_on_privilege_id"
+  add_index "customers_privileges", ["customer_id"], name: "index_customers_privileges_on_customer_id", using: :btree
+  add_index "customers_privileges", ["privilege_id"], name: "index_customers_privileges_on_privilege_id", using: :btree
 
   create_table "customers_todos", force: true do |t|
     t.integer "customer_id"
     t.integer "todo_id"
   end
 
-  add_index "customers_todos", ["customer_id"], name: "index_customers_todos_on_customer_id"
-  add_index "customers_todos", ["todo_id"], name: "index_customers_todos_on_todo_id"
+  add_index "customers_todos", ["customer_id"], name: "index_customers_todos_on_customer_id", using: :btree
+  add_index "customers_todos", ["todo_id"], name: "index_customers_todos_on_todo_id", using: :btree
 
   create_table "daycare_departments", force: true do |t|
     t.string   "department_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_type_id"
+  end
+
+  add_index "daycare_departments", ["customer_type_id"], name: "index_daycare_departments_on_customer_type_id", using: :btree
+
+  create_table "franchises", force: true do |t|
+    t.string   "franchise_name"
+    t.string   "username"
+    t.string   "password_digest"
+    t.string   "email"
+    t.text     "address"
+    t.string   "country"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "partners", force: true do |t|
+    t.string   "partner_name"
+    t.string   "username"
+    t.string   "password_digest"
+    t.string   "email"
+    t.text     "address"
+    t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -91,7 +117,7 @@ ActiveRecord::Schema.define(version: 20150602130710) do
     t.datetime "updated_at"
   end
 
-  add_index "subtasks", ["task_id"], name: "index_subtasks_on_task_id"
+  add_index "subtasks", ["task_id"], name: "index_subtasks_on_task_id", using: :btree
 
   create_table "tasks", force: true do |t|
     t.string   "task"
@@ -100,13 +126,18 @@ ActiveRecord::Schema.define(version: 20150602130710) do
     t.datetime "updated_at"
   end
 
-  add_index "tasks", ["todo_id"], name: "index_tasks_on_todo_id"
+  add_index "tasks", ["todo_id"], name: "index_tasks_on_todo_id", using: :btree
 
   create_table "todos", force: true do |t|
     t.string   "subject"
     t.datetime "complete_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "user_types", force: true do |t|
+    t.string  "user_type_name"
+    t.integer "customer_type_id"
   end
 
 end

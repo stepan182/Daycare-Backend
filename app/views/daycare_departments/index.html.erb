@@ -13,6 +13,7 @@
               </tr>
             </thead>
             <tbody>
+            <% if !@daycare_departments.nil? %>
             <% @daycare_departments.each do |dept| %>
               <tr id="<%=dept.id%>">
                 <td><%= dept.department_name %>
@@ -23,6 +24,7 @@
                 </div>
                 </td>
               </tr>
+            <%end%>
             <%end%>
             </tbody>
         </table>
@@ -129,7 +131,7 @@
             $.post("/daycare_departments",
               {
                   department_name: $("#department_name2").val(),
-                  customer_type_id: <%= params[:customer_type] %>
+                  <%if params["franchise_id"].present? %>franchise_id: <%= params[:franchise_id] %><%end%>
               },
               function(data){
                 
@@ -141,7 +143,7 @@
                 +'<a href="#" data-toggle="modal" data-target="#departmentModal2" data-id="'+ data.id +'" data-department_name="'+ data.department_name +'">edit</a>'
                 +'</div></td></tr>');
 
-                $(".dd").append('<option value='+ data.id +'>'+ data.department_name + '</option>');
+                $(".dd").append('<option value='+ data.id +' selected>'+ data.department_name + '</option>');
                   
               } , "json");
         });

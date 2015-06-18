@@ -8,7 +8,7 @@ class UserTypesController < ApplicationController
   end
   
   def create
-    @user_type = UserType.new(user_type_name: params[:user_type_name], customer_type_id: params[:customer_type_id])
+    @user_type = UserType.new(user_type_name: params[:user_type_name], customer_type_id: params[:customer_type_id], franchise_id: params["franchise_id"], partner_id: params["partner_id"])
     if @user_type.save
       respond_with @user_type
     else
@@ -42,8 +42,12 @@ class UserTypesController < ApplicationController
 
   def get_user_types
     
-    if params["costomer_type"].present?
-      user_types = UserType.where(customer_type_id: params["costomer_type"])
+    if params["customer_type"].present? && !params["franchise_id"].present? && !params["partner_id"].present?
+      user_types = UserType.where(customer_type_id: params["customer_type"])
+    elsif params["customer_type"].present? && params["franchise_id"].present? && !params["partner_id"].present?
+      user_types = UserType.where(customer_type_id: params["customer_type"], franchise_id: params["franchise_id"])
+    elsif params["customer_type"].present? && !params["franchise_id"].present? && params["partner_id"].present?
+      user_types = UserType.where(customer_type_id: params["customer_type"], partner_id: params["partner_id"])
     end
     
     respond_to do |format|

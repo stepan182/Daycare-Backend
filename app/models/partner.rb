@@ -1,4 +1,5 @@
 class Partner < ActiveRecord::Base
+	has_many :customers
 	
 	validates :partner_name, presence: true
     validates :username, presence: true, uniqueness: { case_sensitive: false }

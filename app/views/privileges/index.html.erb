@@ -15,12 +15,22 @@
 
             <div class="form-group" id="ct">
               <%= label_tag :customer_type_id%>
-              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {required: 'true', class: 'form-control', onchange: 'getUserTypes();showCustomers();'}) %>
+              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {class: 'form-control', onchange: 'showCustomers();getUserTypes();'}) %>
+            </div>
+
+            <div class="form-group" id="sel_franchise">
+              <%= label_tag :franchise %>
+              <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'showCustomers();'}) %>
+            </div>
+
+            <div class="form-group" id="sel_partner">
+              <%= label_tag :partner %>
+              <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'showCustomers();'}) %>
             </div>
 
             <div class="form-group" id="ut">
               <%= label_tag :user_type %>
-              <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {class: 'form-control ut', onchange: 'showCustomers()'}) %>
+              <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {class: 'form-control ut', onchange: 'showCustomers("true")'}) %>
             </div>
             
             
@@ -49,12 +59,44 @@
 <!-- Scripts and styles -->
 <script>
 
-    function showCustomers(){
+    function showCustomers(incl){
+        partnerVal = $("#partner_name_partner_id").val();
+        franchiseVal = $("#franchise_name_franchise_id").val();
+
+    // franchise
+        if ($("#customer_type_name_customer_type_id").val() == "2"){
+          $("#sel_franchise").show();
+          $("#sel_partner").hide();
+          partnerVal = "";
+        }
+        //partner
+        else if ($("#customer_type_name_customer_type_id").val() == "3") {
+          $("#sel_partner").show();
+          $("#sel_franchise").hide();
+          franchiseVal = "";
+        }
+        //single
+        else if ($("#customer_type_name_customer_type_id").val() == "1") {
+          $("#sel_franchise").hide();
+          $("#sel_partner").hide();
+          partnerVal = "";
+          franchiseVal = "";
+        }
+
+        if (incl=="true"){
+            var uType = $("#user_type_name_user_type_id").val();
+        }
+        else{
+            var uType = "";
+        }
+
         $.post("/privileges/get_customers_by_country",
             {
                 country: $("#country_sel").val(),
                 customer_type_id: $("#customer_type_name_customer_type_id").val(),
-                user_type_id: $("#user_type_name_user_type_id").val()
+                user_type_id: uType,
+                partner_id: partnerVal,
+                franchise_id: franchiseVal
             },
             
             function(data){
@@ -77,7 +119,9 @@
     function getUserTypes(){
         $.post("/user_types/get_user_types",
             {
-                costomer_type: $("#customer_type_name_customer_type_id").val()
+                customer_type: $("#customer_type_name_customer_type_id").val(),
+                partner_id: partnerVal,
+                franchise_id: franchiseVal
             },
             
             function(data){
@@ -100,6 +144,8 @@
         $("#customerNames").hide();
         $("#ct").hide();
         $("#ut").hide();
+        $("#sel_franchise").hide();
+        $("#sel_partner").hide();
         
         $('#select_all').change(function(){
             var checkboxes = $(this).closest('form').find(':checkbox');

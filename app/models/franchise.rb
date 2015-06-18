@@ -1,4 +1,5 @@
 class Franchise < ActiveRecord::Base
+  	has_many :customers
   	
   	validates :franchise_name, presence: true
     validates :username, presence: true, uniqueness: { case_sensitive: false }

@@ -8,12 +8,9 @@ class DaycareDepartmentsController < ApplicationController
   end
   
   def create
-    if params[:customer_type_id] != "-1"
-      @daycare_department = DaycareDepartment.new(department_name: params[:department_name], customer_type_id: params[:customer_type_id])
-    else
-      @daycare_department = DaycareDepartment.new(department_name: params[:department_name])
-    end
-
+    
+    @daycare_department = DaycareDepartment.new(department_name: params[:department_name], franchise_id: params["franchise_id"])
+    
     if @daycare_department.save
       respond_with @daycare_department
     else
@@ -22,10 +19,12 @@ class DaycareDepartmentsController < ApplicationController
   end
   
   def index
-    if params["customer_type"].present? && !params["user_id"].present?
-      @daycare_departments = DaycareDepartment.where(customer_type_id: params[:customer_type])
-    elsif params["customer_type"].present? && params["user_id"].present?
-      @daycare_departments = Customer.find(params["user_id"]).daycare_departments
+    if params["franchise_id"].present?
+      @daycare_departments = DaycareDepartment.where(franchise_id: params[:franchise_id])
+    end
+
+    if params["customer_id"].present?
+      @daycare_departments = Customer.find(params["customer_id"]).daycare_departments
     end
 
     @daycare_department = DaycareDepartment.new
@@ -52,10 +51,8 @@ class DaycareDepartmentsController < ApplicationController
 
   def get_departments
     
-    if params["customer_type"].present?
-      departments = DaycareDepartment.where(customer_type_id: params["customer_type"])
-    elsif params["user_id"].present?
-      departments = Customer.find(params["user_id"]).daycare_departments
+    if params["franchise_id"].present?
+      departments = DaycareDepartment.where(franchise_id: params["franchise_id"])
     end
     
     respond_to do |format|
