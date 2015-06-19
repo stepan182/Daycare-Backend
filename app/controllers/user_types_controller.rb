@@ -17,7 +17,18 @@ class UserTypesController < ApplicationController
   end
   
   def index
-    @user_types = UserType.where(customer_type_id: params[:customer_type])
+    if params["franchise_id"].present?
+      @user_types = UserType.where(franchise_id: params[:franchise_id])
+    end
+
+    if params["partner_id"].present?
+      @user_types = UserType.where(partner_id: params[:partner_id])
+    end
+
+    if params["customer_type"].present? && !params["franchise_id"].present? && !params["partner_id"].present?
+      @user_types = UserType.where(customer_type_id: params[:customer_type])
+    end
+
     @user_type = UserType.new
   end
   

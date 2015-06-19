@@ -36,7 +36,7 @@
 
 
 <!-- Edit Modal -->
-<div class="modal fade" id="departmentModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade local-modal" id="departmentModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 90%;">
         <div class="modal-content">
             <%= form_for @daycare_department, url: daycare_departments_path, method: :patch, html: {role: "form"} do |f| %>
@@ -64,7 +64,7 @@
 </div>
 
 <!-- Add Modal -->
-<div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade local-modal" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 90%;">
         <div class="modal-content">
             <div class="modal-header">

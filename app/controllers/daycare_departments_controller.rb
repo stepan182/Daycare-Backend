@@ -23,7 +23,7 @@ class DaycareDepartmentsController < ApplicationController
       @daycare_departments = DaycareDepartment.where(franchise_id: params[:franchise_id])
     end
 
-    if params["customer_id"].present?
+    if params["customer_id"].present? && !params["franchise_id"].present?
       @daycare_departments = Customer.find(params["customer_id"]).daycare_departments
     end
 

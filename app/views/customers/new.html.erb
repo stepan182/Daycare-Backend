@@ -116,16 +116,20 @@
 <!-- Scripts and styles -->
 <script>
 
+
 // Show daycare user type if daycare customer type selected
 function showUserTypes(){
   deptCType = $("#customer_customer_type_id").val();
   $("#sel_daycare_user_type").hide();
   $("#sel_daycare_department").hide();
+  partnerVal = $("#customer_partner_id").val()
+  franchiseVal = $("#customer_franchise_id").val()
 
         // franchise
         if (deptCType == "2"){
           $("#sel_franchise").show();
           $("#sel_partner").hide();
+          partnerVal = "";
           
           
           if ($("#customer_franchise_id option:selected" ).text() != ''){
@@ -143,6 +147,8 @@ function showUserTypes(){
         else if (deptCType == "3") {
           $("#sel_partner").show();
           $("#sel_franchise").hide();
+          $(".dd").empty();
+          franchiseVal = "";
 
           if ($("#customer_partner_id option:selected" ).text() != ''){
             $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType +"&partner_id="+ $("#customer_partner_id").val());
@@ -158,6 +164,9 @@ function showUserTypes(){
         else if (deptCType == "1") {
           $("#sel_franchise").hide();
           $("#sel_partner").hide();
+          $(".dd").empty();
+          partnerVal = "";
+          franchiseVal = "";
 
           $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType);
           getUserTypes();
@@ -184,9 +193,9 @@ $(function(){
 
         // Add slogan
         $("#slogan").html("ADD CUSTOMERS");
-        
-        // fix remote modal
-        //$(document).on("hidden.bs.modal", ".modal", function (e) { if (!$(e.target).is(".local-modal")) { $(e.target).removeData("bs.modal").find(".modal-content").empty(); } });
+
+        //fix modal
+        $(document).on("hidden.bs.modal", ".modal", function (e) { if (!$(e.target).is(".local-modal")) { $(e.target).removeData("bs.modal").find(".modal-content").empty(); } });
 
         // Hide or show Daycare fields
         showUserTypes();
@@ -197,8 +206,8 @@ function getUserTypes(){
         $.post("/user_types/get_user_types",
             {
                 customer_type: $("#customer_customer_type_id").val(),
-                partner_id: $("#customer_partner_id").val(),
-                franchise_id: $("#customer_franchise_id").val()
+                partner_id: partnerVal,
+                franchise_id: franchiseVal
 
             },
             

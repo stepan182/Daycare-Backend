@@ -10,26 +10,30 @@
 					
 		<%= form_tag(todos_path, html: { multipart: true }) do |f| %>
 		  
-		  <div class="form-group">
+		      <div class="form-group">
               <%= label_tag :choose_country%>
-              <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "getCustomers()", id: "country_sel"  } %>
+              <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "showCustomers()", id: "country_sel"  } %>
           </div>
           
-          <div class="form-group">
+          <div class="form-group" id="ct">
               <%= label_tag :customer_type_id%>
-              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {required: 'true', class: 'form-control', onchange: 'showUserTypes();showUsers();getCustomers()'}) %>
-          </div>
-		  
-		  <div class="form-group" id="sel_daycare_user_type">
-              <%= label_tag :daycare_user_type %>
-              <%= select_tag(:daycare_user_type, "<option></option><option>Daycare Manager</option><option>Daycare Worker</option><option>Daycare Parent</option>".html_safe, {onchange: "getCustomers()", class: 'form-control'}) %>
-          </div>
-          
-          <div class="form-group" id="sel_daycare_department">
-              <div class="pull-right">select all <input type="checkbox" id="select_all_departments"/></div>
-              <%= label_tag :daycare_department%><br/>
-              <%= select(:daycare_department_names, :daycare_department_ids, @departments_providers.map { |dep| [dep.department_name.html_safe, dep.id] }, {}, {:multiple => true, size: '10', onchange: "getCustomers()", class: 'form-control'}) %>
-          </div>
+              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {class: 'form-control', onchange: 'showCustomers();getUserTypes();'}) %>
+            </div>
+
+            <div class="form-group" id="sel_franchise">
+              <%= label_tag :franchise %>
+              <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'showCustomers();getUserTypes();'}) %>
+            </div>
+
+            <div class="form-group" id="sel_partner">
+              <%= label_tag :partner %>
+              <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'showCustomers();getUserTypes();'}) %>
+            </div>
+
+            <div class="form-group" id="ut">
+              <%= label_tag :user_type %>
+              <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {class: 'form-control ut', onchange: 'showCustomers("true")'}) %>
+            </div>
           
           <div class="form-group" id="customerNames">
             <div class="pull-right">select all <input type="checkbox" id="select_all_customers"/></div>
@@ -60,12 +64,10 @@
             <tr>
             <td></td>
             <td align="center" colspan="2"><b>SubTask</b> <input class="form-control c" id="subtask[0][0]" name="subtask[0][0]" type="text" /></td>
-            <td></td>
+            <td><a href="javascript:void(0);" onclick="$(this).closest('tr').remove();">&times;</a></td>
             </tr>
             
-            <tr>
-            <td colspan="4" style="padding: 10px"><b>Should be completed by</b> <input type='text' class="datetimepicker" id='datetimepicker' name="complete_by" required="required" /></td>
-            </tr></table><br/>
+            </table><br/>
           </div>
             
           <br class="clear" /><br/>
@@ -90,13 +92,13 @@ function addTask(taskNum,i){
   var index = $(i).closest('td').parent()[0].sectionRowIndex;      
   var rowCount = $('#todoTable tr').length;
   
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)-1).innerHTML = '<tr><td></td>'
+  document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML = '<tr><td></td>'
             +'<td colspan="2"><b>Task</b> <input class="form-control c" id="task['+ taskNum +']" name="task['+ taskNum +']" type="text" /></td>'
             +'<td><a href="javascript:void(0);" onclick="addSubTask('+ parseInt(taskNum) +',this)" id="lnkSubTasks">+ add new subtask</a></td></tr>'
             
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML =  '<tr><td></td>'
+  document.getElementById("todoTable").insertRow(parseInt(rowCount)+1).innerHTML =  '<tr><td></td>'
             +'<td align="center" colspan="2"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +'][0]" name="subtask['+ taskNum +'][0]" type="text" /></td>'
-            +'<td></td>'
+            +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();">&times;</a></td>'
             +'</tr>'
   
   $("#lnkTasks").attr("onclick", "addTask("+ (parseInt(taskNum) + 1) +",this)");
@@ -109,36 +111,53 @@ function addSubTask(taskNum,i){
   
   document.getElementById("todoTable").insertRow(parseInt(index) + 1).innerHTML = '<tr><td></td>'
             +'<td align="center" colspan="2"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +']['+ ni +']" name="subtask['+ taskNum +']['+ ni +']" type="text" /></td>'
-            +'<td></td></tr>'
+            +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();">&times;</a></td></tr>'
   $("#lnkSubTasks").attr("onclick", "addSubTask("+ parseInt(taskNum) +",this,"+ ni +")");
 }
 
-// Show daycare user type if daycare customer type selected
-function showUserTypes(){
-    if ($("#customer_type_name_customer_type_id option:selected" ).text() == 'Daycare Customer'){
-        $("#sel_daycare_user_type").show();
-        $("#sel_daycare_department").show();
-    }
-    else{
-        $("#sel_daycare_user_type").hide();
-        $("#sel_daycare_department").hide();
-        $("#sel_daycare_user_type option").removeAttr("selected");
-        $("#sel_daycare_department option").removeAttr("selected");
-    }
-    
-}
 
-function showUsers(){
-    $("#customerNames").show();
-}
 
-function getCustomers(){
+// ####### End Tasks
+
+
+  function showCustomers(incl){
+        partnerVal = $("#partner_name_partner_id").val();
+        franchiseVal = $("#franchise_name_franchise_id").val();
+
+    // franchise
+        if ($("#customer_type_name_customer_type_id").val() == "2"){
+          $("#sel_franchise").show();
+          $("#sel_partner").hide();
+          partnerVal = "";
+        }
+        //partner
+        else if ($("#customer_type_name_customer_type_id").val() == "3") {
+          $("#sel_partner").show();
+          $("#sel_franchise").hide();
+          franchiseVal = "";
+        }
+        //single
+        else if ($("#customer_type_name_customer_type_id").val() == "1") {
+          $("#sel_franchise").hide();
+          $("#sel_partner").hide();
+          partnerVal = "";
+          franchiseVal = "";
+        }
+
+        if (incl=="true"){
+            var uType = $("#user_type_name_user_type_id").val();
+        }
+        else{
+            var uType = "";
+        }
+
         $.post("/privileges/get_customers_by_country",
             {
                 country: $("#country_sel").val(),
                 customer_type_id: $("#customer_type_name_customer_type_id").val(),
-                daycare_user_type: $("#daycare_user_type").val(),
-                daycare_department_ids: $("#daycare_department_names_daycare_department_ids").val()
+                user_type_id: uType,
+                partner_id: partnerVal,
+                franchise_id: franchiseVal
             },
             
             function(data){
@@ -152,27 +171,44 @@ function getCustomers(){
                   
             } , "json");
         
-        //$("#customerNames").show();
+        $("#ct").show();
+
+        $("#customerNames").show();
+        
+    }
+
+    function getUserTypes(){
+        $.post("/user_types/get_user_types",
+            {
+                customer_type: $("#customer_type_name_customer_type_id").val(),
+                partner_id: partnerVal,
+                franchise_id: franchiseVal
+            },
+            
+            function(data){
+                
+                $(".ut").empty();
+                $(".ut").append("<option></option>");
+                
+                $.each(data, function(i, item) {
+                    $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
+                });
+                
+                  
+            } , "json");
+
+        $("#ut").show();
     }
 
     $(function(){
         $("#slogan").html("FUNCTIONALITY");
         
-        // Hide or show Daycare fields
-        showUserTypes();
         $("#customerNames").hide();
+        $("#ct").hide();
+        $("#ut").hide();
+        $("#sel_franchise").hide();
+        $("#sel_partner").hide();
         
-        $('.datetimepicker').datetimepicker();
-        
-        $('#select_all_departments').change(function(){
-            //$("#sel_daycare_department option").attr("selected", "selected");
-            var selectboxes = $(this).closest('form').find('#sel_daycare_department option');
-            if($(this).prop('checked')) {
-              selectboxes.prop('selected', true);
-            } else {
-              selectboxes.prop('selected', false);
-            }
-        });
         
         $('#select_all_customers').change(function(){
             var checkboxes = $(this).closest('form').find('#customerNames :checkbox');

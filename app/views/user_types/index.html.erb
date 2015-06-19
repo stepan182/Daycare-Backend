@@ -34,7 +34,7 @@
 
 
 <!-- Edit Modal -->
-<div class="modal fade" id="userTypeModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade local-modal" id="userTypeModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 90%;">
         <div class="modal-content">
             <%= form_for @user_type, url: user_types_path, method: :patch, html: {role: "form"} do |f| %>
@@ -62,7 +62,7 @@
 </div>
 
 <!-- Add Modal -->
-<div class="modal fade" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade local-modal" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 90%;">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,6 +94,7 @@
 <!-- Scripts and styles -->
 <script>
     $(function(){
+        
         $("#slogan").html("ADD CUSTOMERS");
 
         $(".mClose1").on("click", function(){

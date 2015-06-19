@@ -9,7 +9,8 @@ class TodosController < ApplicationController
         @todo = Todo.new
         @customer = Customer.new
         @type_providers = CustomerType.all
-        @departments_providers = DaycareDepartment.all
+        @franchises = Franchise.all
+        @partners = Partner.all
     end
     
     def create
@@ -67,7 +68,7 @@ class TodosController < ApplicationController
     private
 
     def todo_params
-      params.permit(:subject, :complete_by)
+      params.permit(:subject)
     end
     
 end

@@ -49,12 +49,12 @@
           
           <div class="form-group" id="sel_franchise">
               <%= f.label :choose_franchise %>
-              <%= f.collection_select(:franchise_id, @franchises, :id, :franchise_name, {include_blank: true}, {class: 'form-control fr'}) %>
+              <%= f.collection_select(:franchise_id, @franchises, :id, :franchise_name, {include_blank: true}, {class: 'form-control fr', onchange: 'showUserTypes("doUpdate")'}) %>
           </div>
 
           <div class="form-group" id="sel_partner">
               <%= f.label :choose_partner %>
-              <%= f.collection_select(:partner_id, @partners, :id, :partner_name, {include_blank: true}, {class: 'form-control pr'}) %>
+              <%= f.collection_select(:partner_id, @partners, :id, :partner_name, {include_blank: true}, {class: 'form-control pr', onchange: 'showUserTypes("doUpdate")'}) %>
           </div>
 
           <div class="form-group" id="sel_daycare_user_type">
@@ -112,7 +112,24 @@ $(function(){
         // Add slogan
         $("#slogan").html("ADD CUSTOMERS");
 
-        getUserTypes();
+        //fix modal
+        $(document).on("hidden.bs.modal", ".modal", function (e) { if (!$(e.target).is(".local-modal")) { $(e.target).removeData("bs.modal").find(".modal-content").empty(); } });
+
+        showUserTypes();
+        
+
+        
+});
+
+function showUserTypes(doUpdate){
+  if (doUpdate) {
+    franchiseVal = $(".fr").val();
+    partnerVal = $(".pr").val();
+  }
+  else{
+    partnerVal = "<%= @customer.partner_id %>";
+    franchiseVal = "<%= @customer.franchise_id %>";
+  }
 
         // single
         <% if @customer.customer_type_id == 1 %>
@@ -120,34 +137,41 @@ $(function(){
           $("#sel_partner").hide();
           $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>");
           $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_id=<%=@customer.id%>");
+          partnerVal = "";
+          franchiseVal = "";
+
+          getUserTypes();
 
         // franchise
         <% elsif @customer.customer_type_id == 2 %>
           $("#sel_franchise").show();
           $("#sel_partner").hide();
           getUserDepartments();
-          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&franchise_id=<%= @customer.franchise_id %>");
-          $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&franchise_id=<%= @customer.franchise_id %>");
+          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&franchise_id="+ franchiseVal);
+          $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&franchise_id="+ franchiseVal);
+          partnerVal = "";
+
+          getUserTypes();
 
         // partner
         <% elsif @customer.customer_type_id == 3 %>
           $("#sel_franchise").hide();
           $("#sel_partner").show();
-          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&partner_id=<%= @customer.partner_id %>");
+          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&partner_id="+ partnerVal);
           $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_id=<%=@customer.id%>");
+          franchiseVal = "";
+
+          getUserTypes();
 
         <% end %>
-
-        
-});
-
+}
 
 function getUserTypes(){
         $.post("/user_types/get_user_types",
             {
                 customer_type: <%= @customer.customer_type_id %>,
-                <%if !@customer.partner_id.blank?%>partner_id: <%= @customer.partner_id %>,<%end%>
-                <%if !@customer.franchise_id.blank?%>franchise_id: <%= @customer.franchise_id %> <%end%>
+                partner_id: partnerVal,
+                franchise_id: franchiseVal
             },
             
             function(data){
@@ -168,9 +192,10 @@ function getUserTypes(){
 }
 
 function getUserDepartments(){
+
         $.post("/daycare_departments/get_departments",
             {
-              <%if !@customer.franchise_id.blank?%>franchise_id: <%= @customer.franchise_id %> <%end%>
+              franchise_id: franchiseVal
             },
             
             function(data){

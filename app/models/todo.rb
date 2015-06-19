@@ -4,6 +4,6 @@ class Todo < ActiveRecord::Base
     
     default_scope -> { order(created_at: :desc) }
     validates :subject, presence: true
-    validates :complete_by, presence: true
+    #validates :complete_by, presence: true
 
 end
