@@ -10,4 +10,16 @@ class Partner < ActiveRecord::Base
     
     has_secure_password
 
+    mount_uploader :logo, PictureUploader
+    validate  :picture_size
+
+    private
+
+    # Validates the size of an uploaded picture.
+    def picture_size
+      if logo.size > 5.megabytes
+        errors.add(:logo, "should be less than 5MB")
+      end
+    end
+
 end

@@ -135,7 +135,7 @@ function showUserTypes(doUpdate){
         <% if @customer.customer_type_id == 1 %>
           $("#sel_franchise").hide();
           $("#sel_partner").hide();
-          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>");
+          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&customer_id=<%=@customer.id%>");
           $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_id=<%=@customer.id%>");
           partnerVal = "";
           franchiseVal = "";
@@ -171,6 +171,7 @@ function getUserTypes(){
             {
                 customer_type: <%= @customer.customer_type_id %>,
                 partner_id: partnerVal,
+                <% if @customer.customer_type_id == 1 %>customer_id: <%=@customer.id%>,<%end%>
                 franchise_id: franchiseVal
             },
             

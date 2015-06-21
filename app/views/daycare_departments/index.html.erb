@@ -130,7 +130,7 @@
         $("#daycare_department_btn").on("click", function(){
             $.post("/daycare_departments",
               {
-                  department_name: $("#department_name2").val(),
+                  department_name: $("#department_name2").val().toString()<%if params["franchise_id"].present? %> +'-'+ $("#customer_customer_name").val().toString()<%end%>,
                   <%if params["franchise_id"].present? %>franchise_id: <%= params[:franchise_id] %><%end%>
               },
               function(data){

@@ -17,22 +17,17 @@
           
           <div class="form-group" id="ct">
               <%= label_tag :customer_type_id%>
-              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {class: 'form-control', onchange: 'showCustomers();getUserTypes();'}) %>
+              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {class: 'form-control', onchange: 'showCustomers();'}) %>
             </div>
 
             <div class="form-group" id="sel_franchise">
               <%= label_tag :franchise %>
-              <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'showCustomers();getUserTypes();'}) %>
+              <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'showCustomers();'}) %>
             </div>
 
             <div class="form-group" id="sel_partner">
               <%= label_tag :partner %>
-              <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'showCustomers();getUserTypes();'}) %>
-            </div>
-
-            <div class="form-group" id="ut">
-              <%= label_tag :user_type %>
-              <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {class: 'form-control ut', onchange: 'showCustomers("true")'}) %>
+              <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'showCustomers();'}) %>
             </div>
           
           <div class="form-group" id="customerNames">
@@ -44,6 +39,12 @@
               </div>
               
           </div>
+
+          <div class="form-group" id="ut">
+              <%= label_tag :user_type %>
+              <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {class: 'form-control ut'}) %>
+          </div>
+
           <br/>
           
           <b>To Do</b>
@@ -144,18 +145,10 @@ function addSubTask(taskNum,i){
           franchiseVal = "";
         }
 
-        if (incl=="true"){
-            var uType = $("#user_type_name_user_type_id").val();
-        }
-        else{
-            var uType = "";
-        }
-
         $.post("/privileges/get_customers_by_country",
             {
                 country: $("#country_sel").val(),
                 customer_type_id: $("#customer_type_name_customer_type_id").val(),
-                user_type_id: uType,
                 partner_id: partnerVal,
                 franchise_id: franchiseVal
             },
@@ -163,9 +156,11 @@ function addSubTask(taskNum,i){
             function(data){
                 
                 $("#cNames").empty();
+                $(".ut").empty();
+                $(".ut").append("<option></option>");
                 
                 $.each(data, function(i, item) {
-                    $("#cNames").append('<label for="chk'+ i +'"><input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'"> '+ item.customer_name +'</label><br/>');
+                    $("#cNames").append('<label for="chk'+ i +'"><input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'" onclick="getUserTypes('+ item.id +',\'chk'+ i +'\');"> '+ item.customer_name +'</label><br/>');
                 });
                 
                   
@@ -177,27 +172,60 @@ function addSubTask(taskNum,i){
         
     }
 
-    function getUserTypes(){
+    function getUserTypes(cust,chk){
+      tmp = null;
+
+      if (cust == "all"){
+        tmp = "all";
+        cust = "";
+      }
+      else if (cust == "none"){
+        tmp = "none";
+        cust = ""; 
+      }
+
         $.post("/user_types/get_user_types",
             {
                 customer_type: $("#customer_type_name_customer_type_id").val(),
                 partner_id: partnerVal,
-                franchise_id: franchiseVal
+                franchise_id: franchiseVal,
+                customer_id: cust
             },
             
             function(data){
                 
-                $(".ut").empty();
-                $(".ut").append("<option></option>");
-                
-                $.each(data, function(i, item) {
+                if ($('#'+ chk +''.toString()).is(':checked')){
+                  $.each(data, function(i, item) {
                     $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
-                });
+                  });
+                }
+                else{
+                  $.each(data, function(i, item) {
+                    $(".ut option[value='"+ item.id +"']").remove();
+                  });
+                  
+                }
+
+                // All
+                if (tmp=="all" && !chk){
+                  $(".ut").empty();
+                  $(".ut").append("<option></option>");
+
+                  $.each(data, function(i, item) {
+                    $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
+                  });
+                }
+                else if (tmp=="none" && !chk){
+                  $(".ut").empty();
+                  $(".ut").append("<option></option>");
+                }
                 
                   
             } , "json");
 
-        $("#ut").show();
+        if (cust || tmp){
+          $("#ut").show();
+        }
     }
 
     $(function(){
@@ -214,8 +242,10 @@ function addSubTask(taskNum,i){
             var checkboxes = $(this).closest('form').find('#customerNames :checkbox');
             if($(this).prop('checked')) {
               checkboxes.prop('checked', true);
+              getUserTypes("all");
             } else {
               checkboxes.prop('checked', false);
+              getUserTypes("none");
             }
         });
         

@@ -17,7 +17,7 @@ class TodosController < ApplicationController
         task = params[:task]
         subtask = params[:subtask]
         
-        @todo = Todo.create(todo_params)
+        @todo = Todo.create(subject: params["subject"], user_type_id: params["user_type_name"]["user_type_id"])
         @todo.save
             
         @todo.update_attribute(:customer_ids, params[:customer_id])
@@ -51,7 +51,7 @@ class TodosController < ApplicationController
     end
     
     def edit
-        #@todo = Todo.find(id: params["id"]).includes(tasks: :subtasks)
+       
     end
     
     def update

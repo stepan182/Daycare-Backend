@@ -168,8 +168,7 @@ function showUserTypes(){
           partnerVal = "";
           franchiseVal = "";
 
-          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType);
-          getUserTypes();
+          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type="+ deptCType +"&customer_id=<%=@next_id%>");
           $("#sel_daycare_user_type").show();
           
           $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>");

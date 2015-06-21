@@ -67,13 +67,19 @@ class PrivilegesController < ApplicationController
   
   def create_update
     customer = params[:customer_ids].split(",")
-    customer.each do |c|
-      tmp_cust = Customer.find(c)
-      if !tmp_cust.nil?
-        tmp_cust.update_attribute(:privilege_ids, params[:privilege_ids])
-      end
-    end
     
+    customer.each do |cust|
+
+        params["privilege_ids"].each do |priv|
+          if !params["existing_permissions"].to_s.include?(priv)
+            @privilege = Privilege.create(privilege_name: priv, user_type_id: params["user_type_id"])
+            @privilege.save
+
+            @privilege.update_attribute(:customer_ids, cust)
+          end
+        end
+    end
+
     flash[:success] = "Success: Privileges updated"
     redirect_to '/home'
     

@@ -35,7 +35,7 @@ class CustomersController < ApplicationController
   end
   
   def new
-    #@next_id = Customer.maximum(:id).to_i.next
+    @next_id = Customer.maximum(:id).to_i.next
     @customer = Customer.new
     @type_providers = CustomerType.all
     @franchises = Franchise.all

@@ -132,7 +132,8 @@
                   user_type_name: $("#type_name2").val(),
                   customer_type_id: <%= params[:customer_type] %>,
                   <%if params["franchise_id"].present? %>franchise_id: <%= params["franchise_id"] %>,<%end%>
-                  <%if params["partner_id"].present? %>partner_id: <%= params["partner_id"] %><%end%>
+                  <%if params["partner_id"].present? %>partner_id: <%= params["partner_id"] %>,<%end%>
+                  <%if params["customer_id"].present? %>customer_id: <%= params["customer_id"] %><%end%>
               },
               function(data){
                 
