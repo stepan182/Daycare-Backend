@@ -1,0 +1,95 @@
+<br/>
+
+<div class="col-md-8 col-md-offset-2">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <table width="100%"><tr>
+  		  <td><h4>Todo Report</h4></td>
+  		  <td align="right"><a href="<%= report_search_todos_path %>" class="btn btn-default">Back</a></td>
+		  </tr></table>
+		</div>
+
+		<div class="panel-body">
+
+		<%= form_tag({action: :report_details}, method: :get) do |f| %>
+
+		<% @todos.each do |todo| %>
+        
+        <div class="col-md-3 pull-center" style="margin-left:10px;">
+	        <h4><%= todo.subject %></h4>
+			<div class="icn-button">
+			
+			<%= image_tag todo.icon.url if todo.icon? %>	
+			
+			<hr/>
+			<label>
+				<span><nobr>Report</nobr></span> &nbsp; <input type="radio" name="report_id" value="<%= todo.id %>" class="ddl" />
+            </label>
+			</div>
+			
+		</div>
+			
+
+		<%end%>
+
+		</div>
+		<br /><br />
+
+		<div class="row form-group" style="padding: 25px">
+			<div class="col-md-6">
+			<b>Schedule from Date / time</b><br/> <input type='text' class="datetimepicker form-control" id='datetimepicker' name="report_date_from" required="required" />
+			</div>
+			<div class="col-md-6">
+			<b>Schedule to Date / time</b><br /><input type='text' class="datetimepicker form-control" id='datetimepicker' name="report_date_to" required="required" />
+			</div>
+		</div>
+
+		<br class="clear" /><br/>
+          <div class="col-md-offset-5">
+              <%= submit_tag "Submit", class: "btn btn-primary" %>
+          </div>
+
+		<br/>
+	<%end%>		
+	</div>
+</div>
+
+
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("FUNCTIONALITY");
+        $('.datetimepicker').datetimepicker();
+
+        $('form').submit(function(e) {
+            if($("input[name='report_id']:checked").length == 0){
+            alert('please select atleast one Todo!');
+            return false;
+            }
+        });
+
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #bd2926;
+}
+.icn-button {
+    background-color:#FFF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    float:left;
+    box-shadow: 1px 1px 1px #EFEFEF;
+    width:160px;
+    min-height: 97px;
+    padding:10px;
+}
+.ddl{
+ -ms-transform: scale(1.5); 
+ -moz-transform: scale(1.5); 
+ -webkit-transform: scale(1.5); 
+ -o-transform: scale(1.5); 
+  padding: 5px;
+</style>

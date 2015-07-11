@@ -47,7 +47,7 @@ gem 'autoprefixer-rails'
 gem 'country_select', git: 'https://github.com/alibabajan/country_select.git'
 
 # Roo to proccess excel files
-gem 'roo'
+#gem 'roo'
 
 # Image upload
 gem 'carrierwave',             '0.10.0'

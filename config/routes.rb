@@ -39,7 +39,15 @@ Rails.application.routes.draw do
   end
   get 'functionalities' => 'functionalities#index'
   resources :allergies
-  resources :todos
+  resources :todos do
+    collection {
+      get :edit_search
+      get :edit_index
+      get :report_search
+      get :report_index
+      get :report_details
+    }
+  end
   resources :franchises
   resources :partners
 

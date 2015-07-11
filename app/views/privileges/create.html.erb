@@ -1,7 +1,7 @@
 <div class="col-md-6 col-md-offset-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-		  <h4>Apple Customer Privileges</h4>
+		  <h4>Customer Privileges</h4>
   		</div>
 
 		<div class="panel-body">
@@ -9,7 +9,7 @@
 		    <%= form_for @privilege, url: create_update_privileges_path , html: {role: "form"} do |f| %>
 		    
             <div class="form-group col-md-offset-1" style="padding-left:20px;">
-                
+            
             <div id="ck-button">
                 <label>
                     <input type="checkbox" <%= "checked" if @permissions.to_s.include?("to_do") %> name="privilege_ids[]" value="to_do" hidden="hidden"/><span><nobr>To Do</nobr></span>
@@ -27,7 +27,7 @@
                     <input type="checkbox" <%= "checked" if @permissions.to_s.include?("message") %> name="privilege_ids[]" value="message" hidden="hidden"/><span><nobr>Message</nobr></span>
                 </label>
             </div>
-            
+
             </div>
             
             <br class="clear" /><br/>
@@ -57,7 +57,7 @@
             <br class="clear" /><br/>
             
             <div class="form-group col-md-offset-1" style="padding-left:20px;">
-                
+            
             <div id="ck-button">
                 <label>
                     <input type="checkbox" <%= "checked" if @permissions.to_s.include?("calendar") %> name="privilege_ids[]" value="calendar" hidden="hidden"/><span><nobr>Calendar</nobr></span>

@@ -3,12 +3,15 @@
 <div class="col-md-8 col-md-offset-2">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-		  <h4>Add To Do's for customers</h4>
-  		</div>
+		  <table width="100%"><tr>
+        <td><h4>Todo Report</h4></td>
+        <td align="right"><a href="<%= todos_path %>" class="btn btn-default">Back</a></td>
+      </tr></table>
+  	</div>
 
 		<div class="panel-body">
 					
-		<%= form_tag({action: :create}, multipart: true) do |f| %>
+		<%= form_tag({action: :report_index}, method: :get) do |f| %>
 		  
 		      <div class="form-group">
               <%= label_tag :choose_country%>
@@ -54,89 +57,8 @@
 
           </div>
 
-          <br/>
           
-          <div id="todoTable">
-          <b>To Do</b>
-          <div class="panel-footer">
-            <table width="100%" class="form-inline m" id="todoTable">
-            <tr>
-              <td style="padding-top:10px; padding-bottom:10px; padding-left:25px;"><b>Icon</b></td>
-              <td style="padding-top:10px; padding-bottom:10px;"><input accept="image/jpeg,image/gif,image/png" id="icon" name="icon" type="file" /></td>
-              <td></td>
-              <td></td>
-            </tr>
-
-            <tr>
-            <td style="padding-left: 25px; padding-bottom:10px;"><b>Schedule Date / time</b></td> <td colspan="3" style="padding-bottom:10px;"><input type='text' class="datetimepicker" id='datetimepicker' name="complete_by" required="required" /></td>
-            </tr>
-
-            <tr>
-            <td style="padding-left:25px;"><b>Repeats</b></td>
-            <td colspan="2">
-              <select class="form-control" id="repeat" name="repeat">
-                <option value="">Never</option>
-                <option value="week">Every Week</option>
-                <option value="2week">Every 2 Weeks</option>
-                <option value="month">Every Month</option>
-                <option value="year">Every Year</option>
-              </select>
-            </td>
-            <td></td>
-            </tr>
-
-            <tr>
-            <td style="padding-left:25px;"><b>Title</b></td>
-            <td><input class="form-control c" id="subject" name="subject" required="required" style="margin-left: 0px;" type="text" value="" /></td>
-            <td></td>
-            <td><a href="javascript:void(0);" onclick="addTask(1,this)" id="lnkTasks" class="addbtn2">Add Task</a></td>
-            </tr>
-            
-            <tr>
-            <td style="padding-left:20px; padding-right:20px;">
-                <label class="switch-light well" onclick="" style="margin-top: 15px;">
-                  <input id="taskDelegatable[0]" name="taskDelegatable[0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
-                </label>
-            </td>
-            <td colspan="2"><b>Task</b> <input class="form-control c" id="task[0]" name="task[0]" required="required" type="text" /></td>
-            <td><a href="javascript:void(0);" onclick="addSubTask(0,this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td>
-            </tr>
-            
-            <tr>
-            <td style="padding-left:21px; padding-right:20px;">
-              <label class="switch-light well" onclick="" style="margin-top: 15px;">
-                  <input id="subtaskDelegatable[0][0]" name="subtaskDelegatable[0][0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
-                </label>
-            </td>
-            <td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[0][0]" name="subtask[0][0]" type="text" /></td>
-            <td><a href="javascript:void(0);" onclick="$(this).closest('tr').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>
-            </tr>
-
-            </table><br/>
-
-            <div class="bottomrow">
-              <div class="col-md-6">
-                <b>Delegatable?</b>
-              </div>
-              <div class="col-md-6 pull-right">
-                  <label class="switch-light well" onclick="">
-                    <input id="todoDelegatable" name="todoDelegatable" type="checkbox" value="1" />
-                    <span>
-                      <span>No</span>
-                      <span>Yes</span>
-                    </span>
-
-                    <a class="btn btn-success"></a>
-                  </label>
-
-              </div>
-            </div>
-
-          </div>
-          </div>
-
-            
-          <br class="clear" /><br/>
+          <br class="clear" />
           <div class="col-md-offset-5">
               <%= submit_tag "Submit", class: "btn btn-primary" %>
           </div>
@@ -150,44 +72,6 @@
 
 <!-- Scripts and styles -->
 <script>
-var ni = 0;
-var pi = 1;
-
-function addTask(taskNum,i){
-  pi = 1;
-  var index = $(i).closest('td').parent()[0].sectionRowIndex;      
-  var rowCount = $('#todoTable tr').length;
-  
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML = '<tr>'
-    +'<td style="padding-left:20px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="taskDelegatable['+ taskNum +']" name="taskDelegatable['+ taskNum +']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-    +'<td colspan="2"><b>Task</b> <input class="form-control c" id="task['+ taskNum +']" name="task['+ taskNum +']" type="text" /></td>'
-    +'<td><a href="javascript:void(0);" onclick="addSubTask('+ parseInt(taskNum) +',this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td></tr>'
-            
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)+1).innerHTML =  '<tr>'
-    +'<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable['+ taskNum +'][0]" name="subtaskDelegatable['+ taskNum +'][0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-    +'<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +'][0]" name="subtask['+ taskNum +'][0]" type="text" /></td>'
-    +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>'
-    +'</tr>'
-  
-  $("#lnkTasks").attr("onclick", "addTask("+ (parseInt(taskNum) + 1) +",this)");
-}
-
-function addSubTask(taskNum,i){
-  ni += 1;
-  pi += 1;
-  var index = $(i).closest('td').parent()[0].sectionRowIndex;
-  
-  document.getElementById("todoTable").insertRow(parseInt(index) + 1).innerHTML = '<tr>'
-            +'<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable['+ taskNum +']['+ ni +']" name="subtaskDelegatable['+ taskNum +']['+ ni +']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-            +'<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +']['+ ni +']" name="subtask['+ taskNum +']['+ ni +']" type="text" /></td>'
-            +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td></tr>'
-  $("#lnkSubTasks").attr("onclick", "addSubTask("+ parseInt(taskNum) +",this,"+ ni +")");
-}
-
-
-
-// ####### End Tasks
-
 
   function showCustomers(incl){
         partnerVal = $("#partner_name_partner_id").val();
@@ -238,8 +122,6 @@ function addSubTask(taskNum,i){
         $("#ct").show();
 
         $("#customerNames").show();
-
-        $("#todoTable").show();
         
     }
 
@@ -357,9 +239,6 @@ function addSubTask(taskNum,i){
         $("#dd").hide();
         $("#sel_franchise").hide();
         $("#sel_partner").hide();
-        $("#todoTable").hide();
-        
-        $('.datetimepicker').datetimepicker();
         
         $('#select_all_customers').change(function(){
             var checkboxes = $(this).closest('form').find('#customerNames :checkbox');
@@ -390,7 +269,7 @@ function addSubTask(taskNum,i){
 
         
         $('form').submit(function(e) {
-            if($("input[name='customer_id[]']:checked").length == 0){
+            if($("input:checked").length == 0){
             alert('please select atleast one Customer!');
             return false;
             }
@@ -428,21 +307,5 @@ function addSubTask(taskNum,i){
  -webkit-transform: scale(1.5); 
  -o-transform: scale(1.5); 
   padding: 5px;
-}
-a.addbtn2{
-  background-color: #66868e;
-  padding: 5px;
-  color: white;
-}
-.switch-light {
-  width: none; !important
-}
-.bottomrow {
-  background-color: #F5F5F5;
-  height: 30px;
-}
-.px {
-  font-size: 13px;
-  font-weight: normal;
 }
 </style>

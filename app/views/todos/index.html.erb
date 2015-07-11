@@ -1,47 +1,17 @@
 <br/>
-
-<div class="col-md-8 col-md-offset-2">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <table width="100%"><tr>
-  		  <td><h4>To Do's for customers</h4></td>
-  		  <td align="right"><a href="/todos/new" class="btn btn-primary">Add new todo</a></td>
-		  </tr></table>
-		  </div>
-
-		<div class="panel-body">
-			
-		<% @todos.each do |todo| %>
-		<br/>
-        
-        <b><%= todo.subject %></b>
-		<div class="panel-footer todo">
-			<div class="pull-right">
-				<%= link_to "delete", todo_path(id: todo.id), method: :delete, class: "btn btn-danger btn-sm", data: {confirm: "Are you sure?"}, id: "delete-btn" %>
-				
-			</div>
-			<div>Tasks: </div>
-			
-			<ul>
-				<% todo.tasks.each do |task| %>
-				<li><%= task.task %>
-					<ul>
-						<% task.subtasks.each do |subtask| %>
-						<li><%= subtask.subtask %>
-						<%end%>
-					</ul>
-				<%end%>
-			</ul>
-		
-		<br/>
-		
-		</div>
-			
-		<%end%>
-			
-		</div>
-		
-	</div>
+<h3 class="pull-center">Customer To Do</h3>
+<br/>
+<div class="col-md-6 col-centered">
+    <div class="panel padding20">
+      <div class="panel-body">
+        <div class="pull-center">
+            
+            <a href="<%= new_todo_path %>"><img src="/assets/todo-create-icon.gif" class="linksSpace" width="125"></a> 
+            <a href="<%= edit_search_todos_path %>"><img src="/assets/todo-edit-icon.gif" class="linksSpace" width="125"></a> 
+            <a href="<%= report_search_todos_path %>"><img src="/assets/todo-report-icon.gif" class="linksSpace" width="125"></a>
+        </div>
+      </div>
+    </div>
 </div>
 
 <!-- Scripts and styles -->

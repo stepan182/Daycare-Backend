@@ -35,7 +35,9 @@ class PrivilegesController < ApplicationController
     
     respond_to do |format|
       format.json do
+        
         render json: customers, :only => [:id, :customer_name]
+      
       end
     end
   end

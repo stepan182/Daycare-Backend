@@ -53,6 +53,10 @@ class DaycareDepartmentsController < ApplicationController
     
     if params["franchise_id"].present?
       departments = DaycareDepartment.where(franchise_id: params["franchise_id"])
+    elsif params["customer_id"].present? && !params["franchise_id"].present?
+      departments = Customer.find(params["customer_id"]).daycare_departments
+    elsif params["customer_type"].present? && !params["customer_id"].present? && !params["franchise_id"].present?
+      departments = Customer.find_by(customer_type_id: params["customer_type"]).daycare_departments
     end
     
     respond_to do |format|
