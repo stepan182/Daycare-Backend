@@ -1,15 +1,17 @@
 class Customer < ActiveRecord::Base
     belongs_to :customer_type
     has_many :user_types
+    has_many :users
     belongs_to :franchise
     belongs_to :partner
     has_and_belongs_to_many :daycare_departments, join_table: :customers_daycare_departments
     has_and_belongs_to_many :privileges, join_table: :customers_privileges
     has_and_belongs_to_many :todos, join_table: :customers_todos
+    has_and_belongs_to_many :titles, join_table: :customers_titiles
     
     
     validates :customer_name, presence: true
-    validates :username, presence: true, uniqueness: { case_sensitive: false }
+    #validates :username, presence: true, uniqueness: { case_sensitive: false }
     
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }

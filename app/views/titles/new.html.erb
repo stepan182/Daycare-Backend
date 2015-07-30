@@ -1,0 +1,57 @@
+<br/>
+
+<div class="col-md-6 col-md-offset-3">
+	<div class="panel panel-default">
+		<div class="panel-heading"><h4>New Title</h4></div>
+
+		<div class="panel-body">
+			
+		<%= form_for(@title) do |f| %>
+		      <div class="form-group">
+              <%= f.label :title%>
+              <%= f.text_field :title, {class: "form-control", required: "true"} %>
+              
+              <% params[:customer_id].each do |cust| %>
+                <input type="hidden" name="customer_id[]" value="<%= cust %>" />
+              <% end %>
+              
+              <% params["user_type_name"]["user_type_id"].each do |user| %>
+                <% if !user.nil? %>
+                <input type="hidden" name="user_type_name[user_type_id][]" value="<%= user %>" />
+                <% end %>
+              <% end %>
+
+              <% params["daycare_department_name"]["daycare_department_id"].each do |dept| %>
+                <% if !dept.nil? %>
+                <input type="hidden" name="daycare_department_name[daycare_department_id][]" value="<%= dept %>" />
+                <% end %>
+              <% end %>
+              
+              <input type="hidden" name="tmp_params" value="<%= params.to_query %>">
+          </div>
+
+          <br class="clear" /><br/>
+          <div class="col-md-offset-5">
+              <%= submit_tag "Create", class: "btn btn-primary" %>
+          </div>
+
+        <% end %>
+			
+		</div>
+		
+	</div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("FUNCTIONALITY");
+        
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #bd2926;
+}
+</style>

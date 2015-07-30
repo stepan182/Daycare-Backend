@@ -46,10 +46,35 @@ Rails.application.routes.draw do
       get :report_search
       get :report_index
       get :report_details
+      get :titles_search
+      resources :titles
     }
   end
   resources :franchises
   resources :partners
+
+
+####### API
+  namespace :api do
+    
+    resources :users do
+      collection {
+        get :login
+        post :update_customer_id
+        post :update_department_id
+      }
+    end
+
+    resources :customers do
+      collection {
+        get :get_departments
+        post :create_departments
+        post :send_email_to_worker
+        post :send_email_to_parent
+      }
+    end
+
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

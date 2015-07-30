@@ -38,18 +38,17 @@ Rails.application.configure do
   
   # Mailer config
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  
   config.action_mailer.delivery_method = :smtp
-  
-  config.action_mailer.smtp_settings = {
-    address: "ssl://smtp.gmail.com",
-    port: "587",
-    domain: "gmail.com",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: "",
-    password: ""
+  host = 'http://healthychildcare.net'
+  config.action_mailer.default_url_options = { host: host }
+  ActionMailer::Base.smtp_settings = {
+    :address        => 'smtp.mandrillapp.com',
+    :port           => '587',
+    :authentication => :plain,
+    :user_name      => 'mavr182@gmail.com',
+    :password       => 'LSC-yL0ARPQJb5XprU1tkw',
+    #:domain         => 'heroku.com',
+    :enable_starttls_auto => true
   }
   
 end

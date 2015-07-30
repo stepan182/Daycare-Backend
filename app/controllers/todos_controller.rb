@@ -115,6 +115,12 @@ class TodosController < ApplicationController
         @partners = Partner.all
     end
 
+    def titles_search
+        @type_providers = CustomerType.all
+        @franchises = Franchise.all
+        @partners = Partner.all
+    end
+
     def report_index
         @todos = Todo.all.joins(:customers).where(customers: {country: params["country"], customer_type_id: params["customer_type_name"]["customer_type_id"], id: params["customer_id"]}).joins(:user_types).where(user_types: {id: params["user_type_name"]["user_type_id"]}).joins(:daycare_departments).where(daycare_departments: {id: params["daycare_department_name"]["daycare_department_id"]}).distinct
     end

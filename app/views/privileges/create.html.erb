@@ -12,7 +12,13 @@
             
             <div id="ck-button">
                 <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("to_do") %> name="privilege_ids[]" value="to_do" hidden="hidden"/><span><nobr>To Do</nobr></span>
+                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("create_to_do") %> name="privilege_ids[]" value="create_to_do" hidden="hidden"/><span><nobr>Create To Do</nobr></span>
+                </label>
+            </div>
+
+            <div id="ck-button">
+                <label>
+                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("access_to_do") %> name="privilege_ids[]" value="access_to_do" hidden="hidden"/><span><nobr>Access To Do</nobr></span>
                 </label>
             </div>
             
@@ -22,18 +28,18 @@
                 </label>
             </div>
             
+            </div>
+            
+            <br class="clear" /><br/>
+            
+            <div class="form-group col-md-offset-1" style="padding-left:20px;">
+            
             <div id="ck-button">
                 <label>
                     <input type="checkbox" <%= "checked" if @permissions.to_s.include?("message") %> name="privilege_ids[]" value="message" hidden="hidden"/><span><nobr>Message</nobr></span>
                 </label>
             </div>
 
-            </div>
-            
-            <br class="clear" /><br/>
-            
-            <div class="form-group col-md-offset-1" style="padding-left:20px;">
-                
             <div id="ck-button">
                 <label>
                     <input type="checkbox" <%= "checked" if @permissions.to_s.include?("allergy") %> name="privilege_ids[]" value="allergy" hidden="hidden"/><span><nobr>Allergy</nobr></span>
@@ -46,18 +52,18 @@
                 </label>
             </div>
             
-            <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("notice_board") %> name="privilege_ids[]" value="notice_board" hidden="hidden"/><span><nobr>Notice Board</nobr></span>
-                </label>
-            </div>
-            
             </div>
             
             <br class="clear" /><br/>
             
             <div class="form-group col-md-offset-1" style="padding-left:20px;">
             
+            <div id="ck-button">
+                <label>
+                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("notice_board") %> name="privilege_ids[]" value="notice_board" hidden="hidden"/><span><nobr>Notice Board</nobr></span>
+                </label>
+            </div>
+
             <div id="ck-button">
                 <label>
                     <input type="checkbox" <%= "checked" if @permissions.to_s.include?("calendar") %> name="privilege_ids[]" value="calendar" hidden="hidden"/><span><nobr>Calendar</nobr></span>
@@ -101,7 +107,7 @@
 <style>
 
 #topbar {
-    background-color: #273480;
+    background-color: #90c43d;
 }
 
 label{

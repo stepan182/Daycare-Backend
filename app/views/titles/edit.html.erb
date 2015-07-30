@@ -1,0 +1,42 @@
+<br/>
+
+<div class="col-md-6 col-md-offset-3">
+	<div class="panel panel-default">
+		<div class="panel-heading"><h4>Edit Title</h4></div>
+
+		<div class="panel-body">
+			
+		<%= form_for(@title) do |f| %>
+		      
+          <div class="form-group">
+              <%= f.label :title%>
+              <%= f.text_field :title, {class: "form-control", required: "true"} %>
+              <input type="hidden" name="tmp_params" value="<%= params.to_query %>">
+          </div>
+          
+
+          <br class="clear" /><br/>
+          <div class="col-md-offset-5">
+              <%= submit_tag "Update", class: "btn btn-primary" %>
+          </div>
+
+        <% end %>
+			
+		</div>
+		
+	</div>
+</div>
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("FUNCTIONALITY");
+        
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #bd2926;
+}
+</style>

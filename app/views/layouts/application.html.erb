@@ -10,17 +10,29 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <nav class="navbar navbar-default maxWidth" id="topbar">
+  <nav class="navbar navbar-default maxWidth" id="topbar" style="padding-bottom: 10px;">
 		<div class="container-fluid maxWidth">
 			<div class="navbar-header maxWidth top7" id="sloganbar">
 			  <span class="white" id="slogan"><br/>AS SUPER ADMIN</span>
-			  <span class="pull-right white">
-			      <span class="glyphicon glyphicon-home" aria-hidden="true"></span> <%= link_to("Home", home_path, :class => "white")%>
-			      <span class="glyphicon glyphicon-user linksSpace" aria-hidden="true"></span> <%= link_to("Edit Profile", edit_admin_path(session[:admin_id].to_i), :class => "white") %> 
-			      <span class="glyphicon glyphicon-log-out linksSpace" aria-hidden="true"></span> <%= link_to("Log out", logout_path, :class => "white")%>
-			   </span>
+			  
+        
+        <span class="pull-right white">
+          <a href="#" id="hamburger" class="pull-right white" data-toggle="collapse" data-target="#menu"><img src="/assets/threelines.png" width="40" height="25" style="margin-bottom: 10px;" /></a>
+
+          <br class="clear" />
+        <div id="menu">
+        
+			      <%= link_to("Home", home_path, :class => "white")%> | 
+			      <%= link_to("Edit Profile", edit_admin_path(session[:admin_id].to_i), :class => "white") %> | 
+			      <%= link_to("Log out", logout_path, :class => "white")%>
+			  
+         </div>
+        </span>
+
 			</div>
 		</div>
+
+
   </nav>
 	
 
@@ -36,6 +48,17 @@
     </div>
     
 </div>
+
+<script>
+$(function(){
+    $("#menu").hide();
+    $("#hamburger").on("click", function(){
+
+      $("#menu").toggle();
+
+    });
+});
+</script>
 
 </body>
 </html>
