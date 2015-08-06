@@ -25,6 +25,36 @@ class Api::CustomersController < Api::ApiController
 	    end
 	end
 
+	def create_user_type
+		
+		if params["user_type_name"].present? && params[:customer_id].present?
+
+			tmp_user = UserType.find_by(user_type_name: params["user_type_name"], customer_id: params["customer_id"])
+			
+			if !tmp_user
+				user_type = UserType.create(user_type_name: params["user_type_name"], customer_type_id: params["customer_type_id"], customer_id: params["customer_id"])
+				
+			  if user_type.save
+	          	render status: 200, json: {
+		        message: "Successfully created usertype.",
+		        user_type: user_type
+		        }.to_json
+		      else
+		        render status: 422, json: {
+		          errors: user_type.errors
+		        }.to_json
+		      end
+		  else
+		  	render status: 200, json: {
+		        message: "Successfully fetched usertype.",
+		        user_type: tmp_user
+		        }.to_json
+	  	  end
+
+		end
+		
+	end
+
 	def get_departments
 		if params["customer_id"].present?
 		  render json: Customer.find(params["customer_id"]).daycare_departments, :only => [:id, :department_name]

@@ -71,8 +71,21 @@ Rails.application.routes.draw do
         post :create_departments
         post :send_email_to_worker
         post :send_email_to_parent
+        post :create_user_type
       }
     end
+
+    resources :todos do
+      collection {
+        post :post_subtask_compliance
+        get :get_subtask_compliance
+        post :post_task_compliance
+        get :get_task_compliance
+        post :delegate_todo
+      }
+    end
+
+    resources :privileges
 
   end
 
