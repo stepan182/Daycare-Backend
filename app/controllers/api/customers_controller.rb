@@ -98,6 +98,10 @@ class Api::CustomersController < Api::ApiController
 		end
 	end
 
+	def get_user_types
+		render json: UserType.where(customer_id: params["customer_id"], customer_type_id: 1)
+	end
+
 
 	private
 

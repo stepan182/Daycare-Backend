@@ -72,6 +72,7 @@ Rails.application.routes.draw do
         post :send_email_to_worker
         post :send_email_to_parent
         post :create_user_type
+        get :get_user_types
       }
     end
 
@@ -82,6 +83,13 @@ Rails.application.routes.draw do
         post :post_task_compliance
         get :get_task_compliance
         post :delegate_todo
+        get :get_titles
+        post :complete_todo
+        post :delete_todo
+        get :get_active_departments
+        get :get_active_user_types
+        post :update_todo
+        get :report_details
       }
     end
 
