@@ -1,0 +1,114 @@
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<br/>
+
+<div class="col-md-10 col-centered">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <table width="100%"><tr>
+  		  <td><h4><%= @todo.subject%> Report from <%= params["report_date_from"] %> to <%= params["report_date_to"] %></h4></td>
+  		  <td align="right"><a href="javascript:history.back();" class="btn btn-default">Back</a></td>
+		  </tr></table>
+		</div>
+
+		<div class="panel-body">
+
+			<% @tasks.each do |task| %>
+			<div class="row">
+				<div class="col-md-6">
+					<% 
+					if @complainces[task.id].count > 0 && @required_complainces.count > 0
+						compl_rate = ((@complainces[task.id].count.to_f / @required_complainces.count.to_f) * 100.to_f).round
+					else
+						compl_rate = 0
+					end
+					none_compl_rate = (100.to_f - compl_rate).round
+					%>
+
+					<h4><%= task.task %></h4>
+					
+					<span>Complaince rate <span style="color:#3dc106"><%= compl_rate %>%</span>, None-complaince rate <span style="color:#dd5c4d"><%= none_compl_rate %>%</span></span>
+					<div style="width:90%;">
+						<div style="float:left; width:<%= none_compl_rate %>%; color: white; background-color:#dd5c4d; text-align:center"><%= none_compl_rate %>%</div>
+						<div style="float:left; width:<%= compl_rate %>%; color: white; background-color:#3dc106; text-align:center"><%= compl_rate %>%</div>
+					</div>
+
+					<br class="clear" /><br />
+						<% task.subtasks.each do |subtask| %>
+						<% 
+						if @subtask_complainces[subtask.id].count > 0 && @required_complainces.count > 0
+							sub_compl_rate = ((@subtask_complainces[subtask.id].count.to_f / @required_complainces.count.to_f) * 100.to_f).round 
+						else
+							sub_compl_rate = 0
+						end
+						sub_none_compl_rate = (100.to_f - sub_compl_rate).round
+						%>
+							<p><%= subtask.subtask %>
+							<div style="width:90%;">
+								<div style="float:left; width:<%= sub_none_compl_rate %>%; color: white; background-color:#dd5c4d; text-align:center"><%= sub_none_compl_rate %>%</div>
+								<div style="float:left; width:<%= sub_compl_rate %>%; color: white; background-color:#3dc106; text-align:center"><%= sub_compl_rate %>%</div>
+							</div>
+							</p><br class="clear" /><br />
+						<% end %>
+				</div>
+
+				<div class="col-md-6 pull-right">
+					<div id="piechart<%= task.id %>" style="width: 100%; height: 300px;"></div>
+				</div>
+			</div>
+
+			<script type="text/javascript">
+		      google.load("visualization", "1", {packages:["corechart"]});
+		      google.setOnLoadCallback(drawChart);
+		      function drawChart() {
+
+		        var data = google.visualization.arrayToDataTable([
+		          ['Task', ''],
+		          ['Complaince', <%= compl_rate %>],
+		          ['None-Complaince', <%= none_compl_rate %>]
+		        ]);
+
+		        var options = {
+		          title: 'Task complaince rate',
+		          colors:['#3dc106','#dd5c4d'],
+		          legend: {position: 'bottom'},
+		          pieSliceText: 'value'+'%'
+		        };
+
+		        var chart = new google.visualization.PieChart(document.getElementById('piechart<%= task.id %>'));
+
+		        chart.draw(data, options);
+		      }
+			</script>
+
+			<hr />
+			<% end %>
+		
+		</div>
+
+	</div>
+</div>
+
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("FUNCTIONALITY");
+        $("svg").addClass("reposition");
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #1f80b7;
+}
+.icn-button {
+    background-color:#FFF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    float:left;
+    box-shadow: 1px 1px 1px #EFEFEF;
+    width:160px;
+    min-height: 97px;
+    padding:10px;
+}
+</style>

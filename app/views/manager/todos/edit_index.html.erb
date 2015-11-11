@@ -1,0 +1,84 @@
+<br/>
+
+<div class="col-md-8 col-md-offset-2">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		  <table width="100%"><tr>
+        	<td><h4>Edit Todo</h4></td>
+        <td align="right"><a href="javascript:history.back();" class="btn btn-default">Back</a></td>
+      </tr></table>
+		</div>
+
+		<div class="panel-body">
+			
+		<% @todos.each do |todo| %>
+        
+        <div class="col-md-3" style="margin-left:10px;">
+	        <h4><%= todo.subject %></h4>
+			<div class="icn-button">
+			<%= image_tag todo.icon.url if todo.icon? %>	
+			<br/>
+			</div>
+			<div class="icn-button2">
+				<div class="col-md-6" style="border-right:1px solid #D0D0D0;">
+				<%= link_to "Edit", edit_manager_todo_path(id: todo.id), class: "", id: "delete-btn" %>
+				</div>
+				<div class="col-md-6">
+				<%= link_to "Delete", manager_todo_path(id: todo.id), method: :delete, class: "red", data: {confirm: "Are you sure you want to delete?"}, id: "delete-btn" %>
+				</div>
+			</div>
+
+		</div>
+			
+
+		<%end%>
+			
+		</div>
+		
+	</div>
+</div>
+
+
+
+<!-- Scripts and styles -->
+<script>
+    $(function(){
+        $("#slogan").html("TODO");
+        
+    })
+</script>
+
+<style>
+#topbar {
+    background-color: #1f80b7;
+}
+.icn-button {
+    background-color:#FFF;
+    border-top-left-radius:4px;
+    border-top-right-radius:4px;
+    border-top:1px solid #D0D0D0;
+    border-right:1px solid #D0D0D0;
+    border-left:1px solid #D0D0D0;
+    float:left;
+    box-shadow: 1px 1px 1px #EFEFEF;
+    width:160px;
+    min-height: 97px;
+    padding:10px;
+}
+.icn-button2 {
+    background-color:#FFF;
+    border-bottom-left-radius:4px;
+    border-bottom-right-radius:4px;
+    border-top:1px solid #D0D0D0;
+    border-bottom:1px solid #D0D0D0;
+    border-right:1px solid #D0D0D0;
+    border-left:1px solid #D0D0D0;
+    float:left;
+    box-shadow: 1px 1px 1px #EFEFEF;
+    width:160px;
+    padding:10px;
+}
+.red {
+	color: red;
+}
+</style>

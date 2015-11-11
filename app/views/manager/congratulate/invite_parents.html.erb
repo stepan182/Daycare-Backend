@@ -1,0 +1,56 @@
+<br/>
+<div class="col-md-8 col-centered">
+<p align="center">
+  <h3 align="center">Invite to this application Daycare Parents.</h3>
+</p>
+
+<br><br>
+
+  <%= form_tag({action: :invite_parents2}) do |f| %>
+
+  <div class="form-group">
+              <label for="txtSubjects" class="control-label">Daycare parent email:</label>
+              <a id="lnkDepts" href="#" class="pull-right" onclick="addDeptRow(0);">Add More +</a>
+              <table class="table">
+                    <tbody id="depts-tbl">
+                        <tr>
+                          <td><input class="form-control" id="parent_email[0]" name="parent_email[0]" type="text" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+          </div>
+  
+  <div class="pull-center">
+    <%= submit_tag "Send Invitation", class: "btn btn-primary" %>
+  </div>
+
+  <% end %>
+
+</div>
+<!-- Scripts and styles -->
+<script>
+
+    // doc ready
+    $(function(){
+        $("#slogan").html("CONGRATULATIONS");
+
+        
+    });
+
+    function addDeptRow(num){
+            inum = parseInt(num)+1;
+            $("#depts-tbl").append('<tr>'
+                        +'<td><input class="form-control" id="parent_email['+ inum +']" name="parent_email['+ inum +']" type="text" /></td>'
+                        +'</tr>');
+                        
+            $("#lnkDepts").attr("onclick", "addDeptRow("+ inum +")");
+        }
+
+</script>
+
+<style>
+.btn-primary {
+  background-color: #f05c51;
+  border-color: #f05c51;
+}
+</style>

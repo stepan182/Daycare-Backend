@@ -1,5 +1,5 @@
 class DaycareDepartmentsController < ApplicationController
-  before_action :authorize
+  before_action :authorize, :except => [:get_departments]
   protect_from_forgery :except => [:update, :delete, :create, :update, :get_departments]
   respond_to :html, :js, :json
   
