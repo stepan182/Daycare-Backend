@@ -1,53 +1,55 @@
 <br/>
 
 <div class="col-md-8 col-md-offset-2">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <table width="100%"><tr>
-  		  <td><h4>Todo Titles</h4></td>
-  		  <td align="right"><a href="/todos/titles/new?<%= params.to_query %>" class="btn btn-primary">Add new title</a></td>
-		  </tr></table>
-		  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <table width="100%">
+        <tr>
+          <td><h4>Todo Titles</h4></td>
+          <td align="right"><a href="/todos/titles/new?<%= params.to_query %>" class="btn btn-primary">Add new title</a></td>
+        </tr>
+      </table>
+    </div>
 
-		<div class="panel-body">
-			
-		<table class="table table-striped" id="tbltitles">
-            <thead>
-              <tr>
-                <th>Title</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% @titles.each do |title| %>
-              <tr id="<%=title.id%>">
-              	<td><%= title.title %>
+    <div class="panel-body">
+
+      <table class="table table-striped" id="tbltitles">
+        <thead>
+        <tr>
+          <th>Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @titles.each do |title| %>
+            <tr id="<%= title.id %>">
+              <td><%= title.title %>
 
                 <div class="pull-right">
-                    <%= link_to("delete", title_path(id: title.id, tmp_params: params.to_query), method: :delete, class: "", data: {confirm: "Are you sure?"}) %> | 
-                    <a href="/todos/titles/<%= title.id %>/edit?<%= params.to_query %>">edit</a>
+                  <%= link_to("delete", title_path(id: title.id, tmp_params: params.to_query), method: :delete, class: "", data: {confirm: "Are you sure?"}) %> |
+                  <a href="/todos/titles/<%= title.id %>/edit?<%= params.to_query %>">edit</a>
                 </div>
-                
-                </td>
-              </tr>
-            <%end%>
-            </tbody>
-        </table>
-			
-		</div>
-		
-	</div>
+
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
-    $(function(){
+    $(function () {
         $("#slogan").html("FUNCTIONALITY");
-        
+
     })
 </script>
 
 <style>
-#topbar {
-    background-color: #1f80b7;
-}
+    #topbar {
+        background-color: #1f80b7;
+    }
 </style>

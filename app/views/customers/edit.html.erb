@@ -1,220 +1,225 @@
 <br/>
 <% if @customer.errors.any? %>
-  <div id="error_explanation" class="col-md-6 col-md-offset-3">
-    <div class="alert alert-danger">
-      The form contains <%= pluralize(@customer.errors.count, "error") %>.
+    <div id="error_explanation" class="col-md-6 col-md-offset-3">
+      <div class="alert alert-danger">
+        The form contains <%= pluralize(@customer.errors.count, "error") %>.
+      </div>
+      <ul class="red">
+        <% @customer.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
-    <ul class="red">
-    <% @customer.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
 <% end %>
 
 <div class="col-md-6 col-md-offset-3">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <h4>Edit Customer</h4>
-  		</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Edit Customer</h4>
+    </div>
 
-		<div class="panel-body">
-					
-		<%= form_for @customer, html: {role: "form"} do |f| %>
-		  <div class="form-group">
-              <%= f.label :customer_name%>
-              <%= f.text_field :customer_name, {class: "form-control", required: "true"} %>
-          </div>
-          
+    <div class="panel-body">
+
+      <%= form_for @customer, html: {role: "form"} do |f| %>
           <div class="form-group">
-              <%= f.label :username%>
-              <%= f.text_field :username, {class: "form-control", required: "true"} %>
-          </div>
-          
-          
-          <div class="form-group">
-              <%= f.label :email%>
-              <%= f.text_field :email, {class: "form-control", required: "true"} %>
+            <%= f.label :customer_name %>
+            <%= f.text_field :customer_name, {class: "form-control", required: "true"} %>
           </div>
 
           <div class="form-group">
-              <%= f.label :address%>
-              <%= f.text_area :address, {class: "form-control"} %>
+            <%= f.label :username %>
+            <%= f.text_field :username, {class: "form-control", required: "true"} %>
           </div>
-          
+
+
           <div class="form-group">
-              <%= f.label :country%>
-              <%= f.country_select :country, ["#{@customer.country}"], {}, { :class => "form-control" } %>
+            <%= f.label :email %>
+            <%= f.text_field :email, {class: "form-control", required: "true"} %>
           </div>
-          
+
+          <div class="form-group">
+            <%= f.label :address %>
+            <%= f.text_area :address, {class: "form-control"} %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :country %>
+            <%= f.country_select :country, ["#{@customer.country}"], {}, {:class => "form-control"} %>
+          </div>
+
           <div class="form-group" id="sel_franchise">
-              <%= f.label :choose_franchise %>
-              <%= f.collection_select(:franchise_id, @franchises, :id, :franchise_name, {include_blank: true}, {class: 'form-control fr', onchange: 'showUserTypes("doUpdate")'}) %>
+            <%= f.label :choose_franchise %>
+            <%= f.collection_select(:franchise_id, @franchises, :id, :franchise_name, {include_blank: true}, {class: 'form-control fr', onchange: 'showUserTypes("doUpdate")'}) %>
           </div>
 
           <div class="form-group" id="sel_partner">
-              <%= f.label :choose_partner %>
-              <%= f.collection_select(:partner_id, @partners, :id, :partner_name, {include_blank: true}, {class: 'form-control pr', onchange: 'showUserTypes("doUpdate")'}) %>
+            <%= f.label :choose_partner %>
+            <%= f.collection_select(:partner_id, @partners, :id, :partner_name, {include_blank: true}, {class: 'form-control pr', onchange: 'showUserTypes("doUpdate")'}) %>
           </div>
 
           <div class="form-group" id="sel_daycare_user_type">
-              <a data-toggle="modal" id="idit_user_types" href="/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=1" class="pull-right" data-target="#userTypeModal22" data-cache="false">edit user types</a>
-              <%= f.label :user_type %>
-              <%= f.select(:user_type_id, "<option></option>".html_safe, {}, {multiple: false, class: 'form-control ut'}) %>
+            <a data-toggle="modal" id="idit_user_types" href="/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=1" class="pull-right" data-target="#userTypeModal22" data-cache="false">edit
+              user types</a>
+            <%= f.label :user_type %>
+            <%= f.select(:user_type_id, "<option></option>".html_safe, {}, {multiple: false, class: 'form-control ut'}) %>
           </div>
-          
+
           <div class="form-group" id="sel_daycare_department">
-              <a data-toggle="modal" id="idit_departments" href="/daycare_departments?g=<%= rand(36**8).to_s(36) %>" class="pull-right" data-target="#departmentModal22">edit departments</a>
-              <%= f.label :department%><br/>
-              <%= f.collection_select(:daycare_department_ids, @customer_dept, :id, :department_name, {}, {multiple: true, class: 'form-control dd', size: '10'}) %>
+            <a data-toggle="modal" id="idit_departments" href="/daycare_departments?g=<%= rand(36**8).to_s(36) %>" class="pull-right" data-target="#departmentModal22">edit departments</a>
+            <%= f.label :department %><br/>
+            <%= f.collection_select(:daycare_department_ids, @customer_dept, :id, :department_name, {}, {multiple: true, class: 'form-control dd', size: '10'}) %>
 
           </div>
-          
+
           <br/><br/>
+
           <div class="col-md-offset-5">
-              <%= f.submit "Update", class: "btn btn-primary" %>
+            <%= f.submit "Update", class: "btn btn-primary" %>
           </div>
-        <% end %>
-					
-		</div>
-		
+      <% end %>
+
+    </div>
+
     <br/>
 
-	</div>
+  </div>
 </div>
 
 <!-- Customer Type Modal -->
-<div class="modal fade" id="customerTypeModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
-    <div class="modal-dialog">  
-        <div class="modal-content"></div>  
-    </div>  
-</div>  
+<div class="modal fade" id="customerTypeModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
 
 <!-- User Type Modal -->
-<div class="modal fade" id="userTypeModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true" data-cache="false">  
-    <div class="modal-dialog">  
-        <div class="modal-content"></div>  
-    </div>  
-</div> 
+<div class="modal fade" id="userTypeModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true" data-cache="false">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
 
 <!-- Customer Type Modal -->
-<div class="modal fade" id="departmentModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
-    <div class="modal-dialog">  
-        <div class="modal-content"></div>  
-    </div>  
+<div class="modal fade" id="departmentModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
 
-$(function(){
+    $(function () {
 
         // Add slogan
         $("#slogan").html("ADD CUSTOMERS");
 
         //fix modal
-        $(document).on("hidden.bs.modal", ".modal", function (e) { if (!$(e.target).is(".local-modal")) { $(e.target).removeData("bs.modal").find(".modal-content").empty(); } });
+        $(document).on("hidden.bs.modal", ".modal", function (e) {
+            if (!$(e.target).is(".local-modal")) {
+                $(e.target).removeData("bs.modal").find(".modal-content").empty();
+            }
+        });
 
         showUserTypes();
-        
 
-        
-});
 
-function showUserTypes(doUpdate){
-  if (doUpdate) {
-    franchiseVal = $(".fr").val();
-    partnerVal = $(".pr").val();
-  }
-  else{
-    partnerVal = "<%= @customer.partner_id %>";
-    franchiseVal = "<%= @customer.franchise_id %>";
-  }
+    });
+
+    function showUserTypes(doUpdate) {
+        if (doUpdate) {
+            franchiseVal = $(".fr").val();
+            partnerVal = $(".pr").val();
+        }
+        else {
+            partnerVal = "<%= @customer.partner_id %>";
+            franchiseVal = "<%= @customer.franchise_id %>";
+        }
 
         // single
         <% if @customer.customer_type_id == 1 %>
-          $("#sel_franchise").hide();
-          $("#sel_partner").hide();
-          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&customer_id=<%=@customer.id%>");
-          $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_id=<%=@customer.id%>");
-          partnerVal = "";
-          franchiseVal = "";
+        $("#sel_franchise").hide();
+        $("#sel_partner").hide();
+        $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&customer_id=<%=@customer.id%>");
+        $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_id=<%=@customer.id%>");
+        partnerVal = "";
+        franchiseVal = "";
 
-          getUserTypes();
+        getUserTypes();
 
         // franchise
         <% elsif @customer.customer_type_id == 2 %>
-          $("#sel_franchise").show();
-          $("#sel_partner").hide();
-          getUserDepartments();
-          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&franchise_id="+ franchiseVal);
-          $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&franchise_id="+ franchiseVal);
-          partnerVal = "";
+        $("#sel_franchise").show();
+        $("#sel_partner").hide();
+        getUserDepartments();
+        $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&franchise_id=" + franchiseVal);
+        $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&franchise_id=" + franchiseVal);
+        partnerVal = "";
 
-          getUserTypes();
+        getUserTypes();
 
         // partner
         <% elsif @customer.customer_type_id == 3 %>
-          $("#sel_franchise").hide();
-          $("#sel_partner").show();
-          $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&partner_id="+ partnerVal);
-          $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_id=<%=@customer.id%>");
-          franchiseVal = "";
+        $("#sel_franchise").hide();
+        $("#sel_partner").show();
+        $("#idit_user_types").attr("href", "/user_types?g=<%= rand(36**8).to_s(36) %>&customer_type=<%= @customer.customer_type_id %>&partner_id=" + partnerVal);
+        $("#idit_departments").attr("href", "/daycare_departments?g=<%= rand(36**8).to_s(36) %>&customer_id=<%=@customer.id%>");
+        franchiseVal = "";
 
-          getUserTypes();
+        getUserTypes();
 
         <% end %>
-}
+    }
 
-function getUserTypes(){
+    function getUserTypes() {
         $.post("/user_types/get_user_types",
-            {
-                customer_type: <%= @customer.customer_type_id %>,
-                partner_id: partnerVal,
-                <% if @customer.customer_type_id == 1 %>customer_id: <%=@customer.id%>,<%end%>
-                franchise_id: franchiseVal
-            },
-            
-            function(data){
-                
-                $(".ut").empty();
-                
-                $.each(data, function(i, item) {
-                  if (item.id == "<%=@customer.user_type_id%>"){
-                    $(".ut").append('<option value="'+ item.id +'" selected>'+ item.user_type_name +'</option>');
-                  }
-                  else {
-                    $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
-                  }
-                });
-                
-                  
-            } , "json");
-}
+                {
+                    customer_type: <%= @customer.customer_type_id %>,
+                    partner_id: partnerVal,
+                    <% if @customer.customer_type_id == 1 %>customer_id: <%=@customer.id%>, <%end%>
+                    franchise_id: franchiseVal
+                },
 
-function getUserDepartments(){
+                function (data) {
+
+                    $(".ut").empty();
+
+                    $.each(data, function (i, item) {
+                        if (item.id == "<%=@customer.user_type_id%>") {
+                            $(".ut").append('<option value="' + item.id + '" selected>' + item.user_type_name + '</option>');
+                        }
+                        else {
+                            $(".ut").append('<option value="' + item.id + '">' + item.user_type_name + '</option>');
+                        }
+                    });
+
+
+                }, "json");
+    }
+
+    function getUserDepartments() {
 
         $.post("/daycare_departments/get_departments",
-            {
-              franchise_id: franchiseVal
-            },
-            
-            function(data){
-                
-                $(".dd").empty();
-                
-                $.each(data, function(i, item) {
-                    $(".dd").append('<option value="'+ item.id +'" selected>'+ item.department_name +'</option>');
-                });
-                
-                  
-            } , "json");
-}
+                {
+                    franchise_id: franchiseVal
+                },
+
+                function (data) {
+
+                    $(".dd").empty();
+
+                    $.each(data, function (i, item) {
+                        $(".dd").append('<option value="' + item.id + '" selected>' + item.department_name + '</option>');
+                    });
+
+
+                }, "json");
+    }
 
 </script>
 
 <style>
-#topbar {
-    background-color: #ef5b50;
-}
+    #topbar {
+        background-color: #ef5b50;
+    }
 </style>

@@ -1,20 +1,23 @@
 <br/>
 <div class="col-md-8 col-centered">
-<p align="center">
+  <p align="center">
+
   <h3 align="center">You have now created your profile.</h3>
-</p>
-
-<br><br>
-
-<p align="center">
-  <h3 align="center">Invite Daycare Workers and Parents to this App for START BENEFITING for this immidiately?</h3>
-
-</p>
+  </p>
 
   <br><br>
-  
+
+  <p align="center">
+
+  <h3 align="center">Invite Daycare Workers and Parents to this App for START BENEFITING for this immidiately?</h3>
+
+  </p>
+
+  <br><br>
+
   <div class="pull-center">
-    <button id="btnYes" type="button" class="btn btn-success">Yes</button> <button id="btnNo" type="button" class="btn btn-primary">No</button>
+    <button id="btnYes" type="button" class="btn btn-success">Yes</button>
+    <button id="btnNo" type="button" class="btn btn-primary">No</button>
   </div>
 
 </div>
@@ -22,56 +25,57 @@
 <script>
 
     // doc ready
-    $(function(){
+    $(function () {
         $("#slogan").html("CONGRATULATIONS");
 
-        $("#btnNo").on("click", function(){
-          location.href = '/manager/login';
+        $("#btnNo").on("click", function () {
+            location.href = '/manager/login';
         });
 
-        $("#btnYes").on("click", function(){
-          location.href = '/manager/invite_workers';
+        $("#btnYes").on("click", function () {
+            location.href = '/manager/invite_workers';
         });
-        
+
     });
 
 </script>
 
 <style>
-.btn-primary {
-  background-color: #f05c51;
-  border-color: #f05c51;
-  margin-left: 20px;
-  display: inline-block;
-  margin-bottom: 0px;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 12px 24px;
-  font-size: 14px;
-  line-height: 1.42857;
-  border-radius: 0px;
-  -moz-user-select: none;
-}
-.btn-success {
-  background-color: ##ff96c1;
-  display: inline-block;
-  margin-bottom: 0px;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 12px 24px;
-  font-size: 14px;
-  line-height: 1.42857;
-  border-radius: 0px;
-  -moz-user-select: none;
-}
+    .btn-primary {
+        background-color: #f05c51;
+        border-color: #f05c51;
+        margin-left: 20px;
+        display: inline-block;
+        margin-bottom: 0px;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 12px 24px;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-radius: 0px;
+        -moz-user-select: none;
+    }
+
+    .btn-success {
+        background-color: # #ff96c1;
+        display: inline-block;
+        margin-bottom: 0px;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 12px 24px;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-radius: 0px;
+        -moz-user-select: none;
+    }
 </style>

@@ -1,53 +1,54 @@
 <h1 class="pull-center white headerMargin"><span class="nonBold">Choose who you are</span></h1>
 
 <div class="col-md-10 col-centered">
-    
-    <div class="col-md-5 panel panel-default padding20 pull-center" style="margin-left:40px">
-      <div class="panel-body">
-        <div class="col-centered">
 
-          <h3>Super Admin</h3>
-          <img src="/assets/super-admin.png" class="img-responsive col-centered">
-          <br />
-          <button id="adminBtn" type="submit" class="btn btn-success" style="width: 100%">Login as Super Admin</button>     
+  <div class="col-md-5 panel panel-default padding20 pull-center" style="margin-left:40px">
+    <div class="panel-body">
+      <div class="col-centered">
 
-        </div>
+        <h3>Super Admin</h3>
+        <img src="/assets/super-admin.png" class="img-responsive col-centered">
+        <br/>
+        <button id="adminBtn" type="submit" class="btn btn-success" style="width: 100%">Login as Super Admin</button>
+
       </div>
     </div>
+  </div>
 
-    <div class="col-md-5 panel panel-default padding20" style="margin-left:40px">
-      <div class="panel-body">
-        <div class="pull-center">
+  <div class="col-md-5 panel panel-default padding20" style="margin-left:40px">
+    <div class="panel-body">
+      <div class="pull-center">
 
-          <h3 class="gH">Daycare Manager</h3>
-          <img src="/assets/daycare-manager.png" class="img-responsive col-centered">
-          <br />
-          <button id="managerBtn" type="submit" class="btn btn-success" style="width: 100%">Login as Daycare Manager</button>
+        <h3 class="gH">Daycare Manager</h3>
+        <img src="/assets/daycare-manager.png" class="img-responsive col-centered">
+        <br/>
+        <button id="managerBtn" type="submit" class="btn btn-success" style="width: 100%">Login as Daycare Manager</button>
 
-        </div>
       </div>
     </div>
+  </div>
 
 </div>
 
 <!-- Scripts and styles -->
 <script>
-$(function(){
-    $("#topbar").hide();
-    $("#adminBtn").on("click", function(){
-      location.href = '/login';
+    $(function () {
+        $("#topbar").hide();
+        $("#adminBtn").on("click", function () {
+            location.href = '/login';
+        });
+        $("#managerBtn").on("click", function () {
+            location.href = '/manager/login';
+        });
     });
-    $("#managerBtn").on("click", function(){
-      location.href = '/manager/login';
-    });
-});
 </script>
 <style>
-body {
-    background-color: #ea5b0c;
-    background-image: url('/assets/main-background.gif');
-}
-.gH {
-  color: #ef5c51;
-}
+    body {
+        background-color: #ea5b0c;
+        background-image: url('/assets/main-background.gif');
+    }
+
+    .gH {
+        color: #ef5c51;
+    }
 </style>

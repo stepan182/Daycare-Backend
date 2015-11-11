@@ -1,93 +1,99 @@
 <h1 class="pull-center white headerMargin">Daycare <span class="nonBold">Manager Panel</span></h1>
 
 <div class="col-md-5 col-centered">
-    <div class="panel panel-default padding20">
-      <div class="panel-body">
-        <div class="pull-center">
-            <img src="/assets/Daycare-logo.gif" class="img-responsive">
-            <br/><br/>
-            
-            <form method="post" action="/manager/login">
-                <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-                <div class="form-group">
-                  <input type="text" placeholder="Username" id="txtUserName" name="txtUserName" class="form-control" required>
-                </div>
-                <div class="form-group">
-                  <input type="password" placeholder="Password" id="txtPassword" name="txtPassword" class="form-control" required>
-                </div>
-                
-                <button type="submit" class="btn btn-success btn-green" style="width: 100%">LOG IN</button>
-              </form>
+  <div class="panel panel-default padding20">
+    <div class="panel-body">
+      <div class="pull-center">
+        <img src="/assets/Daycare-logo.gif" class="img-responsive">
+        <br/><br/>
 
+        <form method="post" action="/manager/login">
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"/>
+
+          <div class="form-group">
+            <input type="text" placeholder="Username" id="txtUserName" name="txtUserName" class="form-control" required>
           </div>
+          <div class="form-group">
+            <input type="password" placeholder="Password" id="txtPassword" name="txtPassword" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-success btn-green" style="width: 100%">LOG IN</button>
+        </form>
+
       </div>
     </div>
+  </div>
 
   <div class="pull-center">
-    <table width="100%"><tr>
-      <td><a href="/manager/register/new" class="rbtn" style="color:white;">Register<a></td>
-      <td><a href="#" data-toggle="modal" data-target="#passwordModal" style="color:white;">Forgot Password?</a></td>
-      </tr></table>
+    <table width="100%">
+      <tr>
+        <td><a href="/manager/register/new" class="rbtn" style="color:white;">Register<a></td>
+        <td><a href="#" data-toggle="modal" data-target="#passwordModal" style="color:white;">Forgot Password?</a></td>
+      </tr>
+    </table>
   </div>
-  <br /><br />
+  <br/><br/>
 
 </div>
 
 
 <!-- Forgot Password Modal -->
 <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form accept-charset="UTF-8" action="/manager/forgot_password" method="post" role="form">
-              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title">Forgot password</h4>
-            
-            </div>
-            <div class="modal-body">
-                
-            		  <div class="form-group">
-                          <label for="email">Your email</label>
-                          <input class="form-control" id="email" name="email" type="text" />
-                      </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input class="btn btn-primary pull-right" name="commit" type="submit" value="Submit" />
-            </div>
-            
-</form>        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form accept-charset="UTF-8" action="/manager/forgot_password" method="post" role="form">
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>"/>
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Forgot password</h4>
+
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="email">Your email</label>
+            <input class="form-control" id="email" name="email" type="text"/>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input class="btn btn-primary pull-right" name="commit" type="submit" value="Submit"/>
+        </div>
+
+      </form>
     </div>
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
-$(function(){
-    $("#topbar").hide();
-});
+    $(function () {
+        $("#topbar").hide();
+    });
 </script>
 <style>
-body {
-    background-color: #ea5b0c;
-    background-image: url('/assets/main-background.gif');   
-}
-.rbtn {
-  color: #FFF;
-  background-color: rgba(0,0,0,0.3);
-  display: inline-block;
-  margin-bottom: 0px;
-  font-weight: normal;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  padding: 10px 30px;
-  font-size: 14px;
-  line-height: 1.42857;
-  border-radius: 4px;
-  -moz-user-select: none;
-}
+    body {
+        background-color: #ea5b0c;
+        background-image: url('/assets/main-background.gif');
+    }
+
+    .rbtn {
+        color: #FFF;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: inline-block;
+        margin-bottom: 0px;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 10px 30px;
+        font-size: 14px;
+        line-height: 1.42857;
+        border-radius: 4px;
+        -moz-user-select: none;
+    }
 </style>

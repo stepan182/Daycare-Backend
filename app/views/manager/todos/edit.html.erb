@@ -1,112 +1,139 @@
 <br/>
 <% if @todo.errors.any? %>
-  <div id="error_explanation" class="col-md-6 col-md-offset-3">
-    <div class="alert alert-danger">
-      The form contains <%= pluralize(@todo.errors.count, "error") %>.
+    <div id="error_explanation" class="col-md-6 col-md-offset-3">
+      <div class="alert alert-danger">
+        The form contains <%= pluralize(@todo.errors.count, "error") %>.
+      </div>
+      <ul class="red">
+        <% @todo.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
-    <ul class="red">
-    <% @todo.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
 <% end %>
 
 <div class="col-md-10 col-centered">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <table width="100%"><tr>
-        <td><h4>Edit <%=@todo.subject%></h4></td>
-        <td align="right"><a href="javascript:history.back();" class="btn btn-default">Back</a></td>
-      </tr></table>
-      </div>
+      <table width="100%">
+        <tr>
+          <td><h4>Edit <%= @todo.subject %></h4></td>
+          <td align="right"><a href="javascript:history.back();" class="btn btn-default">Back</a></td>
+        </tr>
+      </table>
+    </div>
 
     <div class="panel-body">
-          
-    <%= form_for(@todo, url: manager_todo_path(@todo), html: { multipart: true }) do |f| %>
-      
+
+      <%= form_for(@todo, url: manager_todo_path(@todo), html: {multipart: true}) do |f| %>
+
           <b>To Do</b>
+
           <div class="panel-footer">
             <table width="100%" class="form-inline m" id="todoTable">
-            <tr>
-              <td style="padding-top:10px; padding-bottom:10px; padding-left:25px;"><b>Icon</b></td>
-              <td style="padding-top:10px; padding-bottom:10px;"><input accept="image/jpeg,image/gif,image/png" id="icon" name="icon" type="file" />
-                <div class="form-group"><%= image_tag @todo.icon.url if @todo.icon? %></div>
-              </td>
-              <td></td>
-              <td></td>
-            </tr>
-
-            <tr>
-            <td style="padding-left: 25px; padding-bottom:10px;"><b>Schedule Date / time</b></td> <td colspan="3" style="padding-bottom:10px;"><input type='text' class="datetimepicker" id='datetimepicker' name="complete_by" required="required" value="<%=@todo.complete_by.strftime("%Y/%m/%d %H:%M")%>" /></td>
-            </tr>
-
-            <tr>
-            <td style="padding-left:25px;"><b>Repeats</b></td>
-            <td colspan="2">
-              <select class="form-control" id="repeat" name="repeat">
-                <option value="">Never</option>
-                <option value="week" <%if @todo.repeat == "week"%>selected=""<%end%>>Every Week</option>
-                <option value="2week" <%if @todo.repeat == "2week"%>selected=""<%end%>>Every 2 Weeks</option>
-                <option value="month" <%if @todo.repeat == "month"%>selected=""<%end%>>Every Month</option>
-                <option value="year" <%if @todo.repeat == "year"%>selected=""<%end%>>Every Year</option>
-              </select>
-            </td>
-            <td></td>
-            </tr>
-
-            <tr>
-            <td style="padding-left:25px;"><b>Title</b></td>
-            <td><input class="form-control c" id="subject" name="subject" required="required" style="margin-left: 0px;" type="text" value="<%=@todo.subject%>" /></td>
-            <td></td>
-            <td><a href="javascript:void(0);" onclick="addTask(1,this)" id="lnkTasks" class="addbtn2">Add Task</a></td>
-            </tr>
-            
-            <% i = 0 %>
-            <% @todo.tasks.each do |task| %>
-
-            <tr>
-            <td style="padding-left:20px; padding-right:20px;">
-                <label class="switch-light well" onclick="" style="margin-top: 15px;">
-                  <input id="taskDelegatable[<%=task.id%>]" name="taskDelegatable[<%=task.id%>]" type="checkbox" value="1" <%if task.delegatable%>checked<%end%> /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
-                </label>
-            </td>
-            <td colspan="2"><b>Task</b> <input class="form-control c" id="task[<%=task.id%>]" name="task[<%=task.id%>]" required="required" type="text" value="<%= task.task %>" /></td>
-            <td><a href="javascript:void(0);" onclick="addSubTask(<%=i%>,this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td>
-            </tr>
-            
-              <% k = 0 %>
-              <% task.subtasks.each do |subtask| %>
               <tr>
-              <td style="padding-left:21px; padding-right:20px;">
-                <label class="switch-light well" onclick="" style="margin-top: 15px;">
-                    <input id="subtaskDelegatable[<%=subtask.id%>]" name="subtaskDelegatable[<%=subtask.id%>]" type="checkbox" value="1" <%if subtask.delegatable%>checked<%end%> /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
-                  </label>
-              </td>
-              <td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[<%=subtask.id%>]" name="subtask[<%=subtask.id%>]" type="text" value="<%= subtask.subtask %>" /></td>
-              <td><a href="javascript:void(0);" onclick="$(this).closest('tr').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>
+                <td style="padding-top:10px; padding-bottom:10px; padding-left:25px;"><b>Icon</b></td>
+                <td style="padding-top:10px; padding-bottom:10px;"><input accept="image/jpeg,image/gif,image/png" id="icon" name="icon" type="file"/>
+
+                  <div class="form-group"><%= image_tag @todo.icon.url if @todo.icon? %></div>
+                </td>
+                <td></td>
+                <td></td>
               </tr>
+
+              <tr>
+                <td style="padding-left: 25px; padding-bottom:10px;"><b>Schedule Date / time</b></td>
+                <td colspan="3" style="padding-bottom:10px;">
+                  <input type='text' class="datetimepicker" id='datetimepicker' name="complete_by" required="required" value="<%= @todo.complete_by.strftime("%Y/%m/%d %H:%M") %>"/></td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:25px;"><b>Repeats</b></td>
+                <td colspan="2">
+                  <select class="form-control" id="repeat" name="repeat">
+                    <option value="">Never</option>
+                    <option value="week"
+                            <% if @todo.repeat == "week" %>selected=""
+                    <% end %>>Every Week
+                    </option>
+                    <option value="2week"
+                            <% if @todo.repeat == "2week" %>selected=""
+                    <% end %>>Every 2 Weeks
+                    </option>
+                    <option value="month"
+                            <% if @todo.repeat == "month" %>selected=""
+                    <% end %>>Every Month
+                    </option>
+                    <option value="year"
+                            <% if @todo.repeat == "year" %>selected=""
+                    <% end %>>Every Year
+                    </option>
+                  </select>
+                </td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:25px;"><b>Title</b></td>
+                <td><input class="form-control c" id="subject" name="subject" required="required" style="margin-left: 0px;" type="text" value="<%= @todo.subject %>"/></td>
+                <td></td>
+                <td><a href="javascript:void(0);" onclick="addTask(1,this)" id="lnkTasks" class="addbtn2">Add Task</a></td>
+              </tr>
+
+              <% i = 0 %>
+              <% @todo.tasks.each do |task| %>
+
+                  <tr>
+                    <td style="padding-left:20px; padding-right:20px;">
+                      <label class="switch-light well" onclick="" style="margin-top: 15px;">
+                        <input id="taskDelegatable[<%= task.id %>]" name="taskDelegatable[<%= task.id %>]" type="checkbox" value="1"
+                               <% if task.delegatable %>checked
+                               <% end %> /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
+                      </label>
+                    </td>
+                    <td colspan="2"><b>Task</b> <input class="form-control c" id="task[<%= task.id %>]" name="task[<%= task.id %>]" required="required" type="text" value="<%= task.task %>"/>
+                    </td>
+                    <td><a href="javascript:void(0);" onclick="addSubTask(<%=i%>,this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td>
+                  </tr>
+
+                  <% k = 0 %>
+                  <% task.subtasks.each do |subtask| %>
+                      <tr>
+                        <td style="padding-left:21px; padding-right:20px;">
+                          <label class="switch-light well" onclick="" style="margin-top: 15px;">
+                            <input id="subtaskDelegatable[<%= subtask.id %>]" name="subtaskDelegatable[<%= subtask.id %>]" type="checkbox" value="1"
+                                   <% if subtask.delegatable %>checked
+                                   <% end %> /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
+                          </label>
+                        </td>
+                        <td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b>
+                          <input class="form-control c" id="subtask[<%= subtask.id %>]" name="subtask[<%= subtask.id %>]" type="text" value="<%= subtask.subtask %>"/></td>
+                        <td><a href="javascript:void(0);" onclick="$(this).closest('tr').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>
+                      </tr>
+                  <% end %>
+
+                  <% i += 1 %>
               <% end %>
 
-            <% i += 1 %>
-            <% end %>
-
-            </table><br/>
+            </table>
+            <br/>
 
             <div class="bottomrow">
               <div class="col-md-6">
                 <b>Once tasks are complited todo list delegetable</b>
               </div>
               <div class="col-md-6 pull-right">
-                  <label class="switch-light well" onclick="">
-                    <input id="todoDelegatable" name="todoDelegatable" type="checkbox" value="1" <%if @todo.delegatable%>checked<%end%> />
+                <label class="switch-light well" onclick="">
+                  <input id="todoDelegatable" name="todoDelegatable" type="checkbox" value="1"
+                         <% if @todo.delegatable %>checked
+                         <% end %> />
                     <span>
                       <span>No</span>
                       <span>Yes</span>
                     </span>
 
-                    <a class="btn btn-success"></a>
-                  </label>
+                  <a class="btn btn-success"></a>
+                </label>
 
               </div>
             </div>
@@ -114,308 +141,315 @@
           </div>
 
 
-            
-          <br class="clear" /><br/>
+          <br class="clear"/><br/>
+
           <div class="col-md-offset-5">
-              <%= submit_tag "Submit", class: "btn btn-primary" %>
+            <%= submit_tag "Submit", class: "btn btn-primary" %>
           </div>
-          
-        <% end %>
-          
+
+      <% end %>
+
     </div>
-    
+
   </div>
 </div>
 
 
 <!-- Scripts and styles -->
 <script>
-var ni = 0;
-var pi = 1;
+    var ni = 0;
+    var pi = 1;
 
-function addTask(taskNum,i){
-  pi = 1;
-  var index = $(i).closest('td').parent()[0].sectionRowIndex;      
-  var rowCount = $('#todoTable tr').length;
-  
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML = '<tr>'
-    +'<td style="padding-left:20px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="taskDelegatable['+ taskNum +']" name="taskDelegatable['+ taskNum +']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-    +'<td colspan="2"><b>Task</b> <input class="form-control c" id="task['+ taskNum +']" name="task['+ taskNum +']" type="text" /></td>'
-    +'<td><a href="javascript:void(0);" onclick="addSubTask('+ parseInt(taskNum) +',this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td></tr>'
-            
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)+1).innerHTML =  '<tr>'
-    +'<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable['+ taskNum +'][0]" name="subtaskDelegatable['+ taskNum +'][0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-    +'<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +'][0]" name="subtask['+ taskNum +'][0]" type="text" /></td>'
-    +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>'
-    +'</tr>'
-  
-  $("#lnkTasks").attr("onclick", "addTask("+ (parseInt(taskNum) + 1) +",this)");
-}
+    function addTask(taskNum, i) {
+        pi = 1;
+        var index = $(i).closest('td').parent()[0].sectionRowIndex;
+        var rowCount = $('#todoTable tr').length;
 
-function addSubTask(taskNum,i){
-  ni += 1;
-  pi += 1;
-  var index = $(i).closest('td').parent()[0].sectionRowIndex;
-  
-  document.getElementById("todoTable").insertRow(parseInt(index) + 1).innerHTML = '<tr>'
-            +'<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable['+ taskNum +']['+ ni +']" name="subtaskDelegatable['+ taskNum +']['+ ni +']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-            +'<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +']['+ ni +']" name="subtask['+ taskNum +']['+ ni +']" type="text" /></td>'
-            +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td></tr>'
-  $("#lnkSubTasks").attr("onclick", "addSubTask("+ parseInt(taskNum) +",this,"+ ni +")");
-}
+        document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML = '<tr>'
+                + '<td style="padding-left:20px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="taskDelegatable[' + taskNum + ']" name="taskDelegatable[' + taskNum + ']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
+                + '<td colspan="2"><b>Task</b> <input class="form-control c" id="task[' + taskNum + ']" name="task[' + taskNum + ']" type="text" /></td>'
+                + '<td><a href="javascript:void(0);" onclick="addSubTask(' + parseInt(taskNum) + ',this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td></tr>'
 
+        document.getElementById("todoTable").insertRow(parseInt(rowCount) + 1).innerHTML = '<tr>'
+                + '<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable[' + taskNum + '][0]" name="subtaskDelegatable[' + taskNum + '][0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
+                + '<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[' + taskNum + '][0]" name="subtask[' + taskNum + '][0]" type="text" /></td>'
+                + '<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>'
+                + '</tr>'
 
+        $("#lnkTasks").attr("onclick", "addTask(" + (parseInt(taskNum) + 1) + ",this)");
+    }
 
-// ####### End Tasks
+    function addSubTask(taskNum, i) {
+        ni += 1;
+        pi += 1;
+        var index = $(i).closest('td').parent()[0].sectionRowIndex;
+
+        document.getElementById("todoTable").insertRow(parseInt(index) + 1).innerHTML = '<tr>'
+                + '<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable[' + taskNum + '][' + ni + ']" name="subtaskDelegatable[' + taskNum + '][' + ni + ']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
+                + '<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[' + taskNum + '][' + ni + ']" name="subtask[' + taskNum + '][' + ni + ']" type="text" /></td>'
+                + '<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td></tr>'
+        $("#lnkSubTasks").attr("onclick", "addSubTask(" + parseInt(taskNum) + ",this," + ni + ")");
+    }
 
 
-  function showCustomers(incl){
+    // ####### End Tasks
+
+
+    function showCustomers(incl) {
         partnerVal = $("#partner_name_partner_id").val();
         franchiseVal = $("#franchise_name_franchise_id").val();
 
-    // franchise
-        if ($("#customer_type_name_customer_type_id").val() == "2"){
-          $("#sel_franchise").show();
-          $("#sel_partner").hide();
-          partnerVal = "";
+        // franchise
+        if ($("#customer_type_name_customer_type_id").val() == "2") {
+            $("#sel_franchise").show();
+            $("#sel_partner").hide();
+            partnerVal = "";
         }
         //partner
         else if ($("#customer_type_name_customer_type_id").val() == "3") {
-          $("#sel_partner").show();
-          $("#sel_franchise").hide();
-          franchiseVal = "";
+            $("#sel_partner").show();
+            $("#sel_franchise").hide();
+            franchiseVal = "";
         }
         //single
         else if ($("#customer_type_name_customer_type_id").val() == "1") {
-          $("#sel_franchise").hide();
-          $("#sel_partner").hide();
-          partnerVal = "";
-          franchiseVal = "";
+            $("#sel_franchise").hide();
+            $("#sel_partner").hide();
+            partnerVal = "";
+            franchiseVal = "";
         }
 
         $.post("/privileges/get_customers_by_country",
-            {
-                country: $("#country_sel").val(),
-                customer_type_id: $("#customer_type_name_customer_type_id").val(),
-                partner_id: partnerVal,
-                franchise_id: franchiseVal
-            },
-            
-            function(data){
-                
-                $("#cNames").empty();
-                $(".ut").empty();
-                $(".dd").empty();
-                //$(".ut").append("<option></option>");
-                
-                $.each(data, function(i, item) {
-                    $("#cNames").append('<label for="chk'+ i +'"><input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'" onclick="getUserTypes('+ item.id +',\'chk'+ i +'\');"> '+ item.customer_name +'</label><br/>');
-                });
-                
-                  
-            } , "json");
-        
+                {
+                    country: $("#country_sel").val(),
+                    customer_type_id: $("#customer_type_name_customer_type_id").val(),
+                    partner_id: partnerVal,
+                    franchise_id: franchiseVal
+                },
+
+                function (data) {
+
+                    $("#cNames").empty();
+                    $(".ut").empty();
+                    $(".dd").empty();
+                    //$(".ut").append("<option></option>");
+
+                    $.each(data, function (i, item) {
+                        $("#cNames").append('<label for="chk' + i + '"><input type="checkbox" name="customer_id[]" id="chk' + i + '" value="' + item.id + '" onclick="getUserTypes(' + item.id + ',\'chk' + i + '\');"> ' + item.customer_name + '</label><br/>');
+                    });
+
+
+                }, "json");
+
         $("#ct").show();
 
         $("#customerNames").show();
-        
+
     }
 
-    function getUserTypes(cust,chk){
-      tmp = null;
+    function getUserTypes(cust, chk) {
+        tmp = null;
 
-      if (cust == "all"){
-        tmp = "all";
-        cust = "";
-      }
-      else if (cust == "none"){
-        tmp = "none";
-        cust = ""; 
-      }
+        if (cust == "all") {
+            tmp = "all";
+            cust = "";
+        }
+        else if (cust == "none") {
+            tmp = "none";
+            cust = "";
+        }
 
         $.post("/user_types/get_user_types",
-            {
-                customer_type: $("#customer_type_name_customer_type_id").val(),
-                partner_id: partnerVal,
-                franchise_id: franchiseVal,
-                customer_id: cust
-            },
-            
-            function(data){
-                
-                if ($('#'+ chk +''.toString()).is(':checked')){
-                  $.each(data, function(i, item) {
-                    $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
-                  });
-                }
-                else{
-                  $.each(data, function(i, item) {
-                    $(".ut option[value='"+ item.id +"']").remove();
-                  });
-                  
-                }
+                {
+                    customer_type: $("#customer_type_name_customer_type_id").val(),
+                    partner_id: partnerVal,
+                    franchise_id: franchiseVal,
+                    customer_id: cust
+                },
 
-                // All
-                if (tmp=="all" && !chk){
-                  $(".ut").empty();
-                  //$(".ut").append("<option></option>");
+                function (data) {
 
-                  $.each(data, function(i, item) {
-                    $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
-                  });
-                }
-                else if (tmp=="none" && !chk){
-                  $(".ut").empty();
-                  //$(".ut").append("<option></option>");
-                }
-                
-                  
-            } , "json");
+                    if ($('#' + chk + ''.toString()).is(':checked')) {
+                        $.each(data, function (i, item) {
+                            $(".ut").append('<option value="' + item.id + '">' + item.user_type_name + '</option>');
+                        });
+                    }
+                    else {
+                        $.each(data, function (i, item) {
+                            $(".ut option[value='" + item.id + "']").remove();
+                        });
 
-        if (cust || tmp){
-          $("#ut").show();
-          $("#dd").show();
-          getUserDepartments(cust,chk);
+                    }
+
+                    // All
+                    if (tmp == "all" && !chk) {
+                        $(".ut").empty();
+                        //$(".ut").append("<option></option>");
+
+                        $.each(data, function (i, item) {
+                            $(".ut").append('<option value="' + item.id + '">' + item.user_type_name + '</option>');
+                        });
+                    }
+                    else if (tmp == "none" && !chk) {
+                        $(".ut").empty();
+                        //$(".ut").append("<option></option>");
+                    }
+
+
+                }, "json");
+
+        if (cust || tmp) {
+            $("#ut").show();
+            $("#dd").show();
+            getUserDepartments(cust, chk);
         }
     }
 
-    function getUserDepartments(cust,chk){
+    function getUserDepartments(cust, chk) {
 
         $.post("/daycare_departments/get_departments",
-            {
-              customer_type: $("#customer_type_name_customer_type_id").val(),
-              franchise_id: franchiseVal,
-              customer_id: cust
-            },
-            
-            function(data){
-                
-                if (franchiseVal || partnerVal){
-                  $(".dd").empty();
-                  //$(".dd").append("<option></option>");
-                }
-                
-                if ($('#'+ chk +''.toString()).is(':checked')){
-                  $.each(data, function(i, item) {
-                      $(".dd").append('<option value="'+ item.id +'">'+ item.department_name +'</option>');
-                  });
-                }
-                else{
-                  $.each(data, function(i, item) {
-                    $(".dd option[value='"+ item.id +"']").remove();
-                  });
-                  
-                }
+                {
+                    customer_type: $("#customer_type_name_customer_type_id").val(),
+                    franchise_id: franchiseVal,
+                    customer_id: cust
+                },
 
-                // All
-                if (tmp=="all" && !chk){
-                  $(".dd").empty();
-                  //$(".ut").append("<option></option>");
+                function (data) {
 
-                  $.each(data, function(i, item) {
-                    $(".dd").append('<option value="'+ item.id +'">'+ item.department_name +'</option>');
-                  });
-                }
-                else if (tmp=="none" && !chk){
-                  $(".dd").empty();
-                  //$(".ut").append("<option></option>");
-                }
-                
-                  
-            } , "json");
+                    if (franchiseVal || partnerVal) {
+                        $(".dd").empty();
+                        //$(".dd").append("<option></option>");
+                    }
+
+                    if ($('#' + chk + ''.toString()).is(':checked')) {
+                        $.each(data, function (i, item) {
+                            $(".dd").append('<option value="' + item.id + '">' + item.department_name + '</option>');
+                        });
+                    }
+                    else {
+                        $.each(data, function (i, item) {
+                            $(".dd option[value='" + item.id + "']").remove();
+                        });
+
+                    }
+
+                    // All
+                    if (tmp == "all" && !chk) {
+                        $(".dd").empty();
+                        //$(".ut").append("<option></option>");
+
+                        $.each(data, function (i, item) {
+                            $(".dd").append('<option value="' + item.id + '">' + item.department_name + '</option>');
+                        });
+                    }
+                    else if (tmp == "none" && !chk) {
+                        $(".dd").empty();
+                        //$(".ut").append("<option></option>");
+                    }
+
+
+                }, "json");
     }
 
     // doc ready
-    $(function(){
+    $(function () {
         $("#slogan").html("FUNCTIONALITY");
-        
+
         $("#customerNames").hide();
         $("#ct").hide();
         $("#ut").hide();
         $("#dd").hide();
         $("#sel_franchise").hide();
         $("#sel_partner").hide();
-        
+
         $('.datetimepicker').datetimepicker();
-        
-        $('#select_all_customers').change(function(){
+
+        $('#select_all_customers').change(function () {
             var checkboxes = $(this).closest('form').find('#customerNames :checkbox');
-            if($(this).prop('checked')) {
-              checkboxes.prop('checked', true);
-              getUserTypes("all");
+            if ($(this).prop('checked')) {
+                checkboxes.prop('checked', true);
+                getUserTypes("all");
             } else {
-              checkboxes.prop('checked', false);
-              getUserTypes("none");
+                checkboxes.prop('checked', false);
+                getUserTypes("none");
             }
         });
 
-        $('#select_all_user_types').change(function(){
-            if($(this).prop('checked')) {
-              $('#ut option').prop('selected', true);
+        $('#select_all_user_types').change(function () {
+            if ($(this).prop('checked')) {
+                $('#ut option').prop('selected', true);
             } else {
-              $('#ut option').prop('selected', false);
+                $('#ut option').prop('selected', false);
             }
         });
-        
-        $('#select_all_departments').change(function(){
-            if($(this).prop('checked')) {
-              $('#dd option').prop('selected', true);
+
+        $('#select_all_departments').change(function () {
+            if ($(this).prop('checked')) {
+                $('#dd option').prop('selected', true);
             } else {
-              $('#dd option').prop('selected', false);
+                $('#dd option').prop('selected', false);
             }
         });
-        
+
     });
 
 </script>
 
 <style>
-#topbar {
-    background-color: #1f80b7;
-}
-.nameBox { 
-    border:2px solid #ccc;
-    width:100%; 
-    height: 200px; 
-    overflow-y: scroll;
-    padding: 10px;
-    text-align:left;
-    margin-bottom:10px;
-}
-.c {
-  width: 70% !important;
-  margin: 7px;
-}
+    #topbar {
+        background-color: #1f80b7;
+    }
 
-.m{
-  border: 1px solid #ccc;
-}
+    .nameBox {
+        border: 2px solid #ccc;
+        width: 100%;
+        height: 200px;
+        overflow-y: scroll;
+        padding: 10px;
+        text-align: left;
+        margin-bottom: 10px;
+    }
 
-.ddl{
- -ms-transform: scale(1.5); 
- -moz-transform: scale(1.5); 
- -webkit-transform: scale(1.5); 
- -o-transform: scale(1.5); 
-  padding: 5px;
-}
-a.addbtn2{
-  background-color: #66868e;
-  padding: 5px;
-  color: white;
-}
-.switch-light {
-  width: none; !important
-}
-.bottomrow {
-  background-color: #F5F5F5;
-  height: 30px;
-}
-.px {
-  font-size: 13px;
-  font-weight: normal;
-}
-.btn-primary {
-  background-color: #f05c51;
-  border-color: #f05c51;
-}
+    .c {
+        width: 70% !important;
+        margin: 7px;
+    }
+
+    .m {
+        border: 1px solid #ccc;
+    }
+
+    .ddl {
+        -ms-transform: scale(1.5);
+        -moz-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        -o-transform: scale(1.5);
+        padding: 5px;
+    }
+
+    a.addbtn2 {
+        background-color: #66868e;
+        padding: 5px;
+        color: white;
+    }
+
+    .switch-light {
+        width: none;
+    !important
+    }
+
+    .bottomrow {
+        background-color: #F5F5F5;
+        height: 30px;
+    }
+
+    .px {
+        font-size: 13px;
+        font-weight: normal;
+    }
+
+    .btn-primary {
+        background-color: #f05c51;
+        border-color: #f05c51;
+    }
 </style>

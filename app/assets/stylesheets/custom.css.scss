@@ -2,84 +2,82 @@
 @import "bootstrap";
 
 body {
-    font-family: Helvetica;
+  font-family: Helvetica;
 }
 
 .white {
-    color: #fff;
+  color: #fff;
 }
 
 .red {
-    color: #a94442;
+  color: #a94442;
 }
 
 a:hover.white {
-    color: #fff;
+  color: #fff;
 }
 
 .nonBold {
-    font-weight: 100;
+  font-weight: 100;
 }
 
 .pull-center {
-     text-align: center;
+  text-align: center;
 }
 
 .headerMargin {
-    margin-top: 80px;
-    margin-bottom: 60px;
+  margin-top: 80px;
+  margin-bottom: 60px;
 }
 
 .padding20 {
-    padding: 20px;
+  padding: 20px;
 }
 
 .top7 {
-    margin-top: 7px;
+  margin-top: 7px;
 }
 
-.col-centered{
-    float: none;
-    margin: 0 auto;
+.col-centered {
+  float: none;
+  margin: 0 auto;
 }
 
 .homeHeader {
-    background-color: #ea5b0c;
+  background-color: #ea5b0c;
 }
 
 .navbar-header {
-    padding-top: 7px;
+  padding-top: 7px;
 }
 
 .maxWidth {
-    width:100%;
+  width: 100%;
 }
 
 .linksSpace {
-    margin-left:5px;
+  margin-left: 5px;
 }
 
 .floatLeft {
-    float:left;
+  float: left;
 }
 
 .clear {
-    clear:both;
+  clear: both;
 }
 
-.table
-{
-    display: table;
+.table {
+  display: table;
 }
 
-.cell
-{
-    display: table-cell;
-    vertical-align: middle;
+.cell {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .btn-green {
-    background-color: #9ECB3B;
-    border-radius: 0px;
-    border-color: #9ECB3B;
+  background-color: #9ECB3B;
+  border-radius: 0px;
+  border-color: #9ECB3B;
 }

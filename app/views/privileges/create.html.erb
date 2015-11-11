@@ -1,162 +1,166 @@
 <div class="col-md-6 col-md-offset-3">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <h4>Customer Privileges</h4>
-  		</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Customer Privileges</h4>
+    </div>
 
-		<div class="panel-body">
+    <div class="panel-body">
 
-		    <%= form_for @privilege, url: create_update_privileges_path , html: {role: "form"} do |f| %>
-		    
-            <div class="form-group col-md-offset-1" style="padding-left:20px;">
-            
-            <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("create_to_do") %> name="privilege_ids[]" value="create_to_do" hidden="hidden"/><span><nobr>Create To Do</nobr></span>
-                </label>
-            </div>
+      <%= form_for @privilege, url: create_update_privileges_path, html: {role: "form"} do |f| %>
+
+          <div class="form-group col-md-offset-1" style="padding-left:20px;">
 
             <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("access_to_do") %> name="privilege_ids[]" value="access_to_do" hidden="hidden"/><span><nobr>Access To Do</nobr></span>
-                </label>
-            </div>
-            
-            <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("attendance") %> name="privilege_ids[]" value="attendance" hidden="hidden"/><span><nobr>Attendance</nobr></span>
-                </label>
-            </div>
-            
-            </div>
-            
-            <br class="clear" /><br/>
-            
-            <div class="form-group col-md-offset-1" style="padding-left:20px;">
-            
-            <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("message") %> name="privilege_ids[]" value="message" hidden="hidden"/><span><nobr>Message</nobr></span>
-                </label>
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("create_to_do") %> name="privilege_ids[]" value="create_to_do" hidden="hidden"/><span><nobr>Create To Do
+              </nobr></span>
+              </label>
             </div>
 
             <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("allergy") %> name="privilege_ids[]" value="allergy" hidden="hidden"/><span><nobr>Allergy</nobr></span>
-                </label>
-            </div>
-            
-            <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("medication") %> name="privilege_ids[]" value="medication" hidden="hidden"/><span><nobr>Medication</nobr></span>
-                </label>
-            </div>
-            
-            </div>
-            
-            <br class="clear" /><br/>
-            
-            <div class="form-group col-md-offset-1" style="padding-left:20px;">
-            
-            <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("notice_board") %> name="privilege_ids[]" value="notice_board" hidden="hidden"/><span><nobr>Notice Board</nobr></span>
-                </label>
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("access_to_do") %> name="privilege_ids[]" value="access_to_do" hidden="hidden"/><span><nobr>Access To Do
+              </nobr></span>
+              </label>
             </div>
 
             <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("calendar") %> name="privilege_ids[]" value="calendar" hidden="hidden"/><span><nobr>Calendar</nobr></span>
-                </label>
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("attendance") %> name="privilege_ids[]" value="attendance" hidden="hidden"/><span><nobr>Attendance</nobr></span>
+              </label>
             </div>
-            
+
+          </div>
+
+          <br class="clear"/><br/>
+
+          <div class="form-group col-md-offset-1" style="padding-left:20px;">
+
             <div id="ck-button">
-                <label>
-                    <input type="checkbox" <%= "checked" if @permissions.to_s.include?("intolerance") %> name="privilege_ids[]" value="intolerance" hidden="hidden"/><span><nobr>Intolerance</nobr></span>
-                </label>
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("message") %> name="privilege_ids[]" value="message" hidden="hidden"/><span><nobr>Message</nobr></span>
+              </label>
             </div>
-            
+
+            <div id="ck-button">
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("allergy") %> name="privilege_ids[]" value="allergy" hidden="hidden"/><span><nobr>Allergy</nobr></span>
+              </label>
             </div>
-            
-              <input type="hidden" name="customer_ids" value="<%= @selected_customers.join(", ") %>">
-              <input type="hidden" name="user_type_id" value="<%= params["user_type_name"]["user_type_id"] %>">
-              <input type="hidden" name="existing_permissions" value="<%= @permissions %>">
-            
-            <br class="clear" /><br/><br/>
-            <div>
-              <a href="/privileges" class="btn btn-default">Back</a>
-              <%= f.submit "Apply", class: "btn btn-primary pull-right" %>
+
+            <div id="ck-button">
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("medication") %> name="privilege_ids[]" value="medication" hidden="hidden"/><span><nobr>Medication</nobr></span>
+              </label>
             </div>
-            <%end%>
-            
-        </div>
-		
-	</div>
+
+          </div>
+
+          <br class="clear"/><br/>
+
+          <div class="form-group col-md-offset-1" style="padding-left:20px;">
+
+            <div id="ck-button">
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("notice_board") %> name="privilege_ids[]" value="notice_board" hidden="hidden"/><span><nobr>Notice Board
+              </nobr></span>
+              </label>
+            </div>
+
+            <div id="ck-button">
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("calendar") %> name="privilege_ids[]" value="calendar" hidden="hidden"/><span><nobr>Calendar</nobr></span>
+              </label>
+            </div>
+
+            <div id="ck-button">
+              <label>
+                <input type="checkbox" <%= "checked" if @permissions.to_s.include?("intolerance") %> name="privilege_ids[]" value="intolerance" hidden="hidden"/><span><nobr>Intolerance</nobr></span>
+              </label>
+            </div>
+
+          </div>
+
+          <input type="hidden" name="customer_ids" value="<%= @selected_customers.join(", ") %>">
+          <input type="hidden" name="user_type_id" value="<%= params["user_type_name"]["user_type_id"] %>">
+          <input type="hidden" name="existing_permissions" value="<%= @permissions %>">
+
+          <br class="clear"/><br/><br/>
+
+          <div>
+            <a href="/privileges" class="btn btn-default">Back</a>
+            <%= f.submit "Apply", class: "btn btn-primary pull-right" %>
+          </div>
+      <% end %>
+
+    </div>
+
+  </div>
 </div>
 
 
 <!-- Scripts and styles -->
 <script>
 
-    $(function(){
+    $(function () {
         $("#slogan").html("PRIVILEGES");
-        
+
     });
 </script>
 
 <style>
 
-#topbar {
-    background-color: #90c43d;
-}
+    #topbar {
+        background-color: #90c43d;
+    }
 
-label{
-    margin-bottom: 0px;
-}
+    label {
+        margin-bottom: 0px;
+    }
 
-div label input {
-   height: 90px;
-}
+    div label input {
+        height: 90px;
+    }
 
-#ck-button {
-    margin:4px;
-    background-color:#EFEFEF;
-    border-radius:5px;
-    border:1px solid #D0D0D0;
-    float:left;
-    margin-left:10px;
-    box-shadow: 1px 1px 1px #EFEFEF;
-}
+    #ck-button {
+        margin: 4px;
+        background-color: #EFEFEF;
+        border-radius: 5px;
+        border: 1px solid #D0D0D0;
+        float: left;
+        margin-left: 10px;
+        box-shadow: 1px 1px 1px #EFEFEF;
+    }
 
-#ck-button label {
-    float:left;
-    width:8.0em;
-    
-}
+    #ck-button label {
+        float: left;
+        width: 8.0em;
 
-#ck-button label span {
-    text-align:center;
-    padding:10px;
-    display:block;
-    border-radius:5px;
-    padding-top: 30px; 
-    height: 90px;
-    color: #cdcccc;
-}
+    }
 
-#ck-button input:hover + span {
-    cursor:pointer;
-}
+    #ck-button label span {
+        text-align: center;
+        padding: 10px;
+        display: block;
+        border-radius: 5px;
+        padding-top: 30px;
+        height: 90px;
+        color: #cdcccc;
+    }
 
-#ck-button input:checked + span {
-    background-image:url('/assets/selected-dot.png');
-    background-position: right top;
-    background-repeat: no-repeat;
-    color: #333333;
-}
+    #ck-button input:hover + span {
+        cursor: pointer;
+    }
 
-#ck-button input:checked:hover + span {
-    cursor:pointer;
-}
+    #ck-button input:checked + span {
+        background-image: url('/assets/selected-dot.png');
+        background-position: right top;
+        background-repeat: no-repeat;
+        color: #333333;
+    }
+
+    #ck-button input:checked:hover + span {
+        cursor: pointer;
+    }
 
 </style>

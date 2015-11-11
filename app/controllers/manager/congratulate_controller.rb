@@ -1,6 +1,6 @@
 class Manager::CongratulateController < ApplicationController
   layout "manager"
-  
+
   def new
   end
 
@@ -8,12 +8,12 @@ class Manager::CongratulateController < ApplicationController
   end
 
   def invite_workers2
-  	worker = params[:worker_email]
+    worker = params[:worker_email]
 
     worker.each do |w|
-    	if !w[1].to_s.blank?
-        	AdminMailer.invite_worker(w).deliver	
-        end
+      if !w[1].to_s.blank?
+        AdminMailer.invite_worker(w).deliver
+      end
     end
 
     redirect_to "/manager/invite_parents"
@@ -24,12 +24,12 @@ class Manager::CongratulateController < ApplicationController
   end
 
   def invite_parents2
-  	parent = params[:parent_email]
+    parent = params[:parent_email]
 
-  	parent.each do |w|
-    	if !w[1].to_s.blank?
-        	AdminMailer.invite_parent(w).deliver
-        end
+    parent.each do |w|
+      if !w[1].to_s.blank?
+        AdminMailer.invite_parent(w).deliver
+      end
     end
 
     redirect_to "/manager/login"

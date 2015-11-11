@@ -1,55 +1,57 @@
 <br/>
 
 <div class="col-md-8 col-md-offset-2">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <table width="100%"><tr>
-  		  <td><h4>Franchises</h4></td>
-  		  <td align="right"><a href="/franchises/new" class="btn btn-primary">Add new franchise</a></td>
-		  </tr></table>
-		  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <table width="100%">
+        <tr>
+          <td><h4>Franchises</h4></td>
+          <td align="right"><a href="/franchises/new" class="btn btn-primary">Add new franchise</a></td>
+        </tr>
+      </table>
+    </div>
 
-		<div class="panel-body">
-			
-		<table class="table table-striped" id="tblFranchises">
-            <thead>
-              <tr>
-                <th>Franchise</th>
-                <th>Address</th>
-                <th>Country</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% @franchises.each do |franchise| %>
-              <tr id="<%=franchise.id%>">
-              	<td><%= franchise.franchise_name %></td>
-              	<td><%= franchise.address %></td>
-                <td><%= franchise.country %>
+    <div class="panel-body">
+
+      <table class="table table-striped" id="tblFranchises">
+        <thead>
+        <tr>
+          <th>Franchise</th>
+          <th>Address</th>
+          <th>Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @franchises.each do |franchise| %>
+            <tr id="<%= franchise.id %>">
+              <td><%= franchise.franchise_name %></td>
+              <td><%= franchise.address %></td>
+              <td><%= franchise.country %>
                 <div class="pull-right">
-                    <%= link_to("delete", franchise_path(id: franchise.id), method: :delete, class: "", data: {confirm: "Are you sure?"}) %> | 
-                    <%= link_to("edit", edit_franchise_path(id: franchise.id)) %>
+                  <%= link_to("delete", franchise_path(id: franchise.id), method: :delete, class: "", data: {confirm: "Are you sure?"}) %> |
+                  <%= link_to("edit", edit_franchise_path(id: franchise.id)) %>
                 </div>
-                </td>
-              </tr>
-            <%end%>
-            </tbody>
-        </table>
-			
-		</div>
-		
-	</div>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
-    $(function(){
+    $(function () {
         $("#slogan").html("FRANCHISES");
-        
+
     })
 </script>
 
 <style>
-#topbar {
-    background-color: #404145;
-}
+    #topbar {
+        background-color: #404145;
+    }
 </style>

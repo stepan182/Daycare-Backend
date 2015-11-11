@@ -1,94 +1,97 @@
 <br/>
 
 <div class="col-md-10 col-centered">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <h4>Create Todo list</h4>
-  		</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Create Todo list</h4>
+    </div>
 
-		<div class="panel-body">
-					
-		<%= form_tag({action: :create}, multipart: true) do |f| %>
-		  
+    <div class="panel-body">
+
+      <%= form_tag({action: :create}, multipart: true) do |f| %>
+
           <div class="form-group" id="dd">
-              <%= label_tag :department %>
-              <%= select(:daycare_department_name, :daycare_department_id, "<option></option>".html_safe, {}, {multiple: true , size: '8', class: 'form-control dd'}) %>
-              <br/>
+            <%= label_tag :department %>
+            <%= select(:daycare_department_name, :daycare_department_id, "<option></option>".html_safe, {}, {multiple: true, size: '8', class: 'form-control dd'}) %>
+            <br/>
 
           </div>
 
           <div class="form-group" id="ut">
-              <%= label_tag :user_type %>
-              <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {multiple: true , size: '8', class: 'form-control ut'}) %>
+            <%= label_tag :user_type %>
+            <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {multiple: true, size: '8', class: 'form-control ut'}) %>
           </div>
 
           <br/>
-          
+
           <div id="todoTableDiv">
-          <b>To Do</b>
-          <div class="panel-footer">
-            <table width="100%" class="form-inline m" id="todoTable">
-            <tr>
-              <td style="padding-top:10px; padding-bottom:10px; padding-left:25px;"><b>Icon</b></td>
-              <td style="padding-top:10px; padding-bottom:10px;"><input accept="image/jpeg,image/gif,image/png" id="icon" name="icon" type="file" /></td>
-              <td></td>
-              <td></td>
-            </tr>
+            <b>To Do</b>
 
-            <tr>
-            <td style="padding-left: 25px; padding-bottom:10px;"><b>Schedule Date / time</b></td> <td colspan="3" style="padding-bottom:10px;"><input type='text' class="datetimepicker" id='datetimepicker' name="complete_by" required="required" /></td>
-            </tr>
+            <div class="panel-footer">
+              <table width="100%" class="form-inline m" id="todoTable">
+                <tr>
+                  <td style="padding-top:10px; padding-bottom:10px; padding-left:25px;"><b>Icon</b></td>
+                  <td style="padding-top:10px; padding-bottom:10px;"><input accept="image/jpeg,image/gif,image/png" id="icon" name="icon" type="file"/></td>
+                  <td></td>
+                  <td></td>
+                </tr>
 
-            <tr>
-            <td style="padding-left:25px;"><b>Repeats</b></td>
-            <td colspan="2">
-              <select class="form-control" id="repeat" name="repeat">
-                <option value="">Never</option>
-                <option value="week">Every Week</option>
-                <option value="2week">Every 2 Weeks</option>
-                <option value="month">Every Month</option>
-                <option value="year">Every Year</option>
-              </select>
-            </td>
-            <td></td>
-            </tr>
+                <tr>
+                  <td style="padding-left: 25px; padding-bottom:10px;"><b>Schedule Date / time</b></td>
+                  <td colspan="3" style="padding-bottom:10px;"><input type='text' class="datetimepicker" id='datetimepicker' name="complete_by" required="required"/></td>
+                </tr>
 
-            <tr>
-            <td style="padding-left:25px;"><b>Title</b></td>
-            <td><input class="form-control c" id="subject" name="subject" required="required" style="margin-left: 0px;" type="text" value="" /></td>
-            <td></td>
-            <td><a href="javascript:void(0);" onclick="addTask(1,this)" id="lnkTasks" class="addbtn2">Add Task</a></td>
-            </tr>
-            
-            <tr>
-            <td style="padding-left:20px; padding-right:20px;">
-                <label class="switch-light well" onclick="" style="margin-top: 15px;">
-                  <input id="taskDelegatable[0]" name="taskDelegatable[0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
-                </label>
-            </td>
-            <td colspan="2"><b>Task</b> <input class="form-control c" id="task[0]" name="task[0]" required="required" type="text" /></td>
-            <td><a href="javascript:void(0);" onclick="addSubTask(0,this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td>
-            </tr>
-            
-            <tr>
-            <td style="padding-left:21px; padding-right:20px;">
-              <label class="switch-light well" onclick="" style="margin-top: 15px;">
-                  <input id="subtaskDelegatable[0][0]" name="subtaskDelegatable[0][0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
-                </label>
-            </td>
-            <td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[0][0]" name="subtask[0][0]" type="text" /></td>
-            <td><a href="javascript:void(0);" onclick="$(this).closest('tr').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>
-            </tr>
+                <tr>
+                  <td style="padding-left:25px;"><b>Repeats</b></td>
+                  <td colspan="2">
+                    <select class="form-control" id="repeat" name="repeat">
+                      <option value="">Never</option>
+                      <option value="week">Every Week</option>
+                      <option value="2week">Every 2 Weeks</option>
+                      <option value="month">Every Month</option>
+                      <option value="year">Every Year</option>
+                    </select>
+                  </td>
+                  <td></td>
+                </tr>
 
-            </table><br/>
+                <tr>
+                  <td style="padding-left:25px;"><b>Title</b></td>
+                  <td><input class="form-control c" id="subject" name="subject" required="required" style="margin-left: 0px;" type="text" value=""/></td>
+                  <td></td>
+                  <td><a href="javascript:void(0);" onclick="addTask(1,this)" id="lnkTasks" class="addbtn2">Add Task</a></td>
+                </tr>
 
-            <div class="bottomrow">
-              <div class="col-md-6">
-                <b>Once tasks are complited todo list delegetable</b>
-              </div>
-              <div class="col-md-6 pull-right">
+                <tr>
+                  <td style="padding-left:20px; padding-right:20px;">
+                    <label class="switch-light well" onclick="" style="margin-top: 15px;">
+                      <input id="taskDelegatable[0]" name="taskDelegatable[0]" type="checkbox" value="1"/><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
+                    </label>
+                  </td>
+                  <td colspan="2"><b>Task</b> <input class="form-control c" id="task[0]" name="task[0]" required="required" type="text"/></td>
+                  <td><a href="javascript:void(0);" onclick="addSubTask(0,this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td>
+                </tr>
+
+                <tr>
+                  <td style="padding-left:21px; padding-right:20px;">
+                    <label class="switch-light well" onclick="" style="margin-top: 15px;">
+                      <input id="subtaskDelegatable[0][0]" name="subtaskDelegatable[0][0]" type="checkbox" value="1"/><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a>
+                    </label>
+                  </td>
+                  <td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[0][0]" name="subtask[0][0]" type="text"/></td>
+                  <td><a href="javascript:void(0);" onclick="$(this).closest('tr').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>
+                </tr>
+
+              </table>
+              <br/>
+
+              <div class="bottomrow">
+                <div class="col-md-6">
+                  <b>Once tasks are complited todo list delegetable</b>
+                </div>
+                <div class="col-md-6 pull-right">
                   <label class="switch-light well" onclick="">
-                    <input id="todoDelegatable" name="todoDelegatable" type="checkbox" value="1" />
+                    <input id="todoDelegatable" name="todoDelegatable" type="checkbox" value="1"/>
                     <span>
                       <span>No</span>
                       <span>Yes</span>
@@ -97,172 +100,180 @@
                     <a class="btn btn-success"></a>
                   </label>
 
+                </div>
               </div>
+
             </div>
-
-          </div>
           </div>
 
-            
-          <br class="clear" /><br/>
+
+          <br class="clear"/><br/>
+
           <div class="col-md-offset-5">
-              <%= hidden_field_tag("customer_id[]", value = session[:customer_id])%>
-              <%= submit_tag "Create", class: "btn btn-primary" %>
+            <%= hidden_field_tag("customer_id[]", value = session[:customer_id]) %>
+            <%= submit_tag "Create", class: "btn btn-primary" %>
           </div>
-          
-        <% end %>
-					
-		</div>
-		
-	</div>
+
+      <% end %>
+
+    </div>
+
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
-var ni = 0;
-var pi = 1;
+    var ni = 0;
+    var pi = 1;
 
-function addTask(taskNum,i){
-  pi = 1;
-  var index = $(i).closest('td').parent()[0].sectionRowIndex;      
-  var rowCount = $('#todoTable tr').length;
-  
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML = '<tr>'
-    +'<td style="padding-left:20px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="taskDelegatable['+ taskNum +']" name="taskDelegatable['+ taskNum +']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-    +'<td colspan="2"><b>Task</b> <input class="form-control c" id="task['+ taskNum +']" name="task['+ taskNum +']" type="text" /></td>'
-    +'<td><a href="javascript:void(0);" onclick="addSubTask('+ parseInt(taskNum) +',this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td></tr>'
-            
-  document.getElementById("todoTable").insertRow(parseInt(rowCount)+1).innerHTML =  '<tr>'
-    +'<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable['+ taskNum +'][0]" name="subtaskDelegatable['+ taskNum +'][0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-    +'<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +'][0]" name="subtask['+ taskNum +'][0]" type="text" /></td>'
-    +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>'
-    +'</tr>'
-  
-  $("#lnkTasks").attr("onclick", "addTask("+ (parseInt(taskNum) + 1) +",this)");
-}
+    function addTask(taskNum, i) {
+        pi = 1;
+        var index = $(i).closest('td').parent()[0].sectionRowIndex;
+        var rowCount = $('#todoTable tr').length;
 
-function addSubTask(taskNum,i){
-  ni += 1;
-  pi += 1;
-  var index = $(i).closest('td').parent()[0].sectionRowIndex;
-  
-  document.getElementById("todoTable").insertRow(parseInt(index) + 1).innerHTML = '<tr>'
-            +'<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable['+ taskNum +']['+ ni +']" name="subtaskDelegatable['+ taskNum +']['+ ni +']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
-            +'<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask['+ taskNum +']['+ ni +']" name="subtask['+ taskNum +']['+ ni +']" type="text" /></td>'
-            +'<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td></tr>'
-  $("#lnkSubTasks").attr("onclick", "addSubTask("+ parseInt(taskNum) +",this,"+ ni +")");
-}
+        document.getElementById("todoTable").insertRow(parseInt(rowCount)).innerHTML = '<tr>'
+                + '<td style="padding-left:20px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="taskDelegatable[' + taskNum + ']" name="taskDelegatable[' + taskNum + ']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
+                + '<td colspan="2"><b>Task</b> <input class="form-control c" id="task[' + taskNum + ']" name="task[' + taskNum + ']" type="text" /></td>'
+                + '<td><a href="javascript:void(0);" onclick="addSubTask(' + parseInt(taskNum) + ',this)" id="lnkSubTasks" class="addbtn2">Add Subtask</a></td></tr>'
 
+        document.getElementById("todoTable").insertRow(parseInt(rowCount) + 1).innerHTML = '<tr>'
+                + '<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable[' + taskNum + '][0]" name="subtaskDelegatable[' + taskNum + '][0]" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
+                + '<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[' + taskNum + '][0]" name="subtask[' + taskNum + '][0]" type="text" /></td>'
+                + '<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td>'
+                + '</tr>'
 
-
-// ####### End Tasks
-
-
-    function getUserTypes(){
-      
-        $.post("/user_types/get_user_types",
-            {
-                customer_type: 1,
-                customer_id: <%= session[:customer_id] %>
-            },
-            
-            function(data){
-                
-                  // All
-                  $(".ut").empty();
-                  
-                  $.each(data, function(i, item) {
-                    if (item.user_type_name != "Daycare Manager"){
-                      $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
-                    }
-                  });
-                
-                  
-            } , "json");
+        $("#lnkTasks").attr("onclick", "addTask(" + (parseInt(taskNum) + 1) + ",this)");
     }
 
-    function getUserDepartments(){
+    function addSubTask(taskNum, i) {
+        ni += 1;
+        pi += 1;
+        var index = $(i).closest('td').parent()[0].sectionRowIndex;
+
+        document.getElementById("todoTable").insertRow(parseInt(index) + 1).innerHTML = '<tr>'
+                + '<td style="padding-left:21px; padding-right:20px;"><label class="switch-light well" onclick="" style="margin-top: 15px;"><input id="subtaskDelegatable[' + taskNum + '][' + ni + ']" name="subtaskDelegatable[' + taskNum + '][' + ni + ']" type="checkbox" value="1" /><span class="px pull-left">Delegatable? <span>No</span><span>Yes</span></span><a class="btn btn-success"></a></label></td>'
+                + '<td align="center" colspan="2" style="padding-left:30px;"><b>SubTask</b> <input class="form-control c" id="subtask[' + taskNum + '][' + ni + ']" name="subtask[' + taskNum + '][' + ni + ']" type="text" /></td>'
+                + '<td><a href="javascript:void(0);" onclick="$(this).closest(\'tr\').remove();" class="glyphicon glyphicon-remove" style="color:#66868e;"> </a></td></tr>'
+        $("#lnkSubTasks").attr("onclick", "addSubTask(" + parseInt(taskNum) + ",this," + ni + ")");
+    }
+
+
+    // ####### End Tasks
+
+
+    function getUserTypes() {
+
+        $.post("/user_types/get_user_types",
+                {
+                    customer_type: 1,
+                    customer_id: <%= session[:customer_id] %>
+                },
+
+                function (data) {
+
+                    // All
+                    $(".ut").empty();
+
+                    $.each(data, function (i, item) {
+                        if (item.user_type_name != "Daycare Manager") {
+                            $(".ut").append('<option value="' + item.id + '">' + item.user_type_name + '</option>');
+                        }
+                    });
+
+
+                }, "json");
+    }
+
+    function getUserDepartments() {
 
         $.post("/daycare_departments/get_departments",
-            {
-              customer_type: 1,
-              customer_id: <%= session[:customer_id] %>
-            },
-            
-            function(data){
-                
-                  // All
-                  $(".dd").empty();
-                  
-                  $.each(data, function(i, item) {
-                    $(".dd").append('<option value="'+ item.id +'">'+ item.department_name +'</option>');
-                  });
-                
-                  
-            } , "json");
+                {
+                    customer_type: 1,
+                    customer_id: <%= session[:customer_id] %>
+                },
+
+                function (data) {
+
+                    // All
+                    $(".dd").empty();
+
+                    $.each(data, function (i, item) {
+                        $(".dd").append('<option value="' + item.id + '">' + item.department_name + '</option>');
+                    });
+
+
+                }, "json");
     }
 
     // doc ready
-    $(function(){
+    $(function () {
         $("#slogan").html("TODO");
-        
+
         $('.datetimepicker').datetimepicker();
-        
+
         getUserDepartments();
 
         getUserTypes();
-        
+
     });
 
 </script>
 
 <style>
-#topbar {
-    background-color: #1f80b7;
-}
-.nameBox { 
-    border:2px solid #ccc;
-    width:100%; 
-    height: 200px; 
-    overflow-y: scroll;
-    padding: 10px;
-    text-align:left;
-    margin-bottom:10px;
-}
-.c {
-  width: 70% !important;
-  margin: 7px;
-}
+    #topbar {
+        background-color: #1f80b7;
+    }
 
-.m{
-  border: 1px solid #ccc;
-}
+    .nameBox {
+        border: 2px solid #ccc;
+        width: 100%;
+        height: 200px;
+        overflow-y: scroll;
+        padding: 10px;
+        text-align: left;
+        margin-bottom: 10px;
+    }
 
-.ddl{
- -ms-transform: scale(1.5); 
- -moz-transform: scale(1.5); 
- -webkit-transform: scale(1.5); 
- -o-transform: scale(1.5); 
-  padding: 5px;
-}
-a.addbtn2{
-  background-color: #66868e;
-  padding: 5px;
-  color: white;
-}
-.switch-light {
-  width: none; !important
-}
-.bottomrow {
-  background-color: #F5F5F5;
-  height: 30px;
-}
-.px {
-  font-size: 13px;
-  font-weight: normal;
-}
-.btn-primary {
-  background-color: #f05c51;
-  border-color: #f05c51;
-}
+    .c {
+        width: 70% !important;
+        margin: 7px;
+    }
+
+    .m {
+        border: 1px solid #ccc;
+    }
+
+    .ddl {
+        -ms-transform: scale(1.5);
+        -moz-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        -o-transform: scale(1.5);
+        padding: 5px;
+    }
+
+    a.addbtn2 {
+        background-color: #66868e;
+        padding: 5px;
+        color: white;
+    }
+
+    .switch-light {
+        width: none;
+    !important
+    }
+
+    .bottomrow {
+        background-color: #F5F5F5;
+        height: 30px;
+    }
+
+    .px {
+        font-size: 13px;
+        font-weight: normal;
+    }
+
+    .btn-primary {
+        background-color: #f05c51;
+        border-color: #f05c51;
+    }
 </style>

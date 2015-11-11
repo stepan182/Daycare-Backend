@@ -1,55 +1,57 @@
 <br/>
 
 <div class="col-md-8 col-md-offset-2">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <table width="100%"><tr>
-  		  <td><h4>Partners</h4></td>
-  		  <td align="right"><a href="/partners/new" class="btn btn-primary">Add new partner</a></td>
-		  </tr></table>
-		  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <table width="100%">
+        <tr>
+          <td><h4>Partners</h4></td>
+          <td align="right"><a href="/partners/new" class="btn btn-primary">Add new partner</a></td>
+        </tr>
+      </table>
+    </div>
 
-		<div class="panel-body">
-			
-		<table class="table table-striped" id="tblpartners">
-            <thead>
-              <tr>
-                <th>Partner</th>
-                <th>Address</th>
-                <th>Country</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% @partners.each do |partner| %>
-              <tr id="<%=partner.id%>">
-              	<td><%= partner.partner_name %></td>
-              	<td><%= partner.address %></td>
-                <td><%= partner.country %>
+    <div class="panel-body">
+
+      <table class="table table-striped" id="tblpartners">
+        <thead>
+        <tr>
+          <th>Partner</th>
+          <th>Address</th>
+          <th>Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @partners.each do |partner| %>
+            <tr id="<%= partner.id %>">
+              <td><%= partner.partner_name %></td>
+              <td><%= partner.address %></td>
+              <td><%= partner.country %>
                 <div class="pull-right">
-                    <%= link_to("delete", partner_path(id: partner.id), method: :delete, class: "", data: {confirm: "Are you sure?"}) %> | 
-                    <%= link_to("edit", edit_partner_path(id: partner.id)) %>
+                  <%= link_to("delete", partner_path(id: partner.id), method: :delete, class: "", data: {confirm: "Are you sure?"}) %> |
+                  <%= link_to("edit", edit_partner_path(id: partner.id)) %>
                 </div>
-                </td>
-              </tr>
-            <%end%>
-            </tbody>
-        </table>
-			
-		</div>
-		
-	</div>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
-    $(function(){
+    $(function () {
         $("#slogan").html("PARTNERS");
-        
+
     })
 </script>
 
 <style>
-#topbar {
-    background-color: #3481b0;
-}
+    #topbar {
+        background-color: #3481b0;
+    }
 </style>

@@ -1,84 +1,85 @@
 <br/>
 <% if @user.errors.any? %>
-  <div id="error_explanation" class="col-md-6 col-md-offset-3">
-    <div class="alert alert-danger">
-      The form contains <%= pluralize(@user.errors.count, "error") %>.
+    <div id="error_explanation" class="col-md-6 col-md-offset-3">
+      <div class="alert alert-danger">
+        The form contains <%= pluralize(@user.errors.count, "error") %>.
+      </div>
+      <ul class="red">
+        <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
-    <ul class="red">
-    <% @user.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
 <% end %>
 
 <div class="col-md-8 col-centered">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <h4>Provide user details</h4>
-  		</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Provide user details</h4>
+    </div>
 
-		<div class="panel-body">
-		
-    <%= form_tag({action: :create}) do |f| %>			
-		  
+    <div class="panel-body">
+
+      <%= form_tag({action: :create}) do |f| %>
+
           <div class="form-group">
-              <%= label_tag :name %>
-              <input class="form-control" id="name" name="name" required="required" type="text" />
+            <%= label_tag :name %>
+            <input class="form-control" id="name" name="name" required="required" type="text"/>
           </div>
 
           <div class="form-group">
-              <%= label_tag :username %>
-              <input class="form-control" id="username" name="username" required="required" type="text" />
+            <%= label_tag :username %>
+            <input class="form-control" id="username" name="username" required="required" type="text"/>
           </div>
 
           <div class="form-group">
-              <%= label_tag :email %>
-              <input class="form-control" id="email" name="email" required="required" type="text" />
+            <%= label_tag :email %>
+            <input class="form-control" id="email" name="email" required="required" type="text"/>
           </div>
 
           <div class="form-group">
-              <%= label_tag :password %>
-              <input class="form-control" id="password" name="password" required="required" type="password" />
+            <%= label_tag :password %>
+            <input class="form-control" id="password" name="password" required="required" type="password"/>
           </div>
 
           <div class="form-group">
-              <%= label_tag :address%>
-              <textarea class="form-control" id="address" name="address"></textarea>
+            <%= label_tag :address %>
+            <textarea class="form-control" id="address" name="address"></textarea>
           </div>
 
           <div class="form-group">
-              <%= label_tag :country%>
-              <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", id: "country", name: "country" } %>
+            <%= label_tag :country %>
+            <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", id: "country", name: "country"} %>
           </div>
-            
-          <br class="clear" /><br/>
+
+          <br class="clear"/><br/>
+
           <div class="col-md-offset-5">
-              <%= hidden_field_tag("is_manager", "yes")%>
-              <%= submit_tag "Next", class: "btn btn-primary" %>
+            <%= hidden_field_tag("is_manager", "yes") %>
+            <%= submit_tag "Next", class: "btn btn-primary" %>
           </div>
-          
-        <% end %>
-					
-		</div>
-		
-	</div>
+
+      <% end %>
+
+    </div>
+
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
 
     // doc ready
-    $(function(){
+    $(function () {
         $("#slogan").html("REGISTER");
-        
+
     });
 
 </script>
 
 <style>
-.btn-primary {
-  background-color: #f05c51;
-  border-color: #f05c51;
-}
+    .btn-primary {
+        background-color: #f05c51;
+        border-color: #f05c51;
+    }
 </style>

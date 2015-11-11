@@ -1,130 +1,130 @@
 <br/>
 
 <div class="col-md-8 col-md-offset-2">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		<h4>Edit Customer</h4>
-		</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Edit Customer</h4>
+    </div>
 
-		<div class="panel-body">
+    <div class="panel-body">
 
-        <%= form_tag(customers_path, html: { multipart: true }) do |f| %>
-          
+      <%= form_tag(customers_path, html: {multipart: true}) do |f| %>
+
           <div class="form-group">
-              <%= label_tag :choose_country%>
-              <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "getCustomers();", id: "country_sel"  } %>
+            <%= label_tag :choose_country %>
+            <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "getCustomers();", id: "country_sel"} %>
           </div>
-          
+
           <div class="form-group">
-              <%= label_tag :customer_type_id%>
-              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {required: 'true', class: 'form-control ct', onchange: 'getCustomers();'}) %>
+            <%= label_tag :customer_type_id %>
+            <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {required: 'true', class: 'form-control ct', onchange: 'getCustomers();'}) %>
           </div>
 
           <div class="form-group" id="sel_franchise">
-              <%= label_tag :franchise %>
-              <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'getCustomers();'}) %>
+            <%= label_tag :franchise %>
+            <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'getCustomers();'}) %>
           </div>
 
           <div class="form-group" id="sel_partner">
-              <%= label_tag :partner %>
-              <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'getCustomers();'}) %>
+            <%= label_tag :partner %>
+            <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'getCustomers();'}) %>
           </div>
-          
-        <%end%>
 
-        <table class="table table-striped" id="tbl">
-            <thead>
-              <tr>
-                <th>Customer name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Country</th>
-              </tr>
-            </thead>
-            <tbody id="custList">
-              
-            </tbody>
-        </table>
-        
-		</div>
-		
-	</div>
+      <% end %>
+
+      <table class="table table-striped" id="tbl">
+        <thead>
+        <tr>
+          <th>Customer name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Country</th>
+        </tr>
+        </thead>
+        <tbody id="custList">
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
 </div>
 
 
 <!-- Customer Type Modal -->
-<div class="modal fade" id="customerTypeModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
-    <div class="modal-dialog">  
-        <div class="modal-content"></div>  
-    </div>  
-</div>  
+<div class="modal fade" id="customerTypeModal22" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
 
 <!-- Daycare user Type Modal -->
-<div class="modal fade" id="customerTypeModal23" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
-    <div class="modal-dialog">  
-        <div class="modal-content"></div>  
-    </div>  
-</div>  
+<div class="modal fade" id="customerTypeModal23" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
 
 <!-- Scripts and styles -->
 <script>
-    $(function(){
+    $(function () {
         $("#slogan").html("ADD CUSTOMERS");
         $("#tbl").hide();
         $("#sel_franchise").hide();
         $("#sel_partner").hide();
-          
+
     });
 
 
-function getCustomers(){
-  //franchise
-  if ($(".ct").val() == "2"){
-    $("#sel_franchise").show();
-    $("#sel_partner").hide();
-  
-  }
-  //partner
-  else if ($(".ct").val() == "3") {
-    $("#sel_partner").show();
-    $("#sel_franchise").hide();
-  }
-  else if ($(".ct").val() == "1") {
-    $("#sel_franchise").hide();
-    $("#sel_partner").hide();
-  }
+    function getCustomers() {
+        //franchise
+        if ($(".ct").val() == "2") {
+            $("#sel_franchise").show();
+            $("#sel_partner").hide();
+
+        }
+        //partner
+        else if ($(".ct").val() == "3") {
+            $("#sel_partner").show();
+            $("#sel_franchise").hide();
+        }
+        else if ($(".ct").val() == "1") {
+            $("#sel_franchise").hide();
+            $("#sel_partner").hide();
+        }
 
 
         $.post("/customers/get_customer_list",
-            {
-                country: $("#country_sel").val(),
-                customer_type_id: $("#customer_type_name_customer_type_id").val(),
-                partner_id: $("#partner_name_partner_id").val(),
-                franchise_id: $("#franchise_name_franchise_id").val()
-            },
-            
-            function(data){
-                
-                $("#custList").empty();
-                
-                $.each(data, function(i, item) {
-                    $("#custList").append('<tr><td>'+ item.customer_name +'</td><td>'+ item.email +'</td><td>'+ item.address +'</td>'
-                    +'<td>'+ item.country +'<div class="pull-right">'
-                    +'<a data-confirm="Are you sure?" data-method="delete" href="/customers/'+ item.id +'">delete</a> | '
-                    +'<a href="/customers/'+ item.id +'/edit">edit</a></div></td></tr>');
-                });
-                
-                  
-            } , "json");
+                {
+                    country: $("#country_sel").val(),
+                    customer_type_id: $("#customer_type_name_customer_type_id").val(),
+                    partner_id: $("#partner_name_partner_id").val(),
+                    franchise_id: $("#franchise_name_franchise_id").val()
+                },
+
+                function (data) {
+
+                    $("#custList").empty();
+
+                    $.each(data, function (i, item) {
+                        $("#custList").append('<tr><td>' + item.customer_name + '</td><td>' + item.email + '</td><td>' + item.address + '</td>'
+                                + '<td>' + item.country + '<div class="pull-right">'
+                                + '<a data-confirm="Are you sure?" data-method="delete" href="/customers/' + item.id + '">delete</a> | '
+                                + '<a href="/customers/' + item.id + '/edit">edit</a></div></td></tr>');
+                    });
+
+
+                }, "json");
 
         $("#tbl").show();
-}
+    }
 
 </script>
 
 <style>
-#topbar {
-    background-color: #ef5b50;
-}
+    #topbar {
+        background-color: #ef5b50;
+    }
 
 </style>

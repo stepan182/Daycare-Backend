@@ -1,122 +1,124 @@
 <div class="modal-header">
-        <table width="100%"><tr>
-            <td><h4>Edit User Types</h4></td>
-            <td><a data-toggle="modal" href="#" class="pull-right" data-target="#userTypeModal">+ add new type</a></td>
-        </tr></table>
-</div>  
-<div class="modal-body">  
-		
-        <table class="table table-striped" id="tblUserTypes">
-            <thead>
-              <tr>
-                <th>User type</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% @user_types.each do |type| %>
-              <tr id="<%=type.id%>">
-                <td><%= type.user_type_name %>
-                <div class="pull-right">
-                    <a href="javascript:void(0);" onclick="deleteType('<%=type.id%>');" data-confirm="Are you sure?">delete</a>
-                     | 
-                    <a href="#" data-toggle="modal" data-target="#userTypeModal2" data-id="<%= type.id %>" data-user_type_name="<%= type.user_type_name %>">edit</a>
-                </div>
-                </td>
-              </tr>
-            <%end%>
-            </tbody>
-        </table>
-        
-		</div>  
-<div class="modal-footer">  
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>  
-</div>  
+  <table width="100%">
+    <tr>
+      <td><h4>Edit User Types</h4></td>
+      <td><a data-toggle="modal" href="#" class="pull-right" data-target="#userTypeModal">+ add new type</a></td>
+    </tr>
+  </table>
+</div>
+<div class="modal-body">
+
+  <table class="table table-striped" id="tblUserTypes">
+    <thead>
+    <tr>
+      <th>User type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @user_types.each do |type| %>
+        <tr id="<%= type.id %>">
+          <td><%= type.user_type_name %>
+            <div class="pull-right">
+              <a href="javascript:void(0);" onclick="deleteType('<%=type.id%>');" data-confirm="Are you sure?">delete</a>
+              |
+              <a href="#" data-toggle="modal" data-target="#userTypeModal2" data-id="<%= type.id %>" data-user_type_name="<%= type.user_type_name %>">edit</a>
+            </div>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
 
 
 <!-- Edit Modal -->
 <div class="modal fade local-modal" id="userTypeModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 90%;">
-        <div class="modal-content">
-            <%= form_for @user_type, url: user_types_path, method: :patch, html: {role: "form"} do |f| %>
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title">Edit User Type</h4>
-            
+  <div class="modal-dialog" style="width: 90%;">
+    <div class="modal-content">
+      <%= form_for @user_type, url: user_types_path, method: :patch, html: {role: "form"} do |f| %>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Edit User Type</h4>
+
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+              <%= f.label :user_type_name %>
+              <%= f.text_field :user_type_name, class: "form-control" %>
             </div>
-            <div class="modal-body">
-                
-            		  <div class="form-group">
-                          <%= f.label :user_type_name%>
-                          <%= f.text_field :user_type_name, class: "form-control" %>
-                      </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default mClose2">Close</button>
-                <button type="button" class="btn btn-primary mClose2" id="user_type_btn2">Update</button>
-            </div>
-            
-            <% end %>
-        </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default mClose2">Close</button>
+            <button type="button" class="btn btn-primary mClose2" id="user_type_btn2">Update</button>
+          </div>
+
+      <% end %>
     </div>
+  </div>
 </div>
 
 <!-- Add Modal -->
 <div class="modal fade local-modal" id="userTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 90%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                 <h4 class="modal-title">Add New User Type</h4>
-            
+  <div class="modal-dialog" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add New User Type</h4>
+
+      </div>
+      <div class="modal-body">
+
+        <%= form_for @user_type, url: user_types_path, html: {role: "form"} do |f| %>
+            <div class="form-group">
+              <%= f.label :user_type_name %>
+              <%= f.text_field :user_type_name, class: "form-control", id: "type_name2" %>
+              <%= f.hidden_field :customer_type_id, :value => params[:customer_type] %>
+              <%= f.hidden_field :franchise_id, :value => params[:franchise_id] %>
+              <%= f.hidden_field :partner_id, :value => params[:partner_id] %>
             </div>
-            <div class="modal-body">
-                
-                <%= form_for @user_type, url: user_types_path, html: {role: "form"} do |f| %>
-            		  <div class="form-group">
-                          <%= f.label :user_type_name%>
-                          <%= f.text_field :user_type_name, class: "form-control", id: "type_name2" %>
-                          <%= f.hidden_field :customer_type_id, :value => params[:customer_type] %>
-                          <%= f.hidden_field :franchise_id, :value => params[:franchise_id] %>
-                          <%= f.hidden_field :partner_id, :value => params[:partner_id] %>
-                      </div>
-                
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default mClose1">Close</button>
-                <button type="button" class="btn btn-primary mClose1" id="user_type_btn">Add</button>
-                <% end %>
-            </div>
+              <button type="button" class="btn btn-default mClose1">Close</button>
+              <button type="button" class="btn btn-primary mClose1" id="user_type_btn">Add</button>
+        <% end %>
         </div>
-    </div>
+        </div>
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
-    $(function(){
-        
+    $(function () {
+
         $("#slogan").html("ADD CUSTOMERS");
 
-        $(".mClose1").on("click", function(){
-          $('#userTypeModal').modal('hide');
+        $(".mClose1").on("click", function () {
+            $('#userTypeModal').modal('hide');
         });
 
-        $(".mClose2").on("click", function(){
-          $('#userTypeModal2').modal('hide');
+        $(".mClose2").on("click", function () {
+            $('#userTypeModal2').modal('hide');
         });
-        
+
         //Edit modal data bind
         $('#userTypeModal2').on('show.bs.modal', function (event) {
-          var a = $(event.relatedTarget);
-          var id = a.data('id');
-          var name = a.data('user_type_name');
-          
-          var modal = $(this);
-          modal.find('.modal-body #user_type_user_type_name').val(name);
-          modal.find('.modal-content form').attr("action", "/user_types/" + id)
-          modal.find('.modal-footer #user_type_btn2').attr("onclick", "updateType("+ id +")")
+            var a = $(event.relatedTarget);
+            var id = a.data('id');
+            var name = a.data('user_type_name');
+
+            var modal = $(this);
+            modal.find('.modal-body #user_type_user_type_name').val(name);
+            modal.find('.modal-content form').attr("action", "/user_types/" + id)
+            modal.find('.modal-footer #user_type_btn2').attr("onclick", "updateType(" + id + ")")
         });
-        
+
         // prevent modal forms submission
         //$("form").eq(0).submit(function(e) {       
         //  e.preventDefault();
@@ -124,70 +126,70 @@
         //$("form").eq(1).submit(function(e) {       
         //  e.preventDefault();
         //});
- 
-        // Add customer type and append to list
-        $("#user_type_btn").on("click", function(){
-            $.post("/user_types",
-              {
-                  user_type_name: $("#type_name2").val(),
-                  customer_type_id: <%= params[:customer_type] %>,
-                  <%if params["franchise_id"].present? %>franchise_id: <%= params["franchise_id"] %>,<%end%>
-                  <%if params["partner_id"].present? %>partner_id: <%= params["partner_id"] %>,<%end%>
-                  <%if params["customer_id"].present? %>customer_id: <%= params["customer_id"] %><%end%>
-              },
-              function(data){
-                
-                $("#type_name2").val('');
-                $("#tblUserTypes tr:last").after('<tr id="'+ data.id +'">'
-                +'<td>' + data.user_type_name
-                +'<div class="pull-right">'
-                +'<a href="javascript:void(0);" onclick="deleteType(\''+ data.id +'\');" data-confirm="Are you sure?">delete</a> | ' 
-                +'<a href="#" data-toggle="modal" data-target="#userTypeModal2" data-id="'+ data.id +'" data-user_type_name="'+ data.user_type_name +'">edit</a>'
-                +'</div></td></tr>');
 
-                $(".ut").append('<option value='+ data.id +'>'+ data.user_type_name + '</option>');
-                  
-              } , "json");
+        // Add customer type and append to list
+        $("#user_type_btn").on("click", function () {
+            $.post("/user_types",
+                    {
+                        user_type_name: $("#type_name2").val(),
+                        customer_type_id: <%= params[:customer_type] %>,
+                        <%if params["franchise_id"].present? %>franchise_id: <%= params["franchise_id"] %>, <%end%>
+                        <%if params["partner_id"].present? %>partner_id: <%= params["partner_id"] %>, <%end%>
+                        <%if params["customer_id"].present? %>customer_id: <%= params["customer_id"] %><%end%>
+                    },
+                    function (data) {
+
+                        $("#type_name2").val('');
+                        $("#tblUserTypes tr:last").after('<tr id="' + data.id + '">'
+                                + '<td>' + data.user_type_name
+                                + '<div class="pull-right">'
+                                + '<a href="javascript:void(0);" onclick="deleteType(\'' + data.id + '\');" data-confirm="Are you sure?">delete</a> | '
+                                + '<a href="#" data-toggle="modal" data-target="#userTypeModal2" data-id="' + data.id + '" data-user_type_name="' + data.user_type_name + '">edit</a>'
+                                + '</div></td></tr>');
+
+                        $(".ut").append('<option value=' + data.id + '>' + data.user_type_name + '</option>');
+
+                    }, "json");
         });
- 
+
     });
 
-// Delete
-function deleteType(id){
-  $.ajax({
-    url: '/user_types/'+id,
-    type: 'DELETE',
-    success: function(result) {
-        $('table#tblUserTypes tr#'+id).remove();
-        $(".ut option[value='"+ id +"']").remove();
+    // Delete
+    function deleteType(id) {
+        $.ajax({
+            url: '/user_types/' + id,
+            type: 'DELETE',
+            success: function (result) {
+                $('table#tblUserTypes tr#' + id).remove();
+                $(".ut option[value='" + id + "']").remove();
+            }
+        });
+
     }
-  });
 
-}
+    // Update
+    function updateType(id) {
 
-// Update
-function updateType(id){
+        data = {user_type_name: $("#user_type_user_type_name").val(), _method: 'patch'};
+        url = "/user_types/" + id
+        request = $.post(url, data);
+        request.done(function (data) {
+            $('table#tblUserTypes tr#' + data.id).html('<td>' + data.user_type_name
+                    + '<div class="pull-right">'
+                    + '<a href="javascript:void(0);" onclick="deleteType(\'' + data.id + '\');" data-confirm="Are you sure?">delete</a> | '
+                    + '<a href="#" data-toggle="modal" data-target="#userTypeModal2" data-id="' + data.id + '" data-user_type_name="' + data.user_type_name + '">edit</a>'
+                    + '</div></td>');
 
-            data = { user_type_name: $("#user_type_user_type_name").val(), _method: 'patch' };
-            url = "/user_types/"+id
-            request = $.post(url, data);
-            request.done(function(data){
-                $('table#tblUserTypes tr#'+data.id).html('<td>' + data.user_type_name
-                +'<div class="pull-right">'
-                +'<a href="javascript:void(0);" onclick="deleteType(\''+ data.id +'\');" data-confirm="Are you sure?">delete</a> | ' 
-                +'<a href="#" data-toggle="modal" data-target="#userTypeModal2" data-id="'+ data.id +'" data-user_type_name="'+ data.user_type_name +'">edit</a>'
-                +'</div></td>');
+            $(".ut option[value='" + id + "']").html(data.user_type_name);
 
-                $(".ut option[value='"+ id +"']").html(data.user_type_name);
-
-            });
-}
+        });
+    }
 
 </script>
 
 <style>
-#topbar {
-    background-color: #1a8a8f;
-}
+    #topbar {
+        background-color: #1a8a8f;
+    }
 
 </style>

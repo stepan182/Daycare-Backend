@@ -1,203 +1,204 @@
 <div class="col-md-6 col-md-offset-3">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <h4>Customer Privileges</h4>
-  		</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Customer Privileges</h4>
+    </div>
 
-		<div class="panel-body">
-		    
-		    <%= form_tag privileges_path, html: {role: "form"} do %>
-		    
-		    <div class="form-group">
-              <%= label_tag :choose_country%>
-              <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "showCustomers()", id: "country_sel"  } %>
-            </div>
+    <div class="panel-body">
 
-            <div class="form-group" id="ct">
-              <%= label_tag :customer_type_id%>
-              <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {class: 'form-control', onchange: 'showCustomers();'}) %>
-            </div>
+      <%= form_tag privileges_path, html: {role: "form"} do %>
 
-            <div class="form-group" id="sel_franchise">
-              <%= label_tag :franchise %>
-              <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'showCustomers();'}) %>
-            </div>
+          <div class="form-group">
+            <%= label_tag :choose_country %>
+            <%= country_select :country, nil, {}, {prompt: 'Please select a country', class: "form-control", onchange: "showCustomers()", id: "country_sel"} %>
+          </div>
 
-            <div class="form-group" id="sel_partner">
-              <%= label_tag :partner %>
-              <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'showCustomers();'}) %>
-            </div>
+          <div class="form-group" id="ct">
+            <%= label_tag :customer_type_id %>
+            <%= select(:customer_type_name, :customer_type_id, @type_providers.map { |cust| [cust.type_name.html_safe, cust.id] }, {include_blank: true}, {class: 'form-control', onchange: 'showCustomers();'}) %>
+          </div>
 
-            
-            <div class="form-group" id="customerNames">
+          <div class="form-group" id="sel_franchise">
+            <%= label_tag :franchise %>
+            <%= select(:franchise_name, :franchise_id, @franchises.map { |f| [f.franchise_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control fr', onchange: 'showCustomers();'}) %>
+          </div>
+
+          <div class="form-group" id="sel_partner">
+            <%= label_tag :partner %>
+            <%= select(:partner_name, :partner_id, @partners.map { |f| [f.partner_name.html_safe, f.id] }, {include_blank: true}, {class: 'form-control pr', onchange: 'showCustomers();'}) %>
+          </div>
+
+
+          <div class="form-group" id="customerNames">
             <div class="pull-right">select all <input type="checkbox" id="select_all"/></div>
             <label>Choose customer</label>
-            
-              <div class="nameBox pull-right" id="cNames">
-                
-              </div>
-              
+
+            <div class="nameBox pull-right" id="cNames">
+
             </div>
 
-            <div class="form-group" id="ut">
-              <%= label_tag :user_type %>
-              <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {class: 'form-control ut'}) %>
-            </div>
-            
-            <br class="clear" /><br/>
-            <div class="col-md-offset-5">
-              <%= submit_tag "Next", class: "btn btn-primary" %>
-            </div>
-            <%end%>
-            
-        </div>
-		
-	</div>
+          </div>
+
+          <div class="form-group" id="ut">
+            <%= label_tag :user_type %>
+            <%= select(:user_type_name, :user_type_id, "<option></option>".html_safe, {}, {class: 'form-control ut'}) %>
+          </div>
+
+          <br class="clear"/><br/>
+
+          <div class="col-md-offset-5">
+            <%= submit_tag "Next", class: "btn btn-primary" %>
+          </div>
+      <% end %>
+
+    </div>
+
+  </div>
 </div>
 
 
 <!-- Scripts and styles -->
 <script>
 
-    function showCustomers(incl){
+    function showCustomers(incl) {
         partnerVal = $("#partner_name_partner_id").val();
         franchiseVal = $("#franchise_name_franchise_id").val();
 
-    // franchise
-        if ($("#customer_type_name_customer_type_id").val() == "2"){
-          $("#sel_franchise").show();
-          $("#sel_partner").hide();
-          partnerVal = "";
+        // franchise
+        if ($("#customer_type_name_customer_type_id").val() == "2") {
+            $("#sel_franchise").show();
+            $("#sel_partner").hide();
+            partnerVal = "";
         }
         //partner
         else if ($("#customer_type_name_customer_type_id").val() == "3") {
-          $("#sel_partner").show();
-          $("#sel_franchise").hide();
-          franchiseVal = "";
+            $("#sel_partner").show();
+            $("#sel_franchise").hide();
+            franchiseVal = "";
         }
         //single
         else if ($("#customer_type_name_customer_type_id").val() == "1") {
-          $("#sel_franchise").hide();
-          $("#sel_partner").hide();
-          partnerVal = "";
-          franchiseVal = "";
+            $("#sel_franchise").hide();
+            $("#sel_partner").hide();
+            partnerVal = "";
+            franchiseVal = "";
         }
 
         $.post("/privileges/get_customers_by_country",
-            {
-                country: $("#country_sel").val(),
-                customer_type_id: $("#customer_type_name_customer_type_id").val(),
-                partner_id: partnerVal,
-                franchise_id: franchiseVal
-            },
-            
-            function(data){
-                
-                $("#cNames").empty();
-                
-                $.each(data, function(i, item) {
-                    $("#cNames").append('<label for="chk'+ i +'"><input type="checkbox" name="customer_id[]" id="chk'+ i +'" value="'+ item.id +'" onclick="getUserTypes('+ item.id +',\'chk'+ i +'\');"> '+ item.customer_name +'</label><br/>');
-                });
-                
-                  
-            } , "json");
-        
+                {
+                    country: $("#country_sel").val(),
+                    customer_type_id: $("#customer_type_name_customer_type_id").val(),
+                    partner_id: partnerVal,
+                    franchise_id: franchiseVal
+                },
+
+                function (data) {
+
+                    $("#cNames").empty();
+
+                    $.each(data, function (i, item) {
+                        $("#cNames").append('<label for="chk' + i + '"><input type="checkbox" name="customer_id[]" id="chk' + i + '" value="' + item.id + '" onclick="getUserTypes(' + item.id + ',\'chk' + i + '\');"> ' + item.customer_name + '</label><br/>');
+                    });
+
+
+                }, "json");
+
         $("#ct").show();
 
         $("#customerNames").show();
-        
+
     }
 
-    function getUserTypes(cust,chk){
-      tmp = null;
-      
-      if (cust == "all"){
-        tmp = "all";
-        cust = "";
-      }
-      else if (cust == "none"){
-        tmp = "none";
-        cust = ""; 
-      }
+    function getUserTypes(cust, chk) {
+        tmp = null;
+
+        if (cust == "all") {
+            tmp = "all";
+            cust = "";
+        }
+        else if (cust == "none") {
+            tmp = "none";
+            cust = "";
+        }
 
         $.post("/user_types/get_user_types",
-            {
-                customer_type: $("#customer_type_name_customer_type_id").val(),
-                partner_id: partnerVal,
-                franchise_id: franchiseVal,
-                customer_id: cust
-            },
-            
-            function(data){
+                {
+                    customer_type: $("#customer_type_name_customer_type_id").val(),
+                    partner_id: partnerVal,
+                    franchise_id: franchiseVal,
+                    customer_id: cust
+                },
 
-                if ($('#'+ chk +''.toString()).is(':checked')){
-                  $.each(data, function(i, item) {
-                    $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
-                  });
-                }
-                else{
-                  $.each(data, function(i, item) {
-                    $(".ut option[value='"+ item.id +"']").remove();
-                  });
-                  
-                }
+                function (data) {
 
-                // All
-                if (tmp=="all" && !chk){
-                  $(".ut").empty();
-                  $(".ut").append("<option></option>");
+                    if ($('#' + chk + ''.toString()).is(':checked')) {
+                        $.each(data, function (i, item) {
+                            $(".ut").append('<option value="' + item.id + '">' + item.user_type_name + '</option>');
+                        });
+                    }
+                    else {
+                        $.each(data, function (i, item) {
+                            $(".ut option[value='" + item.id + "']").remove();
+                        });
 
-                  $.each(data, function(i, item) {
-                    $(".ut").append('<option value="'+ item.id +'">'+ item.user_type_name +'</option>');
-                  });
-                }
-                else if (tmp=="none" && !chk){
-                  $(".ut").empty();
-                  $(".ut").append("<option></option>");
-                }
+                    }
 
-                  
-            } , "json");
+                    // All
+                    if (tmp == "all" && !chk) {
+                        $(".ut").empty();
+                        $(".ut").append("<option></option>");
 
-        if (cust || tmp){
-          $("#ut").show();
+                        $.each(data, function (i, item) {
+                            $(".ut").append('<option value="' + item.id + '">' + item.user_type_name + '</option>');
+                        });
+                    }
+                    else if (tmp == "none" && !chk) {
+                        $(".ut").empty();
+                        $(".ut").append("<option></option>");
+                    }
+
+
+                }, "json");
+
+        if (cust || tmp) {
+            $("#ut").show();
         }
     }
 
-    $(function(){
+    $(function () {
         $("#slogan").html("PRIVILEGES");
         $("#customerNames").hide();
         $("#ct").hide();
         $("#ut").hide();
         $("#sel_franchise").hide();
         $("#sel_partner").hide();
-        
-        $('#select_all').change(function(){
+
+        $('#select_all').change(function () {
             var checkboxes = $(this).closest('form').find(':checkbox');
-            if($(this).prop('checked')) {
-              checkboxes.prop('checked', true);
-              getUserTypes("all");
+            if ($(this).prop('checked')) {
+                checkboxes.prop('checked', true);
+                getUserTypes("all");
             } else {
-              checkboxes.prop('checked', false);
-              getUserTypes("none");
+                checkboxes.prop('checked', false);
+                getUserTypes("none");
             }
         });
     });
 </script>
 
 <style>
-#topbar {
-    background-color: #90c43d;
-}
+    #topbar {
+        background-color: #90c43d;
+    }
 
-.nameBox { 
-    border:2px solid #ccc;
-    width:100%; 
-    height: 200px; 
-    overflow-y: scroll;
-    padding: 10px;
-    text-align:left;
-    margin-bottom:10px;
-}
+    .nameBox {
+        border: 2px solid #ccc;
+        width: 100%;
+        height: 200px;
+        overflow-y: scroll;
+        padding: 10px;
+        text-align: left;
+        margin-bottom: 10px;
+    }
 
 </style>

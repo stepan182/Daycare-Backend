@@ -1,10 +1,10 @@
 class AdminsController < ApplicationController
   before_action :authorize
-  
+
   def edit
     @admin = Admin.find(params[:id])
   end
-  
+
   def update
     @admin = Admin.find(params[:id])
     if @admin.update_attributes(admin_params)
@@ -14,11 +14,11 @@ class AdminsController < ApplicationController
       render 'edit'
     end
   end
-  
+
   private
 
-    def admin_params
-      params.require(:admin).permit(:name, :email, :password, :password_confirmation)
-    end
-  
+  def admin_params
+    params.require(:admin).permit(:name, :email, :password, :password_confirmation)
+  end
+
 end

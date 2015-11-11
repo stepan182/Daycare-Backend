@@ -1,50 +1,50 @@
 <br/>
 <% if @customer.errors.any? %>
-  <div id="error_explanation" class="col-md-6 col-md-offset-3">
-    <div class="alert alert-danger">
-      The form contains <%= pluralize(@customer.errors.count, "error") %>.
+    <div id="error_explanation" class="col-md-6 col-md-offset-3">
+      <div class="alert alert-danger">
+        The form contains <%= pluralize(@customer.errors.count, "error") %>.
+      </div>
+      <ul class="red">
+        <% @customer.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
     </div>
-    <ul class="red">
-    <% @customer.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
 <% end %>
 
 <div class="col-md-6 col-md-offset-3">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-		  <h4>Create Multiple Customers</h4>
-  		</div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Create Multiple Customers</h4>
+    </div>
 
-		<div class="panel-body pull-center">
-		    <h5>Upload multiple customers with excel file</h5>
-		    <br/><br/>
-        <%= form_tag import_customers_path, multipart: true do %>
+    <div class="panel-body pull-center">
+      <h5>Upload multiple customers with excel file</h5>
+      <br/><br/>
+      <%= form_tag import_customers_path, multipart: true do %>
           <div class="form-group col-md-offset-3">
-              
-              <%= file_field_tag :file, {required: "true"} %>
-          </div>
-              <br/><br/>
-              <%= submit_tag "Import Customers", class: "btn btn-primary" %>
-        <% end %>
-              <br/>
 
-        </div>
-		
-	</div>
+            <%= file_field_tag :file, {required: "true"} %>
+          </div>
+          <br/><br/>
+          <%= submit_tag "Import Customers", class: "btn btn-primary" %>
+      <% end %>
+      <br/>
+
+    </div>
+
+  </div>
 </div>
 
 <!-- Scripts and styles -->
 <script>
-    $(function(){
+    $(function () {
         $("#slogan").html("ADD CUSTOMERS");
     })
 </script>
 
 <style>
-#topbar {
-    background-color: #ef5b50;
-}
+    #topbar {
+        background-color: #ef5b50;
+    }
 </style>
