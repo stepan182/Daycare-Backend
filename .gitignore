@@ -18,3 +18,4 @@
 /log/*.log
 /tmp
 /config/initializers/api_user.rb
+.idea
